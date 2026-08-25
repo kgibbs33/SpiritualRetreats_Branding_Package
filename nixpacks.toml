@@ -1,0 +1,12 @@
+[variables]
+NODE_ENV = "production"
+NIXPACKS_NODE_VERSION = "24"
+
+# Install phase already runs `npm ci` once. A second `npm ci` here fails on Coolify/Docker
+# BuildKit when `node_modules/.cache` is a cache mount (EBUSY on rmdir).
+[phases.build]
+cmds = ["npm run build", "npm prune --omit=dev"]
+cacheDirectories = [".next/cache"]
+
+[start]
+cmd = "NODE_ENV=production node app.js"
