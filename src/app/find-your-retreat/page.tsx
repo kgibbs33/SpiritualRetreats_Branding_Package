@@ -133,8 +133,8 @@ export default function FindYourRetreatPage() {
         <div className="mx-auto mb-12 max-w-3xl overflow-hidden rounded-3xl">
           <div className="relative h-64 w-full sm:h-80">
             <Image
-              src="/images/hero-yoga-outdoor.jpg"
-              alt="Person doing yoga in a peaceful outdoor setting"
+              src="/images/hero-nature.jpg"
+              alt="Calm natural landscape with mountains and forest"
               fill
               className="object-cover"
               priority
