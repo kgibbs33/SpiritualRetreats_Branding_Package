@@ -12,26 +12,31 @@ type SourceContent = {
 const sourceMap: Record<string, SourceContent> = {
   discovery: {
     heading: "Your retreat journey starts here",
-    body: "Your questionnaire is saved. We will use your answers to match you with retreats that fit your intentions and will be in touch by email with personalised suggestions.",
+    body: "Thank you, we have received your details. Explore retreats while you wait — our team will review your answers.",
     cta: { label: "Browse Retreat Listings", href: "/retreat-listings" },
     secondary: { label: "Back to Home", href: "/" },
   },
   "retreat-intake": {
     heading: "Your retreat has been submitted",
-    body: "Thank you for listing your retreat with us. Our team will review your submission and reach out within 2–3 working days to discuss next steps and get your retreat live on the platform.",
-    cta: { label: "Back to For Retreat Owners", href: "/for-retreat-owners" },
+    body: "Thank you for listing your retreat with us. Our team will review your submission and be in touch to discuss next steps and get your retreat live on the platform.",
+    cta: { label: "Why list with us", href: "/why-work-with-us" },
     secondary: { label: "Back to Home", href: "/" },
+  },
+  "venue-application": {
+    heading: "Your venue application has been submitted",
+    body: "Thank you for telling us about your venue. Our team will review your application and be in touch about the next steps.",
+    cta: { label: "Back to Home", href: "/" },
   },
   "facilitator-matching": {
     heading: "Your matching request is in",
     body: "Thank you for sharing your practice and availability. We will reach out when a retreat collaboration that fits your profile comes up. In the meantime, feel free to explore the platform.",
-    cta: { label: "Back to Facilitators Portal", href: "/facilitators-portal" },
+    cta: { label: "Explore Retreats", href: "/retreat-listings" },
     secondary: { label: "Back to Home", href: "/" },
   },
   contact: {
     heading: "Message received",
-    body: "Thank you for reaching out. We aim to reply within 1–2 working days. In the meantime, feel free to explore the platform.",
-    cta: { label: "Explore Retreats", href: "/find-your-retreat" },
+    body: "Thank you for reaching out. We will get back to you as soon as we can. In the meantime, feel free to explore the platform.",
+    cta: { label: "Explore Retreats", href: "/retreat-listings" },
     secondary: { label: "Back to Home", href: "/" },
   },
 };
