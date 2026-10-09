@@ -18,8 +18,7 @@ import { EMBLEM_PATH, BRAND_NAME } from "@/lib/brand";
  */
 
 const EMBLEM_SIZE = 64;
-const HORIZONTAL_WIDTH = 280;
-const HORIZONTAL_HEIGHT = 102; // 280 × (571/1563) ≈ 102
+const HORIZONTAL_WIDTH = 280; // 280 × (571/1563) ≈ 102px tall
 
 const HORIZONTAL_PATH = "/brand/lpr-logo-horizontal.png";
 

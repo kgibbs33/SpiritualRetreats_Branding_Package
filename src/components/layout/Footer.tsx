@@ -102,7 +102,7 @@ export function Footer() {
                 href="/"
                 className="inline-block rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest-green/40 focus-visible:ring-offset-2"
               >
-                <BrandLogo size={64} />
+                <BrandLogo variant="emblem" />
               </Link>
               <p className="mt-4 max-w-[280px] text-sm leading-relaxed text-stone-600">
                 {BRAND_POSITIONING}
