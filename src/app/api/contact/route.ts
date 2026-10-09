@@ -93,7 +93,7 @@ export async function POST(request: Request) {
         contact: { name, email },
         data: { subject, message },
         record_id: String(inquiry.id),
-      });
+      }).catch(function() {});
     });
 
     return NextResponse.json({ success: true }, { status: 201 });

@@ -155,3 +155,21 @@ header — never in the URL or body.
 3. The `X-Webhook-Secret` header can be validated in GHL's webhook settings.
 4. Map GHL contact fields from the `contact` object and custom fields from `data`.
    `record_id` is the Supabase row UUID — use it for deduplication or linking back.
+## Setting up the HighLevel workflow
+
+**Trigger:** use **Inbound Webhook**.  The Mapping Reference dropdown stays
+empty until HighLevel has received at least one sample POST, so:
+
+1. Submit one real test from the live site (e.g. fill in the contact form).
+2. Go back to the workflow editor, open the Inbound Webhook trigger again,
+   and click **"Check for new requests"**.
+3. Select the just-received request as the Mapping Reference — its JSON body
+   populates the field picker.
+4. Map the fields you need (name, email, phone from `contact`; any custom
+   fields from `data`; `form_type` and `record_id` for routing).
+5. **Keep the workflow in Draft** until every field is mapped and tested.
+
+**About X-Webhook-Secret:** HighLevel's Inbound Webhook trigger does not
+validate custom headers. We still send `X-Webhook-Secret` on every POST
+(for other platforms that do validate it), but treat the webhook URL itself
+as the secret. Never expose the webhook URL publicly.

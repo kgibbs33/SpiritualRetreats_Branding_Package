@@ -1,16 +1,22 @@
 #!/usr/bin/env node
 /**
- * Smoke-test every public form route on a given base URL.
- * Usage: node scripts/test-forms.mjs <BASE_URL>
- * Example: node scripts/test-forms.mjs https://spiritual-retreats-branding-package-git-milestone-2-xforria.vercel.app
+ * Smoke-test all public form routes.
  *
- * Posts clearly fake data (name "TEST - ignore") to each form endpoint.
- * Prints a table: form, HTTP status, result (thank-you or error).
- * Never runs against production — you provide the URL.
+ * Usage: node scripts/test-forms.mjs [BASE_URL]
+ *   Defaults to http://localhost:3000 if no argument given.
+ *
+ * Posts fake test-only data to each form.  Prints PASS or FAIL per form.
+ * Exits non-zero if any form fails.
+ *
+ * After running, delete the test rows in Supabase and check HighLevel
+ * for any stray test contacts.
  */
 
+const BASE = process.argv[2] ?? "http://localhost:3000";
+
+const TS = Date.now();
 const TEST_NAME = "TEST - ignore";
-const TEST_EMAIL = "test@example.com";
+const TEST_EMAIL = `test+${TS}@example.com`;
 
 const forms = [
   {
@@ -19,8 +25,8 @@ const forms = [
     body: {
       name: TEST_NAME,
       email: TEST_EMAIL,
-      subject: "Test submission",
-      message: "This is an automated test. Please ignore.",
+      subject: "TEST - delete me",
+      message: "Automated test submission. Please ignore.",
       company: "",
     },
   },
@@ -30,7 +36,7 @@ const forms = [
     body: {
       fullName: TEST_NAME,
       email: TEST_EMAIL,
-      answers: { q1: "test" },
+      answers: { purpose: "TEST - delete me" },
       company: "",
     },
   },
@@ -40,7 +46,7 @@ const forms = [
     body: {
       contactName: TEST_NAME,
       email: TEST_EMAIL,
-      retreatTitle: "Test Retreat",
+      retreatTitle: "TEST - delete me",
       company: "",
     },
   },
@@ -50,7 +56,7 @@ const forms = [
     body: {
       contactName: TEST_NAME,
       email: TEST_EMAIL,
-      venueName: "Test Venue",
+      venueName: "TEST - delete me",
       consent: true,
       company: "",
     },
@@ -92,41 +98,42 @@ const forms = [
     body: {
       fullName: TEST_NAME,
       email: TEST_EMAIL,
-      purpose: "Test",
+      purpose: "TEST - delete me",
       company: "",
     },
   },
 ];
 
-const BASE = process.argv[2];
-if (!BASE) {
-  console.error("Usage: node scripts/test-forms.mjs <BASE_URL>");
-  process.exit(1);
-}
-const baseUrl = BASE.replace(/\/+$/, "");
-
-console.log("Form                    Status  Result");
-console.log("────────────────────────────────────────");
+let failed = 0;
 
 for (const { name, url, body } of forms) {
-  const fullUrl = baseUrl + url;
+  const fullUrl = BASE.replace(/\/+$/, "") + url;
+  process.stdout.write(`${name.padEnd(26)} `);
   try {
     const res = await fetch(fullUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     });
-    const text = await res.text().catch(() => "");
-    let result = `HTTP ${res.status}`;
-    if (res.status >= 500) {
-      result += " — ERROR";
-    } else if (res.status >= 400) {
-      result += " — validation (expected on missing fields)";
+    if (res.status === 200 || res.status === 201) {
+      console.log("PASS");
     } else {
-      result += " — " + (text.includes("success") ? "thank-you" : text.slice(0, 50));
+      console.log(`FAIL (HTTP ${res.status})`);
+      failed++;
     }
-    console.log(`${name.padEnd(24)} ${result}`);
   } catch (err) {
-    console.log(`${name.padEnd(24)} NETWORK ERROR: ${err.message.slice(0, 40)}`);
+    console.log(`FAIL (${err.message.slice(0, 50)})`);
+    failed++;
   }
 }
+
+console.log(
+  `\n${forms.length - failed} / ${forms.length} passed` +
+    (failed ? `, ${failed} FAILED` : "")
+);
+
+console.log(
+  "\nREMINDER: Delete test rows in Supabase and check HighLevel for stray test contacts."
+);
+
+process.exit(failed > 0 ? 1 : 0);

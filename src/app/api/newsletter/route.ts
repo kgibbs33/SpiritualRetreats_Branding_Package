@@ -32,9 +32,11 @@ export async function POST(request: Request) {
 
     const supabase = createAdminClient();
     const email = parsed.data.email.toLowerCase().trim();
-    const { error } = await supabase
+    const { data: newRow, error } = await supabase
       .from("newsletter_subscriptions")
-      .insert({ email });
+      .insert({ email })
+      .select("id")
+      .single();
 
     if (error) {
       if (error.code === "23505") {
@@ -53,6 +55,7 @@ export async function POST(request: Request) {
     await supabase.from("events").insert({
       event_type: "newsletter_subscribed",
       entity_type: "newsletter_subscription",
+      entity_id: newRow.id,
       payload: { email },
     });
 
@@ -65,7 +68,7 @@ export async function POST(request: Request) {
       try {
         await sendTeamSubmissionNotification({
           formType: "Newsletter signup",
-          recordId: email,
+          recordId: newRow?.id || email,
           fields: { Email: email },
         });
       } catch (teamErr) {
@@ -78,7 +81,7 @@ export async function POST(request: Request) {
           source_url: "",
           contact: { name: "", email },
           data: {},
-          record_id: email,
+          record_id: newRow?.id || email,
         });
       } catch {
         // fire-and-forget — never fail the submission

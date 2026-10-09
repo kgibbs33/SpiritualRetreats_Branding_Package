@@ -1,14 +1,13 @@
 /**
  * Shared outgoing webhook client for all public forms.
  *
- * Reads FORM_WEBHOOK_URL (primary) — already set in Vercel.
- * N8N_FORM_SUBMISSION_URL is kept as a fallback for backward compatibility.
- * Sends the webhook secret as an X-Webhook-Secret header, never in URL/body.
+ * Reads FORM_WEBHOOK_URL from env (already set in Vercel).
+ * FORM_WEBHOOK_SECRET is sent as X-Webhook-Secret header.
  *
- * Payload: { form_type, submitted_at, source_url, contact, data, record_id }
- *
- * CRITICAL: a failed webhook must NEVER fail the user's submission.
- * Always caught and logged with no personal data.
+ * CRITICAL: a webhook failure or timeout must NEVER fail or delay the
+ * user's submission.  The fetch has an 8 s timeout; non-2xx responses are
+ * logged (form_type + status only, no personal data) and treated as soft
+ * failures.  The caller should always fire-and-forget (never await this).
  */
 
 const WEBHOOK_URL =
@@ -47,12 +46,19 @@ export async function fireFormWebhook(
   }
 
   try {
-    await fetch(WEBHOOK_URL, {
+    const res = await fetch(WEBHOOK_URL, {
       method: "POST",
       headers,
       body: JSON.stringify(payload),
+      signal: AbortSignal.timeout(8000),
     });
+    if (!res.ok) {
+      console.error(
+        `webhook: ${payload.form_type} returned HTTP ${res.status}`
+      );
+    }
   } catch {
-    console.error("webhook: " + payload.form_type + " delivery failed");
+    // Timeout or network error — logged without personal data.
+    console.error(`webhook: ${payload.form_type} delivery failed`);
   }
 }

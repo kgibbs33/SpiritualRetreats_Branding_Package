@@ -1,64 +1,61 @@
--- RLS verification: anonymous users can read only published retreats and
--- published facilitators, and cannot read any submission table.
+-- RLS verification: anonymous + authenticated users can only read
+-- published retreats/facilitators, and cannot read any submission table.
 --
--- Run this in the Supabase SQL editor (do NOT run via migration tool).
--- Expected result: every SELECT below returns 0 rows (empty set), proving
--- anonymous access is denied.  Only retreats/facilitators with published
--- status should return rows (those tests are true-positive — data-dependent).
+-- HOW TO RUN: Paste this entire file into the Supabase SQL Editor
+-- and run it.  Read the result messages.
+--
+-- EXPECTED RESULTS (see annotations on each SELECT):
+--   - Every submission/events table: 0 rows OR "permission denied" = SAFE
+--   - retreats / facilitators: only rows with status = 'published' returned
+--
+-- This script is READ-ONLY (SELECT only).  Safe to run on the live database.
 
--- ── Submission tables (must return 0 rows for anon) ─────────────────────
+-- ═══════════════════════════════════════════════════════════════════════
+-- SECTION 1 — anon role (public, unauthenticated visitors)
+-- ═══════════════════════════════════════════════════════════════════════
 
--- Attempt to read contact_inquiries as anon (must fail)
-SELECT 'contact_inquiries' AS table_name, count(*) AS rows_found
-  FROM contact_inquiries
-  LIMIT 1;
+set role anon;
 
--- Attempt to read retreat_submissions as anon
-SELECT 'retreat_submissions' AS table_name, count(*) AS rows_found
-  FROM retreat_submissions
-  LIMIT 1;
+-- ── Submission tables (expected: 0 rows OR permission denied) ─────────
 
--- Attempt to read venue_submissions as anon
-SELECT 'venue_submissions' AS table_name, count(*) AS rows_found
-  FROM venue_submissions
-  LIMIT 1;
+select 'contact_inquiries'       as table_name, count(*) as rows_found from contact_inquiries;
+select 'retreat_submissions'     as table_name, count(*) as rows_found from retreat_submissions;
+select 'venue_submissions'       as table_name, count(*) as rows_found from venue_submissions;
+select 'seeker_discovery'        as table_name, count(*) as rows_found from seeker_discovery_responses;
+select 'newsletter_subscriptions' as table_name, count(*) as rows_found from newsletter_subscriptions;
+select 'facilitator_onboarding'  as table_name, count(*) as rows_found from facilitator_onboarding_responses;
+select 'facilitator_matching'    as table_name, count(*) as rows_found from facilitator_matching_requests;
+select 'events'                  as table_name, count(*) as rows_found from events;
+select 'matches'                 as table_name, count(*) as rows_found from matches;
 
--- Attempt to read seeker_discovery_responses as anon
-SELECT 'seeker_discovery_responses' AS table_name, count(*) AS rows_found
-  FROM seeker_discovery_responses
-  LIMIT 1;
+-- ── Published directories (expected: only status = 'published') ───────
 
--- Attempt to read newsletter_subscriptions as anon
-SELECT 'newsletter_subscriptions' AS table_name, count(*) AS rows_found
-  FROM newsletter_subscriptions
-  LIMIT 1;
+select status, count(*) as cnt from retreats    group by status;
+select status, count(*) as cnt from facilitators group by status;
 
--- Attempt to read facilitator_onboarding_responses as anon
-SELECT 'facilitator_onboarding_responses' AS table_name, count(*) AS rows_found
-  FROM facilitator_onboarding_responses
-  LIMIT 1;
+reset role;
 
--- Attempt to read facilitator_matching_requests as anon
-SELECT 'facilitator_matching_requests' AS table_name, count(*) AS rows_found
-  FROM facilitator_matching_requests
-  LIMIT 1;
+-- ═══════════════════════════════════════════════════════════════════════
+-- SECTION 2 — authenticated role (logged-in users, no admin session)
+-- ═══════════════════════════════════════════════════════════════════════
 
--- ── Published retreats (may return rows if data exists) ────────────────
+set role authenticated;
 
--- Read retreats as anon — should return only rows where published = true
-SELECT 'retreats (anon)' AS table_name, count(*) AS rows_found
-  FROM retreats;
+select 'contact_inquiries'       as table_name, count(*) as rows_found from contact_inquiries;
+select 'retreat_submissions'     as table_name, count(*) as rows_found from retreat_submissions;
+select 'venue_submissions'       as table_name, count(*) as rows_found from venue_submissions;
+select 'seeker_discovery'        as table_name, count(*) as rows_found from seeker_discovery_responses;
+select 'newsletter_subscriptions' as table_name, count(*) as rows_found from newsletter_subscriptions;
+select 'facilitator_onboarding'  as table_name, count(*) as rows_found from facilitator_onboarding_responses;
+select 'facilitator_matching'    as table_name, count(*) as rows_found from facilitator_matching_requests;
+select 'events'                  as table_name, count(*) as rows_found from events;
+select 'matches'                 as table_name, count(*) as rows_found from matches;
 
--- Read facilitators as anon — should return only rows where published = true
-SELECT 'facilitators (anon)' AS table_name, count(*) AS rows_found
-  FROM facilitators;
+reset role;
 
--- ── Events table (RLS enabled, should be deny-all) ─────────────────────
-SELECT 'events' AS table_name, count(*) AS rows_found
-  FROM events
-  LIMIT 1;
-
--- ── Interpretation ─────────────────────────────────────────────────────
--- If any submission/events row has rows_found > 0, RLS is misconfigured.
--- If retreats rows_found > 0 but those rows are NOT published, RLS is
--- misconfigured (anon should only see published = true).
+-- ═══════════════════════════════════════════════════════════════════════
+-- INTERPRETATION
+-- ═══════════════════════════════════════════════════════════════════════
+-- If any submission/events/match row has rows_found > 0, RLS is broken.
+-- For retreats/facilitators: if rows with status <> 'published' appear,
+-- the RLS policy is too permissive.

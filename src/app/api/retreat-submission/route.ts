@@ -107,7 +107,7 @@ export async function POST(request: Request) {
         contact: { name: d.contactName, email: d.email },
         data: { retreatTitle: d.retreatTitle, location: d.location },
         record_id: String(row.id),
-      });
+      }).catch(function() {});
     });
 
     return NextResponse.json({ success: true, id: row.id }, { status: 201 });
