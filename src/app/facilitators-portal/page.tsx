@@ -633,7 +633,7 @@ export default function FacilitatorsPortalPage() {
 
       <div className="border-t border-stone-100" />
 
-      {/* ── Why Re:Treat ─────────────────────────────────── */}
+      {/* ── Why Light Path Retreats ─────────────────────────────────── */}
       <section className="bg-cream px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-5xl">
           <p className="text-center text-sm font-semibold uppercase tracking-widest text-forest">
@@ -668,7 +668,7 @@ export default function FacilitatorsPortalPage() {
                     Other platforms
                   </th>
                   <th className="px-5 py-3 text-left text-xs font-medium uppercase tracking-wide text-forest">
-                    Re:Treat Yourself
+                    Light Path Retreats
                   </th>
                 </tr>
               </thead>

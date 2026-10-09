@@ -15,7 +15,7 @@ import {
 const SUPPORT = CONTACT_EMAIL;
 
 function supportMailto(): string {
-  return `mailto:${SUPPORT}?subject=${encodeURIComponent("Re: Treat Yourself — question")}`;
+  return `mailto:${SUPPORT}?subject=${encodeURIComponent("Light Path Retreats — question")}`;
 }
 
 async function sendBrandedUserEmail(input: {
@@ -44,11 +44,11 @@ export async function sendContactUserConfirmation(input: {
   const text = [
     `Hi ${name.trim() || "there"},`,
     "",
-    "Thanks for contacting Re: Treat Yourself. We received your message and will get back to you when we can.",
+    "Thanks for contacting Light Path Retreats. We received your message and will get back to you when we can.",
     "",
     `Questions? Email us at ${SUPPORT}`,
     "",
-    `— Re: Treat Yourself`,
+    `— Light Path Retreats`,
     getPublicBaseUrl(),
   ].join("\n");
 
@@ -61,7 +61,7 @@ export async function sendContactUserConfirmation(input: {
 
   await sendBrandedUserEmail({
     to: toEmail,
-    subject: "We received your message — Re: Treat Yourself",
+    subject: "We received your message — Light Path Retreats",
     text,
     html: wrapBrandedEmail(inner),
     idempotencyKey: `contact-user/${inquiryId}`,
@@ -75,7 +75,7 @@ export async function sendNewsletterUserConfirmation(toEmail: string): Promise<v
   const text = [
     "You are on the list.",
     "",
-    "We will send occasional updates about retreats, opportunities, and launches from Re: Treat Yourself.",
+    "We will send occasional updates about retreats, opportunities, and launches from Light Path Retreats.",
     "",
     `To reach us: ${SUPPORT}`,
     "",
@@ -90,7 +90,7 @@ export async function sendNewsletterUserConfirmation(toEmail: string): Promise<v
 
   await sendBrandedUserEmail({
     to: toEmail,
-    subject: "You are on the list — Re: Treat Yourself",
+    subject: "You are on the list — Light Path Retreats",
     text,
     html: wrapBrandedEmail(inner),
     idempotencyKey,
@@ -123,7 +123,7 @@ export async function sendSeekerDiscoveryUserConfirmation(input: {
 
   await sendBrandedUserEmail({
     to: input.toEmail,
-    subject: "We received your questionnaire — Re: Treat Yourself",
+    subject: "We received your questionnaire — Light Path Retreats",
     text,
     html: wrapBrandedEmail(inner),
     idempotencyKey: `seeker-user/${input.responseId}`,
@@ -161,7 +161,7 @@ export async function sendRetreatSubmissionUserConfirmation(input: {
 
   await sendBrandedUserEmail({
     to: input.toEmail,
-    subject: "We received your retreat details — Re: Treat Yourself",
+    subject: "We received your retreat details — Light Path Retreats",
     text,
     html: wrapBrandedEmail(inner),
     idempotencyKey: `retreat-user/${input.submissionId}`,
@@ -178,7 +178,7 @@ export async function sendFacilitatorWelcomeEmail(input: {
   const text = [
     `Hi ${first},`,
     "",
-    "Thank you for completing facilitator onboarding with Re: Treat Yourself.",
+    "Thank you for completing facilitator onboarding with Light Path Retreats.",
     "",
     "Our team will review your details and follow up when we can.",
     "",
@@ -196,7 +196,7 @@ export async function sendFacilitatorWelcomeEmail(input: {
 
   await sendBrandedUserEmail({
     to: input.toEmail,
-    subject: "We received your facilitator profile — Re: Treat Yourself",
+    subject: "We received your facilitator profile — Light Path Retreats",
     text,
     html: wrapBrandedEmail(inner),
     idempotencyKey: `facilitator-welcome/${input.responseId}`,
@@ -213,7 +213,7 @@ export async function sendFacilitatorMatchingConfirmation(input: {
   const text = [
     `Hi ${first},`,
     "",
-    "Thank you for submitting your matching request with Re: Treat Yourself.",
+    "Thank you for submitting your matching request with Light Path Retreats.",
     "",
     "Our team will review your availability and practice profile and reach out when a suitable retreat collaboration comes up.",
     "",
@@ -231,7 +231,7 @@ export async function sendFacilitatorMatchingConfirmation(input: {
 
   await sendBrandedUserEmail({
     to: input.toEmail,
-    subject: "We received your matching request — Re: Treat Yourself",
+    subject: "We received your matching request — Light Path Retreats",
     text,
     html: wrapBrandedEmail(inner),
     idempotencyKey: `facilitator-matching/${input.responseId}`,
@@ -269,7 +269,7 @@ export async function sendMatchNotificationToSeeker(input: {
 
   await sendBrandedUserEmail({
     to: input.toEmail,
-    subject: "A retreat we think you will like — Re: Treat Yourself",
+    subject: "A retreat we think you will like — Light Path Retreats",
     text,
     html: wrapBrandedEmail(inner),
     idempotencyKey: `match-seeker/${input.matchId}`,
@@ -309,7 +309,7 @@ export async function sendMatchNotificationToFacilitator(input: {
 
   await sendBrandedUserEmail({
     to: input.toEmail,
-    subject: "New seeker match — Re: Treat Yourself",
+    subject: "New seeker match — Light Path Retreats",
     text,
     html: wrapBrandedEmail(inner),
     idempotencyKey: `match-facilitator/${input.matchId}`,

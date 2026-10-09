@@ -16,4 +16,4 @@ Photos are free to use; attribution appreciated but not required.
 | nature-immersion.jpg | Forest, serene landscape (legacy script download) | [Unsplash](https://unsplash.com/photos/nature-immersion) |
 | mindfulness-retreat.jpg | Mindful practice | [Unsplash](https://unsplash.com/photos/mindfulness) |
 | sacred-valley.jpg | Sacred Valley, Peru, spiritual | [Unsplash](https://unsplash.com/photos/sacred-valley) |
-| logo.png | Re: Treat Yourself logo | Brand asset |
+| logo.png | Light Path Retreats logo | Brand asset |

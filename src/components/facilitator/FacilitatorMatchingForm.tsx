@@ -723,7 +723,7 @@ export function FacilitatorMatchingForm() {
               className="mt-1 size-4 rounded border-stone-300 text-forest focus:ring-forest"
             />
             <span className="text-sm text-stone-600">
-              I consent to Re:Treat Yourself featuring my profile in marketing
+              I consent to Light Path Retreats featuring my profile in marketing
               to retreat owners (optional).
             </span>
           </label>

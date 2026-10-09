@@ -30,7 +30,7 @@ const benefits = [
       </svg>
     ),
     heading: "Global reach, zero ad spend",
-    body: "RE:TREAT YOURSELF connects retreat owners worldwide with a growing base of seekers actively looking. You focus on the experience — we handle discovery.",
+    body: "Light Path Retreats connects retreat owners worldwide with a growing base of seekers actively looking. You focus on the experience — we handle discovery.",
   },
 ];
 
@@ -125,9 +125,9 @@ const adPackages = [
 // ---------------------------------------------------------------------------
 
 export const metadata = {
-  title: "For Retreat Owners — Re: Treat Yourself",
+  title: "For Retreat Owners — Light Path Retreats",
   description:
-    "List your retreat with RE:TREAT YOURSELF and reach pre-qualified seekers who are actively looking for transformational experiences aligned with yours.",
+    "List your retreat with Light Path Retreats and reach pre-qualified seekers who are actively looking for transformational experiences aligned with yours.",
   alternates: { canonical: "/for-retreat-owners" },
 };
 
@@ -146,7 +146,7 @@ export default function ForRetreatOwnersPage() {
               Fill your retreats with the right people
             </h1>
             <p className="mt-6 text-lg leading-relaxed text-stone-600">
-              List your retreat on RE:TREAT YOURSELF and connect with seekers
+              List your retreat on Light Path Retreats and connect with seekers
               who are actively looking for exactly what you offer — matched by
               intention, not just availability.
             </p>

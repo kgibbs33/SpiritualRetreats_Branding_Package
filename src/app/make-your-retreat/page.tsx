@@ -6,7 +6,7 @@ import {
 } from "@/lib/make-your-retreat-modules";
 
 export const metadata = {
-  title: "Make Your Retreat | Re:Treat Yourself",
+  title: "Make Your Retreat | Light Path Retreats",
   description:
     "Twelve owner support modules — vision through delivery. €250 per module with human guidance.",
   alternates: { canonical: "/make-your-retreat" },

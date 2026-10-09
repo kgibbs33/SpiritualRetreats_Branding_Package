@@ -424,7 +424,7 @@ export default function HowItWorksPage() {
                   Other platforms
                 </th>
                 <th className="px-5 py-3 text-left text-xs font-medium text-forest uppercase tracking-wide">
-                  Re:Treat Yourself
+                  Light Path Retreats
                 </th>
               </tr>
             </thead>

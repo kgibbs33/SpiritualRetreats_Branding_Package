@@ -3,7 +3,7 @@ import Link from "next/link";
 import { FacilitatorMatchingForm } from "@/components/facilitator/FacilitatorMatchingForm";
 
 export const metadata = {
-  title: "Facilitator Matching — Re: Treat Yourself",
+  title: "Facilitator Matching — Light Path Retreats",
   description:
     "Tell us about your facilitation practice and availability so we can connect you with retreat owners looking for the right collaborator.",
 };

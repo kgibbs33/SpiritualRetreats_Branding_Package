@@ -41,13 +41,13 @@ export async function generateMetadata({
 }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const { row } = await getPublishedFacilitatorBySlug(slug);
-  if (!row) return { title: "Facilitator not found — Re: Treat Yourself" };
+  if (!row) return { title: "Facilitator not found — Light Path Retreats" };
 
-  const title = `${row.display_name} — Re: Treat Yourself`;
+  const title = `${row.display_name} — Light Path Retreats`;
   const description =
     row.headline?.trim() ||
     row.bio?.trim()?.slice(0, 160) ||
-    `${row.display_name} facilitates retreats with Re: Treat Yourself.`;
+    `${row.display_name} facilitates retreats with Light Path Retreats.`;
   const canonical = `/facilitator-directory/${slug}`;
   return {
     title,

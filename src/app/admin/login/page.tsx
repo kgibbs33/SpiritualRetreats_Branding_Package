@@ -37,7 +37,7 @@ export default function AdminLoginPage() {
             </svg>
           </div>
           <h1 className="font-display text-2xl text-foreground">Admin Access</h1>
-          <p className="text-sm text-muted mt-1">Re: Treat Yourself operations panel</p>
+          <p className="text-sm text-muted mt-1">Light Path Retreats operations panel</p>
         </div>
 
         <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-beige p-6 shadow-[var(--shadow-card)]">

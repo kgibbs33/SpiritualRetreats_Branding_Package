@@ -161,7 +161,7 @@ export function extractVerifiedMailboxAddress(mailFromHeader: string): string | 
 }
 
 /** Display name for user-facing receipts; matches site / layout branding. */
-const BRAND_MAIL_FROM_DISPLAY = "Re: Treat Yourself";
+const BRAND_MAIL_FROM_DISPLAY = "Light Path Retreats";
 
 /**
  * `MAIL_FROM` with a fixed branded display name on the verified mailbox.
@@ -174,7 +174,7 @@ export function formatBrandedMailFrom(mailFromHeader: string): string {
   return `"${BRAND_MAIL_FROM_DISPLAY}" <${addr}>`;
 }
 
-/** Same mailbox as `MAIL_FROM`, shown to recipients as “Re: Treat Yourself”. */
+/** Same mailbox as `MAIL_FROM`, shown to recipients as “Light Path Retreats”. */
 export function getBrandedConfirmationFromOrNull(): string | null {
   const raw = getMailFromOrNull();
   if (!raw) return null;

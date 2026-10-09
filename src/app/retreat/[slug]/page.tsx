@@ -18,9 +18,9 @@ export async function generateMetadata({
   const { slug } = await params;
   const { row } = await getRetreatBySlug(slug);
   if (!row) {
-    return { title: "Retreat not found — Re: Treat Yourself" };
+    return { title: "Retreat not found — Light Path Retreats" };
   }
-  const title = `${row.title} — Re: Treat Yourself`;
+  const title = `${row.title} — Light Path Retreats`;
   const description =
     row.description?.trim() ||
     `${row.type} retreat in ${row.location ?? "a beautiful location"}. ${row.dates_display}.`;

@@ -317,7 +317,7 @@ export default function FindYourRetreatPage() {
 
             {/* Matched column */}
             <div className="rounded-2xl border border-forest/20 bg-forest/5 p-6">
-              <p className="mb-4 text-sm font-semibold text-forest">Matched by Re-Treat Yourself</p>
+              <p className="mb-4 text-sm font-semibold text-forest">Matched by Light Path Retreats</p>
               <ul className="space-y-3">
                 {[
                   "2–4 retreats chosen for your situation",

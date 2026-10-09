@@ -1,19 +1,20 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { BrandLogo } from "@/components/layout/BrandLogo";
+import { CTA } from "@/lib/brand";
 
 const mainNav = [
-  { href: "/find-your-retreat", label: "Find Your Retreat" },
-  { href: "/retreat-listings", label: "Retreat Listings" },
-  { href: "/for-retreat-owners", label: "For Owners" },
-  { href: "/facilitators-portal", label: "Facilitators" },
+  { href: "/retreat-listings", label: CTA.DISCOVER_RETREATS },
+  { href: "/find-your-retreat", label: CTA.FIND_YOUR_PATH },
+  { href: "/how-it-works", label: "How It Works" },
+  { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ];
 
 const linkUnderline =
-  "relative shrink-0 whitespace-nowrap px-1 py-2.5 text-[15px] font-semibold tracking-tight text-warm-brown transition-colors duration-200 hover:text-forest motion-reduce:transition-none 2xl:text-base after:pointer-events-none after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-forest after:transition-[width] after:duration-200 motion-reduce:after:transition-none hover:after:w-full after:content-['']";
+  "relative shrink-0 whitespace-nowrap px-1 py-2.5 text-[15px] font-semibold tracking-tight text-river-teal transition-colors duration-200 hover:text-forest-green motion-reduce:transition-none 2xl:text-base after:pointer-events-none after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-forest-green after:transition-[width] after:duration-200 motion-reduce:after:transition-none hover:after:w-full after:content-['']";
 
 export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -46,23 +47,14 @@ export function Header() {
         onClick={() => setMobileOpen(false)}
       />
 
-      <header className="sticky top-0 z-50 border-b border-beige bg-white/95 pt-[env(safe-area-inset-top,0px)] backdrop-blur-md supports-[backdrop-filter]:bg-white/90">
+      <header className="sticky top-0 z-50 border-b border-sage-mist bg-white/95 pt-[env(safe-area-inset-top,0px)] backdrop-blur-md supports-[backdrop-filter]:bg-white/90">
         {/* Mobile: 3-col grid — spacer | centered logo | hamburger. xl+: 3-column grid — logo | centered nav | CTA */}
         <div className="mx-auto grid max-w-7xl grid-cols-[1fr_auto_1fr] items-center px-4 py-3 sm:px-6 sm:py-3.5 xl:flex xl:max-w-[90rem] xl:justify-between xl:gap-x-6 xl:px-8 xl:py-4 2xl:gap-x-10">
           <Link
             href="/"
-            className="group relative col-start-2 flex h-12 shrink-0 items-center justify-self-center rounded-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-stone-400 focus-visible:ring-offset-2 xl:col-auto xl:h-14 xl:justify-self-auto 2xl:h-[3.75rem]"
+            className="group relative col-start-2 flex shrink-0 items-center justify-self-center rounded-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-stone-400 focus-visible:ring-offset-2 xl:col-auto xl:justify-self-auto"
           >
-            <Image
-              src="/images/logo-transparent.png"
-              alt="Re: Treat Yourself"
-              width={914}
-              height={365}
-              className="h-full max-h-full w-auto object-contain brightness-[0.35] contrast-[1.1] transition-opacity motion-reduce:transition-none group-hover:opacity-90"
-              style={{ width: "auto", height: "auto", maxHeight: "100%" }}
-              priority
-              sizes="(max-width: 1279px) 110px, 130px"
-            />
+            <BrandLogo size={56} className="sm:h-[3.5rem] sm:w-[3.5rem]" />
           </Link>
 
           <nav
@@ -83,10 +75,10 @@ export function Header() {
 
           <div className="col-start-3 flex shrink-0 items-center justify-end gap-3 xl:col-auto xl:pl-2">
             <Link
-              href="/retreat-discovery-form"
-              className="hidden rounded-full bg-forest px-6 py-3 text-[15px] font-semibold leading-none text-white shadow-sm transition-all motion-reduce:transition-none hover:bg-[#345834] hover:shadow-md 2xl:px-7 2xl:text-base xl:inline-flex"
+              href="/join-our-community"
+              className="hidden rounded-full bg-sacred-gold px-6 py-3 text-[15px] font-semibold leading-none text-celestial-navy shadow-sm transition-all motion-reduce:transition-none hover:bg-sacred-gold/90 hover:shadow-md 2xl:px-7 2xl:text-base xl:inline-flex"
             >
-              Get Started
+              {CTA.JOIN_OUR_COMMUNITY}
             </Link>
             <button
               type="button"
@@ -117,7 +109,7 @@ export function Header() {
 
         <nav
           id="mobile-nav"
-          className={`overflow-hidden border-t border-beige bg-cream transition-[max-height] duration-300 ease-out motion-reduce:transition-none xl:hidden ${
+          className={`overflow-hidden border-t border-sage-mist bg-warm-cream transition-[max-height] duration-300 ease-out motion-reduce:transition-none xl:hidden ${
             mobileOpen ? "max-h-[min(75vh,calc(100dvh-5rem))]" : "max-h-0"
           }`}
           aria-label="Mobile"
@@ -130,17 +122,17 @@ export function Header() {
                 ref={i === 0 ? firstMobileLinkRef : undefined}
                 href={href}
                 onClick={() => setMobileOpen(false)}
-                className="block min-h-[44px] rounded-lg px-3 py-3 text-[16px] font-semibold leading-snug text-stone-800 transition-colors hover:bg-stone-50 active:bg-stone-100"
+                className="block min-h-[44px] rounded-lg px-3 py-3 text-[16px] font-semibold leading-snug text-celestial-navy transition-colors hover:bg-warm-cream active:bg-sage-mist"
               >
                 {label}
               </Link>
             ))}
             <Link
-              href="/retreat-discovery-form"
+              href="/join-our-community"
               onClick={() => setMobileOpen(false)}
-              className="mt-3 flex min-h-[48px] items-center justify-center rounded-full bg-forest py-3.5 text-[16px] font-semibold text-white transition-colors hover:bg-[#345834] active:bg-[#2d4d2d]"
+              className="mt-3 flex min-h-[48px] items-center justify-center rounded-full bg-sacred-gold py-3.5 text-[16px] font-semibold text-celestial-navy transition-colors hover:bg-sacred-gold/90 active:bg-sacred-gold/80"
             >
-              Get Started
+              {CTA.JOIN_OUR_COMMUNITY}
             </Link>
           </div>
         </nav>

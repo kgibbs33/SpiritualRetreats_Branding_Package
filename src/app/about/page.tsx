@@ -4,7 +4,7 @@ export default function AboutPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
       <h1 className="font-[family-name:var(--font-display)] text-3xl font-semibold tracking-tight text-stone-900">
-        About Re: Treat Yourself
+        About Light Path Retreats
       </h1>
       <p className="mt-4 text-lg font-semibold text-forest">
         A global retreat matching platform for seekers, retreat owners, and

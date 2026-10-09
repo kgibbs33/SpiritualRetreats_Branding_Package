@@ -31,7 +31,7 @@ export function escapeHtml(s: string): string {
 
 export function wrapBrandedEmail(innerHtml: string): string {
   const base = getPublicBaseUrl();
-  const logoUrl = `${base}/images/logo-transparent.png`;
+  const logoUrl = `${base}/brand/lpr-emblem.png`;
   const font =
     '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif';
 
@@ -45,7 +45,7 @@ export function wrapBrandedEmail(innerHtml: string): string {
         <table role="presentation" width="100%" style="max-width:560px;background:#ffffff;border-radius:16px;border:1px solid ${BRAND.beige};overflow:hidden;">
           <tr>
             <td style="padding:28px 24px 16px;text-align:center;background:${BRAND.cream};">
-              <img src="${logoUrl}" width="180" height="48" alt="Re: Treat Yourself" style="display:inline-block;max-width:180px;height:auto;border:0;">
+              <img src="${logoUrl}" width="180" height="48" alt="Light Path Retreats" style="display:inline-block;max-width:180px;height:auto;border:0;">
             </td>
           </tr>
           <tr>
@@ -56,7 +56,7 @@ export function wrapBrandedEmail(innerHtml: string): string {
           <tr>
             <td style="padding:16px 24px;background:${BRAND.forest};text-align:center;font-size:12px;color:#f5f5f4;line-height:1.5;">
               <a href="${escapeHtml(base)}" style="color:#e7e5e4;text-decoration:underline;">Visit our site</a>
-              &nbsp;·&nbsp;Re: Treat Yourself
+              &nbsp;·&nbsp;Light Path Retreats
             </td>
           </tr>
         </table>
