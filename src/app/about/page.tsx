@@ -40,8 +40,8 @@ export default function AboutPage() {
           </li>
           <li>
             <strong className="text-stone-800">For retreat owners:</strong> we
-            offer a fair, commission-based model — no upfront fees, just
-            results.
+            provide exposure, a professional listing profile, and enquiries
+            through the platform.
           </li>
         </ul>
       </section>

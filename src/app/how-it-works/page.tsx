@@ -109,14 +109,14 @@ const steps: Record<
     {
       step: "02",
       title: "We send you aligned guests",
-      body: "We don't blast your retreat across a directory and hope. We review incoming seeker profiles and hand-select retreats that match. You receive guests who already understand and want what you offer.",
+      body: "Your retreat appears in search and directory results so seekers can find, compare and contact you directly. You receive enquiries from people already looking for what you offer.",
       outcome: "Higher conversion. Fewer mismatches.",
     },
     {
       step: "03",
       title: "You handle your bookings",
-      body: "We introduce the seeker to you directly. You manage your own booking process — no locked-in payment processor, no 14% commission. You stay in control of your guest relationship from day one.",
-      outcome: "No platform commission. No lock-in.",
+      body: "Seekers contact you directly and you manage your own booking process. You stay in control of your guest relationship from day one.",
+      outcome: "Direct enquiries. Your relationship.",
     },
   ],
   facilitator: [
@@ -145,12 +145,12 @@ const differentFrom: { label: string; them: string; us: string }[] = [
   {
     label: "How retreats are matched",
     them: "Algorithm + ad ranking",
-    us: "Human curation, intention-first",
+    us: "Search and compare, intention-first",
   },
   {
-    label: "Booking fees",
-    them: "14% commission on every booking",
-    us: "Zero commission, direct booking",
+    label: "How enquiries work",
+    them: "Anonymous marketplace messages",
+    us: "Direct contact with seekers",
   },
   {
     label: "Who gets seen",
@@ -252,15 +252,15 @@ export default function HowItWorksPage() {
             Transformation starts with the right match.
           </h1>
           <p className="mt-4 mx-auto max-w-xl text-lg text-stone-200">
-            We connect seekers, retreat owners, and facilitators — not through
-            algorithms, but through intention and human curation.
+            We connect seekers, retreat owners, and facilitators — through
+            clear information and trusted listings.
           </p>
           {/* Quick trust stats */}
           <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-12">
             {[
-              { value: "48h", label: "Avg. matching time" },
-              { value: "0%", label: "Commission taken" },
-              { value: "100%", label: "Human-reviewed" },
+              { value: "Search", label: "Compare and choose yourself" },
+              { value: "Direct", label: "Contact organisers directly" },
+              { value: "Trusted", label: "Listings reviewed before publishing" },
             ].map((stat) => (
               <div key={stat.label} className="text-center">
                 <p className="font-[family-name:var(--font-display)] text-3xl font-semibold text-white">

@@ -4,7 +4,6 @@ import { RetreatSearchBar } from "@/components/home/RetreatSearchBar";
 import { RetreatCard } from "@/components/retreat/RetreatCard";
 import { listPublishedRetreats } from "@/lib/retreats/queries";
 import {
-  BRAND_NAME,
   BRAND_POSITIONING,
   SEEKER_HERO_HEADING,
   SEEKER_HERO_TEXT,
