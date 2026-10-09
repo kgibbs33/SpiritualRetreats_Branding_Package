@@ -58,23 +58,33 @@ body {
   font-family: var(--font-sans), Arial, ui-sans-serif, system-ui, sans-serif;
 }
 
+/* ── Accessibility: visible focus states on all interactive elements ───── */
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid #1E7A78;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
 /* ── Utility classes for common brand patterns ─────────────────────────── */
 
-.btn-primary {
-  background-color: #D9A233;
-  color: #061A33;
-}
-.btn-secondary {
-  background-color: #0B4A36;
-  color: #F8F2E7;
-}
-.text-link {
-  color: #1E7A78;
-}
-.text-link:hover {
-  text-decoration: underline;
-}
-.info-panel {
-  background-color: #DDE9D8;
-  color: #0B4A36;
-}
+.btn-primary { background-color: #D9A233; color: #061A33; }
+.btn-secondary { background-color: #0B4A36; color: #F8F2E7; }
+.text-link { color: #1E7A78; }
+.text-link:hover { text-decoration: underline; }
+.info-panel { background-color: #DDE9D8; color: #0B4A36; }
+
+/*
+  Brand rules enforced:
+  - Body text never in gold (gold = buttons only)
+  - Emblem only on light backgrounds (white, cream, sage) — never on
+    navy/forest green/photos — handled by BrandLogo component
+  - Text links = River teal, underline on hover
+  - No script fonts in body/nav/buttons — Lato for those, EB Garamond for headings
+  - No neon, no black-heavy
+*/
