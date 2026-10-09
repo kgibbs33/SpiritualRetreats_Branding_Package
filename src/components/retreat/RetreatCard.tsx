@@ -26,7 +26,7 @@ export function RetreatCard({
   dates,
   price,
   image,
-  rating = 5,
+  rating,
   reviewCount,
   badge,
   trustVariant,

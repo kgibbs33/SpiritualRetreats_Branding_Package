@@ -35,7 +35,7 @@ export default function AboutPage() {
           </li>
           <li>
             <strong className="text-stone-800">For retreats:</strong> we
-            provide exposure, authentic ratings, and social storytelling to
+            provide exposure and a professional listing profile to
             attract the right guests.
           </li>
           <li>
@@ -92,7 +92,7 @@ export default function AboutPage() {
             fees for guests.
           </li>
           <li>
-            <strong className="text-stone-800">Authentic:</strong> real ratings,
+            <strong className="text-stone-800">Authentic:</strong> real 
             real stories, real growth.
           </li>
           <li>
