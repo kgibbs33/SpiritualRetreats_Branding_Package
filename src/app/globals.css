@@ -1,50 +1,44 @@
 @import "tailwindcss";
 
+/* ── Light Path Retreats brand v1.0 ─────────────────────────────────────── */
+
 @theme inline {
-  /* Brand palette (from design image) */
-  --color-warm-brown: #8b654d;
-  --color-gold: #d79f4f;
-  --color-sage: #9eb598;
-  --color-forest: #3d5f3d;
-  --color-teal: #3d7c86;
-  --color-aqua: #a1c6c5;
-  --color-beige: #e1d3c8;
-  --color-cream: #f1ede4;
+  /* Primary palette */
+  --color-celestial-navy: #061A33;
+  --color-forest-green: #0B4A36;
+  --color-sacred-gold: #D9A233;
+  --color-warm-cream: #F8F2E7;
+  --color-sage-mist: #DDE9D8;
+  --color-river-teal: #1E7A78;
 
   /* Semantic tokens */
-  --color-primary: #3d5f3d;
-  --color-primary-hover: #345834;
-  --color-secondary: #8b654d;
-  --color-accent: #d79f4f;
+  --color-primary: #0B4A36;
+  --color-primary-hover: #083D2D;
+  --color-secondary: #061A33;
+  --color-accent: #D9A233;
   --color-background: #ffffff;
-  --color-background-alt: #f1ede4;
-  --color-foreground: #222222;
-  --color-muted: #717171;
-  --color-border: #e1d3c8;
+  --color-background-alt: #F8F2E7;
+  --color-foreground: #061A33;
+  --color-muted: #5B6A7A;
+  --color-border: #DDE9D8;
 
-  /* Typography */
-  --font-sans: var(--font-sans-body), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-display), ui-serif, Georgia, serif;
-
-  /* Homepage eyebrow — min 14px mobile for legibility (SCOPE-013) */
-  --text-eyebrow: 0.875rem;
-  --text-eyebrow--line-height: 1.5;
-  --text-eyebrow-lg: 1rem;
-  --text-eyebrow-lg--line-height: 1.5;
+  /* Typography — EB Garamond (headings) + Lato (body/nav/buttons/forms) */
+  --font-sans: var(--font-sans-body), Arial, ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-display), Georgia, ui-serif, serif;
 
   /* Spacing & radius */
   --radius-card: 1rem;
   --radius-button: 0.75rem;
 
-  /* Shadows */
-  --shadow-card: 0 4px 12px rgba(61, 95, 61, 0.06);
-  --shadow-card-hover: 0 8px 24px rgba(61, 95, 61, 0.1);
+  /* Shadows — premium, light */
+  --shadow-card: 0 4px 12px rgba(11, 74, 54, 0.06);
+  --shadow-card-hover: 0 8px 24px rgba(11, 74, 54, 0.1);
 }
 
 :root {
   --background: #ffffff;
-  --foreground: #222222;
-  /* Match SiteChrome header: mobile py-3 + h-11; xl+ py-4 + taller logo row */
+  --foreground: #061A33;
+  /* Match SiteChrome header */
   --site-header-height: calc(4.25rem + env(safe-area-inset-top, 0px));
 }
 
@@ -61,5 +55,26 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-sans), Arial, ui-sans-serif, system-ui, sans-serif;
+}
+
+/* ── Utility classes for common brand patterns ─────────────────────────── */
+
+.btn-primary {
+  background-color: #D9A233;
+  color: #061A33;
+}
+.btn-secondary {
+  background-color: #0B4A36;
+  color: #F8F2E7;
+}
+.text-link {
+  color: #1E7A78;
+}
+.text-link:hover {
+  text-decoration: underline;
+}
+.info-panel {
+  background-color: #DDE9D8;
+  color: #0B4A36;
 }
