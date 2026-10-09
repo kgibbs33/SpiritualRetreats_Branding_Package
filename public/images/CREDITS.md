@@ -16,4 +16,16 @@ Photos are free to use; attribution appreciated but not required.
 | nature-immersion.jpg | Forest, serene landscape (legacy script download) | [Unsplash](https://unsplash.com/photos/nature-immersion) |
 | mindfulness-retreat.jpg | Mindful practice | [Unsplash](https://unsplash.com/photos/mindfulness) |
 | sacred-valley.jpg | Sacred Valley, Peru, spiritual | [Unsplash](https://unsplash.com/photos/sacred-valley) |
-| logo.png | Light Path Retreats logo | Brand asset |
+
+## TODO(owner): undocumented images — need licence/source
+
+The following images are in `public/images/` but are **not yet documented**
+in this file. Source / licence status unknown. Do not use in public-facing
+context until confirmed.
+
+| File | Notes |
+|------|-------|
+| aerial-yoga-jungle.jpg | Unused in current build? Source unknown |
+| circle-meditation-studio.jpg | Unused in current build? Source unknown |
+| hero-yoga-outdoor.jpg | Previously used on old homepage hero — source unknown |
+| white-meditation-group.jpg | Unused in current build? Source unknown |
