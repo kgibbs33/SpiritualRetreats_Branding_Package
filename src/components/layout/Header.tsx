@@ -54,7 +54,14 @@ export function Header() {
             href="/"
             className="group relative col-start-2 flex shrink-0 items-center justify-self-center rounded-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-stone-400 focus-visible:ring-offset-2 xl:col-auto xl:justify-self-auto"
           >
-            <BrandLogo size={56} className="sm:h-[3.5rem] sm:w-[3.5rem]" />
+            {/* Emblem — visible below xl */}
+            <span className="xl:hidden">
+              <BrandLogo variant="emblem" />
+            </span>
+            {/* Horizontal lockup — visible xl and up */}
+            <span className="hidden xl:inline-flex">
+              <BrandLogo variant="horizontal" />
+            </span>
           </Link>
 
           <nav
