@@ -787,8 +787,7 @@ export function RetreatIntakeForm() {
                 </button>
 
                 <p className="text-center text-xs text-stone-400">
-                  Submissions are reviewed within 48 h. We&apos;ll follow up by
-                  email. By submitting you agree to our{" "}
+                  We&apos;ll review your submission and follow up by email. By submitting you agree to our{" "}
                   <a href="/privacy" className="underline hover:text-stone-600">
                     privacy policy
                   </a>
