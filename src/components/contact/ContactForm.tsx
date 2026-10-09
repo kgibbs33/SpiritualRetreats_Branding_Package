@@ -122,19 +122,12 @@ export function ContactForm() {
       <p className="text-sm text-stone-600">
         This page is for general contact. If you are a{" "}
         <Link
-          href="/for-retreat-owners"
-          className="font-medium text-forest hover:underline"
+          href="/join-our-community"
+          className="font-medium text-river-teal hover:underline"
         >
-          retreat owner
+          retreat owner or facilitator
         </Link>{" "}
-        (run retreats) or{" "}
-        <Link
-          href="/facilitators-portal"
-          className="font-medium text-forest hover:underline"
-        >
-          facilitator
-        </Link>{" "}
-        (give workshops or sessions), you can go here.
+        (or represent a venue), you can go here.
       </p>
 
       {errors.form && (
