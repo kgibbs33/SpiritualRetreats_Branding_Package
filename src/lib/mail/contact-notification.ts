@@ -46,7 +46,7 @@ function buildMailBodies(payload: ContactInquiryMailPayload): {
   const safeSubject = payload.subject?.trim() || "(no subject)";
   const mailto = `mailto:${encodeURIComponent(payload.email.trim())}`;
   const text = [
-    "New contact inquiry — Re: Treat Yourself",
+    "New contact inquiry — Light Path Retreats",
     `Reference: ${payload.inquiryId}`,
     "",
     `From: ${payload.name}`,

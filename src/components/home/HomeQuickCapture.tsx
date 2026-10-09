@@ -41,7 +41,7 @@ export function HomeQuickCapture() {
         return;
       }
       setStatus("ok");
-      setMessage("Thank you — we'll be in touch within 24 hours.");
+      setMessage("Thank you, we have received your details.");
       setFullName("");
       setEmail("");
       setPhone("");

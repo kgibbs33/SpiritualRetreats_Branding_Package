@@ -17,8 +17,8 @@ export default function RetreatIntakeFormPage() {
       </div>
 
       <p className="mt-10 text-center text-sm text-stone-500">
-        <Link href="/for-retreat-owners" className="text-forest hover:underline">
-          ← Back to For Retreat Owners
+        <Link href="/why-work-with-us" className="text-river-teal hover:underline">
+          ← Back to Why list with us
         </Link>
       </p>
     </div>

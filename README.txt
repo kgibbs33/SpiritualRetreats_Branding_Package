@@ -1,9 +1,11 @@
-SpiritualRetreats.network Branding Package
+Light Path Retreats — public website
+====================================
 
-Included files:
-- SpiritualRetreats_Network_Branding_Portfolio.pptx - editable PowerPoint brand portfolio
-- SpiritualRetreats_Network_Branding_Portfolio.pdf - shareable PDF version
-- Logo_Master_Navy_Gold.png - supplied logo master image
-- Logo_Mark_Geometry_Lotus.png - cropped sacred lotus/geometry mark for concept use
+Next.js 16 / React 19 / Tailwind 4 / Supabase
+Deployed on Vercel (team xforria, project spiritual-retreats-branding-package)
 
-Note: For production, the final logo should be redrawn/exported as transparent PNG/SVG files with exact spacing and no background.
+Quick start: npm install && npm run dev
+Build:       npm run build
+Lint:        npm run lint
+
+See README.md for full documentation — stack, env vars, logo instructions.

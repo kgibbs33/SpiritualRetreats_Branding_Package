@@ -12,6 +12,7 @@ export type GuardRouteKey =
   | "seeker-discovery"
   | "home-quick-capture"
   | "retreat-submission"
+  | "venue-submission"
   | "facilitator-onboarding"
   | "facilitator-matching";
 

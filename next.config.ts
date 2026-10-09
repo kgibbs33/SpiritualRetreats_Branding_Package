@@ -74,12 +74,10 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      { source: "/for-retreat-owners", destination: "/join-our-community", permanent: true },
+      { source: "/make-your-retreat", destination: "/retreat-intake-form", permanent: true },
+      { source: "/facilitators-portal", destination: "/join-our-community", permanent: true },
       { source: "/discover", destination: "/retreat-listings", permanent: true },
-      { source: "/find-your-path", destination: "/retreat-discovery-form", permanent: true },
-      { source: "/create", destination: "/make-your-retreat", permanent: true },
-      { source: "/facilitators", destination: "/facilitators-portal", permanent: true },
-      { source: "/about/how-it-works", destination: "/why-work-with-us", permanent: true },
-      { source: "/how-it-works", destination: "/why-work-with-us", permanent: true },
     ];
   },
 };

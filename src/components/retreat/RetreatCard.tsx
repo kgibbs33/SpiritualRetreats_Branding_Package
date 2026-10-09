@@ -26,12 +26,14 @@ export function RetreatCard({
   dates,
   price,
   image,
-  rating = 5,
+  rating,
   reviewCount,
   badge,
   trustVariant,
   href = "#",
 }: RetreatCardProps) {
+  const hasRating = typeof rating === "number" && rating > 0;
+
   return (
     <Link
       href={href}
@@ -68,7 +70,7 @@ export function RetreatCard({
             </span>
             {trustVariant ? <TrustBadge variant={trustVariant} /> : null}
           </span>
-          {rating > 0 && (
+          {hasRating && (
             <span className="flex items-center gap-1 text-sm font-medium text-stone-800">
               <svg
                 className="h-4 w-4 fill-amber-400"

@@ -1,61 +1,68 @@
 import type { Metadata } from "next";
-import { Inter, Cormorant_Garamond } from "next/font/google";
+import { EB_Garamond, Lato } from "next/font/google";
 import "./globals.css";
 import { SiteChrome } from "@/components/layout/SiteChrome";
+import { BRAND_NAME, BRAND_MOTTO, SHORT_DESCRIPTION } from "@/lib/brand";
 
-const fontSans = Inter({
-  variable: "--font-sans-body",
-  subsets: ["latin"],
-  display: "swap",
-});
+// ── Fonts: EB Garamond (headings) + Lato (body / nav / buttons / forms) ──
 
-const fontDisplay = Cormorant_Garamond({
+const fontDisplay = EB_Garamond({
   variable: "--font-display",
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: ["500", "600", "700"],
+  style: ["normal", "italic"],
   display: "swap",
 });
+
+const fontSans = Lato({
+  variable: "--font-sans-body",
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  display: "swap",
+});
+
+// ── Metadata ──────────────────────────────────────────────────────────────
 
 const siteUrl =
   process.env.NEXT_PUBLIC_APP_URL?.trim()?.replace(/\/+$/, "") ||
-  process.env.APP_URL?.trim()?.replace(/\/+$/, "") ||
-  "https://retreatyourself.network";
+  "https://lightpathretreats.com";
 
-const siteName = "Re: Treat Yourself";
-const defaultTitle = "Re: Treat Yourself | Find Your Retreat";
-const defaultDescription =
-  "Mind–body–spirit retreat matching for seekers, retreat owners, and facilitators—intention-based onboarding and structured next steps.";
+const defaultTitle = `${BRAND_NAME} | ${BRAND_MOTTO}`;
+
 const defaultShareImage = {
-  url: "/images/hero-meditation.jpg",
-  // SCOPE-095: emit explicit dimensions so social crawlers render the card
-  // without a layout shift / fetch. Matches public/images/hero-meditation.jpg.
+  url: "/brand/og-share.png",
   width: 1200,
-  height: 1395,
-  alt: "Re: Treat Yourself — find your retreat",
+  height: 630,
+  alt: BRAND_NAME,
 };
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
     default: defaultTitle,
-    template: "%s | Re: Treat Yourself",
+    template: `%s | ${BRAND_NAME}`,
   },
-  description: defaultDescription,
+  description: SHORT_DESCRIPTION,
   openGraph: {
     type: "website",
-    siteName,
+    siteName: BRAND_NAME,
     title: defaultTitle,
-    description: defaultDescription,
+    description: SHORT_DESCRIPTION,
     locale: "en_US",
     images: [defaultShareImage],
   },
   twitter: {
     card: "summary_large_image",
     title: defaultTitle,
-    description: defaultDescription,
+    description: SHORT_DESCRIPTION,
     images: [defaultShareImage.url],
   },
+  alternates: {
+    canonical: siteUrl,
+  },
 };
+
+// ── Root layout ───────────────────────────────────────────────────────────
 
 export default function RootLayout({
   children,
@@ -65,7 +72,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${fontSans.variable} ${fontDisplay.variable}`}
+      className={`${fontDisplay.variable} ${fontSans.variable}`}
       suppressHydrationWarning
     >
       <body

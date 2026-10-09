@@ -12,7 +12,7 @@ export default function TermsPage() {
 
       <h2>2. Platform description</h2>
       <p>
-        Re: Treat Yourself is a retreat discovery and matching platform. We
+        Light Path Retreats is a retreat discovery and matching platform. We
         connect seekers with retreat owners and facilitators. We do not book
         retreats directly. Retreat owners and facilitators are responsible for
         their own retreat bookings and operations.

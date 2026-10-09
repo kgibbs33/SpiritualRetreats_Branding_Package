@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Why work with us | Re:Treat Yourself",
+  title: "Why work with us | Light Path Retreats",
   description:
-    "Human-matched retreats for seekers, owners, and facilitators — how Re:Treat Yourself supports transformation.",
+    "Human-matched retreats for seekers, owners, and facilitators — how Light Path Retreats supports transformation.",
   alternates: { canonical: "/why-work-with-us" },
 };
 

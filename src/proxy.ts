@@ -5,7 +5,7 @@ import type { NextRequest } from "next/server";
  * Host-based role redirects (SCOPE-003 / SCOPE-004).
  *
  * The cPanel account serves the same Next app on four domains. Only
- * `retreatyourself.network` is canonical; the others are marketing / role
+ * `lightpathretreats.com` is canonical; the others are marketing / role
  * entry domains that must 301/308-redirect to a fixed landing page on the
  * canonical domain so they never serve a duplicate full site.
  *
@@ -23,12 +23,12 @@ import type { NextRequest } from "next/server";
  */
 const CANONICAL_ORIGIN =
   process.env.NEXT_PUBLIC_APP_URL?.trim()?.replace(/\/+$/, "") ||
-  "https://retreatyourself.network";
+  "https://lightpathretreats.com";
 
 const HOST_REDIRECTS: Record<string, string> = {
-  "retreatyourself.host": "/for-retreat-owners", // owners / hosts (SCOPE-003)
-  "retreatyourself.expert": "/facilitators-portal", // coaches / experts (SCOPE-004 — PENDING)
-  "retreatyourself.exchange": "/facilitators-portal", // facilitators / marketplace (SCOPE-004 — PENDING)
+  "lightpathretreats.host": "/for-retreat-owners", // owners / hosts (SCOPE-003)
+  "lightpathretreats.expert": "/facilitators-portal", // coaches / experts (SCOPE-004 — PENDING)
+  "lightpathretreats.exchange": "/facilitators-portal", // facilitators / marketplace (SCOPE-004 — PENDING)
 };
 
 /** Resolve the request host (honoring a reverse proxy), normalized: no port, no `www.`. */

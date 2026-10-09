@@ -2,7 +2,7 @@
  * Shared trust badge (SCOPE-044) — consistent verified / listed signalling
  * across the retreat and facilitator directories.
  *
- * - `verified` — vetted by the RE:TREAT team (check icon, forest).
+ * - `verified` — vetted by the Light Path Retreats team (check icon, forest).
  * - `listed` — published but not yet verified (neutral).
  */
 export type TrustVariant = "verified" | "listed";
@@ -28,7 +28,7 @@ export function TrustBadge({
   if (variant === "verified") {
     return (
       <span
-        aria-label="Verified by Re: Treat Yourself"
+        aria-label="Verified by Light Path Retreats"
         className={`inline-flex items-center gap-1 rounded-full bg-forest/10 px-2.5 py-0.5 text-xs font-semibold text-forest ${className}`}
       >
         <svg className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden>

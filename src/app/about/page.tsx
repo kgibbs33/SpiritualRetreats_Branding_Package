@@ -4,7 +4,7 @@ export default function AboutPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
       <h1 className="font-[family-name:var(--font-display)] text-3xl font-semibold tracking-tight text-stone-900">
-        About Re: Treat Yourself
+        About Light Path Retreats
       </h1>
       <p className="mt-4 text-lg font-semibold text-forest">
         A global retreat matching platform for seekers, retreat owners, and
@@ -35,13 +35,13 @@ export default function AboutPage() {
           </li>
           <li>
             <strong className="text-stone-800">For retreats:</strong> we
-            provide exposure, authentic ratings, and social storytelling to
+            provide exposure and a professional listing profile to
             attract the right guests.
           </li>
           <li>
             <strong className="text-stone-800">For retreat owners:</strong> we
-            offer a fair, commission-based model — no upfront fees, just
-            results.
+            provide exposure, a professional listing profile, and enquiries
+            through the platform.
           </li>
         </ul>
       </section>
@@ -92,7 +92,7 @@ export default function AboutPage() {
             fees for guests.
           </li>
           <li>
-            <strong className="text-stone-800">Authentic:</strong> real ratings,
+            <strong className="text-stone-800">Authentic:</strong> real 
             real stories, real growth.
           </li>
           <li>
