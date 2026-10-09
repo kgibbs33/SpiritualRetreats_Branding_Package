@@ -74,7 +74,7 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
-      { source: "/for-retreat-owners", destination: "/why-work-with-us", permanent: true },
+      { source: "/for-retreat-owners", destination: "/join-our-community", permanent: true },
       { source: "/make-your-retreat", destination: "/retreat-intake-form", permanent: true },
       { source: "/facilitators-portal", destination: "/join-our-community", permanent: true },
       { source: "/discover", destination: "/retreat-listings", permanent: true },

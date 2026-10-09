@@ -88,15 +88,15 @@ const steps: Record<
     },
     {
       step: "02",
-      title: "We do the searching",
-      body: "Our team reviews your profile and hand-matches you with retreats that genuinely fit — location, depth, style, budget. Not ranked by ad spend. Not automated guesswork.",
-      outcome: "You receive curated options within 48 hours.",
+      title: "Explore retreats that fit",
+      body: "Browse the directory by destination, type, budget and duration. Every listing is reviewed before publishing so you can trust what you see.",
+      outcome: "Search and compare at your own pace.",
     },
     {
       step: "03",
       title: "You choose and connect",
-      body: "We introduce you directly to the retreat or facilitator. You ask questions, feel it out, and book directly with them. No platform fees on your end. No middleman in the way.",
-      outcome: "Your retreat. Your terms. Zero booking fee.",
+      body: "When you find a retreat you like, reach out to the organiser directly through the platform. You ask questions, feel it out, and book directly with them.",
+      outcome: "Your retreat. Your terms.",
     },
   ],
   owner: [
@@ -104,7 +104,7 @@ const steps: Record<
       step: "01",
       title: "Submit your retreat",
       body: "Tell us about your space, your programme, and the type of guests you serve best. This takes 15 minutes and gives us everything we need to match you with intention-aligned seekers.",
-      outcome: "Listing reviewed within 5 business days.",
+      outcome: "We review and publish your listing.",
     },
     {
       step: "02",
