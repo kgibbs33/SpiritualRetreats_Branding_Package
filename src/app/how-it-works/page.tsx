@@ -392,7 +392,7 @@ export default function HowItWorksPage() {
           Why this is different from everything else you&apos;ve seen.
         </h2>
         <p className="mt-3 text-stone-500 text-sm max-w-xl">
-          Most retreat directories are search engines with a booking button. We
+          Our platform
           built something different — because transformation deserves better than
           a filtered list.
         </p>

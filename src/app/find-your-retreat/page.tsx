@@ -58,14 +58,14 @@ const howSteps = [
   {
     step: "2",
     heading: "We read your answers carefully",
-    body: "A real person reviews your responses. We look at intention, energy, budget, and timing — not just keywords.",
+    body: "We look at what matters to you — intention, timing, budget.",
     accent: "Human review",
   },
   {
     step: "3",
     heading: "You receive curated matches",
-    body: "Within 24 hours, we send you 2–4 retreats that genuinely fit — with a short note on why each one.",
-    accent: "24 h reply",
+    body: "You tell us what you are looking for and we match you with retreats that fit your situation.",
+    accent: "A few reply",
   },
 ];
 
@@ -73,12 +73,12 @@ const whatYouGet = [
   {
     icon: <IconHeart className="h-5 w-5" />,
     heading: "Retreat options built for you",
-    body: "Not a search results page. A small, considered selection matched to your exact situation.",
+    body: "Retreats matched to your situation — not a generic list.",
   },
   {
     icon: <IconSparkles className="h-5 w-5" />,
-    heading: "A human recommendation, not an algorithm",
-    body: "We read between the lines. Someone who has done this work reviews your answers personally.",
+    heading: "Personal guidance based on what you tell us",
+    body: "We read between the lines. Your answers help us find retreats that match.",
   },
   {
     icon: <IconLeaf className="h-5 w-5" />,
@@ -89,7 +89,7 @@ const whatYouGet = [
 
 const trustStats = [
   { value: "Free", label: "Always free for seekers" },
-  { value: "24 h", label: "Average reply time" },
+  { value: "A few", label: "We read every response" },
   { value: "Vetted", label: "Every retreat partner" },
 ];
 
@@ -163,7 +163,7 @@ export default function FindYourRetreatPage() {
               Find my retreat — 3 minutes, free
             </Link>
             <p className="mt-3 text-xs text-stone-400">
-              No account · No spam · Reply within 24 hours
+              No account · No spam · Reply within A fewours
             </p>
           </div>
         </div>
@@ -257,7 +257,7 @@ export default function FindYourRetreatPage() {
             What you receive
           </p>
           <h2 className="mt-3 text-center font-[family-name:var(--font-display)] text-2xl font-semibold text-stone-900 sm:text-3xl">
-            Not a list. A recommendation.
+            Your path, your pace.
           </h2>
           <p className="mx-auto mt-3 max-w-md text-center text-sm leading-relaxed text-stone-500">
             Most booking platforms return hundreds of results. We send you 2–4,
@@ -320,7 +320,7 @@ export default function FindYourRetreatPage() {
               <p className="mb-4 text-sm font-semibold text-forest">Matched by Light Path Retreats</p>
               <ul className="space-y-3">
                 {[
-                  "2–4 retreats chosen for your situation",
+                  "Retreats that match your situation",
                   "A human who read your answers, not a filter",
                   "One clear recommendation with a reason",
                   "Someone to answer your questions after",
@@ -357,7 +357,7 @@ export default function FindYourRetreatPage() {
             Ready to find the one that fits?
           </h2>
           <p className="mx-auto mt-3 max-w-sm text-sm leading-relaxed text-stone-500">
-            3 minutes. No account. A real reply within a day.
+            3 minutes. No account.
           </p>
           <Link
             href="/retreat-discovery-form"
