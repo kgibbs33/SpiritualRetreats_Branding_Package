@@ -3,6 +3,7 @@ import { NextResponse, after } from "next/server";
 import { sendTeamSubmissionNotification } from "@/lib/mail/team-notification";
 import { publicJsonPostGuards } from "@/lib/request-guards";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { fireFormWebhook } from "@/lib/webhooks";
 import {
   venueSubmissionInsertSchema,
   venueSubmissionSchema,
@@ -10,7 +11,6 @@ import {
 
 export const runtime = "nodejs";
 
-const N8N_URL = process.env.N8N_FORM_SUBMISSION_URL;
 
 export async function POST(request: Request) {
   const blocked = publicJsonPostGuards(request, "venue-submission");
@@ -97,21 +97,14 @@ export async function POST(request: Request) {
       } catch (teamErr) {
         console.error("venue team notification mail:", teamErr);
       }
-      if (N8N_URL) {
-        try {
-          await fetch(N8N_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              form_type: "venue_submission",
-              data: { id: row.id, ...d },
-              idempotency_key: `venue-${row.id}-${Date.now()}`,
-            }),
-          });
-        } catch (e) {
-          console.error("n8n venue_submission webhook:", e);
-        }
-      }
+      fireFormWebhook({
+        form_type: "venue_submission",
+        submitted_at: new Date().toISOString(),
+        source_url: "",
+        contact: { name: d.contactName, email: d.email, phone: d.phone ?? null },
+        data: { venueName: d.venueName, location: d.location },
+        record_id: String(row.id),
+      });
     });
 
     return NextResponse.json({ success: true, id: row.id }, { status: 201 });

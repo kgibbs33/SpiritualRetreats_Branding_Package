@@ -2,6 +2,7 @@ import { NextResponse, after } from "next/server";
 
 import { sendContactUserConfirmation } from "@/lib/mail/transactional-confirmations";
 import { sendContactInquiryMail } from "@/lib/mail/contact-notification";
+import { fireFormWebhook } from "@/lib/webhooks";
 import { publicJsonPostGuards } from "@/lib/request-guards";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { contactSchema } from "@/validation/contact";
@@ -9,7 +10,6 @@ import { contactSchema } from "@/validation/contact";
 /** Nodemailer / Resend require Node.js (not Edge). */
 export const runtime = "nodejs";
 
-const N8N_URL = process.env.N8N_FORM_SUBMISSION_URL;
 
 export async function POST(request: Request) {
   const blocked = publicJsonPostGuards(request, "contact");
@@ -86,22 +86,14 @@ export async function POST(request: Request) {
       } catch (confirmErr) {
         console.error("contact user confirmation mail:", confirmErr);
       }
-      if (N8N_URL) {
-        const idempotencyKey = `contact-${inquiry.id}-${Date.now()}`;
-        try {
-          await fetch(N8N_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              form_type: "contact",
-              data: { name, email, subject, message, id: inquiry.id },
-              idempotency_key: idempotencyKey,
-            }),
-          });
-        } catch (webhookErr) {
-          console.error("n8n webhook error:", webhookErr);
-        }
-      }
+      fireFormWebhook({
+        form_type: "contact",
+        submitted_at: new Date().toISOString(),
+        source_url: "",
+        contact: { name, email },
+        data: { subject, message },
+        record_id: String(inquiry.id),
+      });
     });
 
     return NextResponse.json({ success: true }, { status: 201 });

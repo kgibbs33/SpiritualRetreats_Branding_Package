@@ -2,6 +2,7 @@ import { NextResponse, after } from "next/server";
 
 import { sendFacilitatorMatchingConfirmation } from "@/lib/mail/transactional-confirmations";
 import { sendTeamSubmissionNotification } from "@/lib/mail/team-notification";
+import { fireFormWebhook } from "@/lib/webhooks";
 import { publicJsonPostGuards } from "@/lib/request-guards";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { facilitatorMatchingSchema } from "@/validation/facilitatorMatching";
@@ -93,6 +94,18 @@ export async function POST(request: Request) {
         });
       } catch (teamErr) {
         console.error("facilitator matching team notification mail:", teamErr);
+      }
+      try {
+        fireFormWebhook({
+          form_type: "facilitator_matching",
+          submitted_at: new Date().toISOString(),
+          source_url: "",
+          contact: { name: d.fullName.trim(), email: d.email.trim(), phone: d.phone?.trim() || null },
+          data: { practiceAreas: d.practiceAreas, sessionFormat: d.sessionFormat },
+          record_id: String(row.id),
+        });
+      } catch {
+        // fire-and-forget — never fail the submission
       }
     });
 

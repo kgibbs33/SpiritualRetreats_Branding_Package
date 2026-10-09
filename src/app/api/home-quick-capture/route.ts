@@ -2,6 +2,7 @@ import { NextResponse, after } from "next/server";
 
 import { sendSeekerDiscoveryUserConfirmation } from "@/lib/mail/transactional-confirmations";
 import { sendTeamSubmissionNotification } from "@/lib/mail/team-notification";
+import { fireFormWebhook } from "@/lib/webhooks";
 import { publicJsonPostGuards } from "@/lib/request-guards";
 import { createAdminClient } from "@/lib/supabase/admin";
 import {
@@ -102,6 +103,18 @@ export async function POST(request: Request) {
         });
       } catch (teamErr) {
         console.error("home-quick-capture team notification mail:", teamErr);
+      }
+      try {
+        fireFormWebhook({
+          form_type: "home_quick_capture",
+          submitted_at: new Date().toISOString(),
+          source_url: "",
+          contact: { name: d.fullName, email: d.email, phone: d.phoneWhatsapp ?? null },
+          data: { purpose: d.purpose, budget: d.budgetRange, destination: d.destinationRegion },
+          record_id: String(row.id),
+        });
+      } catch {
+        // fire-and-forget — never fail the submission
       }
     });
 

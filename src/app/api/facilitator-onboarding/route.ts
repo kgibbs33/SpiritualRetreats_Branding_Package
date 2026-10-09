@@ -4,6 +4,7 @@ import {
   sendFacilitatorWelcomeEmail,
 } from "@/lib/mail/transactional-confirmations";
 import { sendTeamSubmissionNotification } from "@/lib/mail/team-notification";
+import { fireFormWebhook } from "@/lib/webhooks";
 import { publicJsonPostGuards } from "@/lib/request-guards";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { facilitatorOnboardingSchema } from "@/validation/facilitatorOnboarding";
@@ -91,6 +92,18 @@ export async function POST(request: Request) {
         });
       } catch (teamErr) {
         console.error("facilitator team notification mail:", teamErr);
+      }
+      try {
+        fireFormWebhook({
+          form_type: "facilitator_onboarding",
+          submitted_at: new Date().toISOString(),
+          source_url: "",
+          contact: { name: d.fullName.trim(), email: d.email.trim() },
+          data: { practiceAreas: d.practiceAreas, city: d.city },
+          record_id: String(row.id),
+        });
+      } catch {
+        // fire-and-forget — never fail the submission
       }
     });
 

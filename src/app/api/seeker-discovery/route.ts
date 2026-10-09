@@ -2,6 +2,7 @@ import { NextResponse, after } from "next/server";
 
 import { sendSeekerDiscoveryUserConfirmation } from "@/lib/mail/transactional-confirmations";
 import { sendTeamSubmissionNotification } from "@/lib/mail/team-notification";
+import { fireFormWebhook } from "@/lib/webhooks";
 import { publicJsonPostGuards } from "@/lib/request-guards";
 import { createAdminClient } from "@/lib/supabase/admin";
 import {
@@ -11,7 +12,6 @@ import {
 
 export const runtime = "nodejs";
 
-const N8N_URL = process.env.N8N_FORM_SUBMISSION_URL;
 
 export async function POST(request: Request) {
   const blocked = publicJsonPostGuards(request, "seeker-discovery");
@@ -121,26 +121,14 @@ export async function POST(request: Request) {
       } catch (teamErr) {
         console.error("seeker team notification mail:", teamErr);
       }
-      if (N8N_URL) {
-        const idempotencyKey = `seeker-${row.id}-${Date.now()}`;
-        try {
-          await fetch(N8N_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              form_type: "seeker_discovery",
-              data: {
-                id: row.id,
-                ...d,
-                answers: d.answers,
-              },
-              idempotency_key: idempotencyKey,
-            }),
-          });
-        } catch (e) {
-          console.error("n8n seeker_discovery webhook:", e);
-        }
-      }
+      fireFormWebhook({
+        form_type: "seeker_discovery",
+        submitted_at: new Date().toISOString(),
+        source_url: "",
+        contact: { name: d.fullName, email: d.email, phone: d.phoneWhatsapp ?? null },
+        data: { answers: d.answers, purpose: d.purpose, budget: d.budgetRange, destination: d.destinationRegion },
+        record_id: String(row.id),
+      });
     });
 
     return NextResponse.json({ success: true, id: row.id }, { status: 201 });
