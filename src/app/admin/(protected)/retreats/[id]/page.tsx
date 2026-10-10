@@ -44,6 +44,8 @@ export default function RetreatEditPage() {
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState<{ kind: "ok" | "err"; text: string } | null>(null);
   const [checks, setChecks] = useState<Record<string, boolean>>({});
+  const [depStart, setDepStart] = useState("");
+  const [delId, setDelId] = useState<string | null>(null);
 
   async function reloadDepartures(rid: string) {
     const res = await fetch(`/api/admin/departures?retreat_id=${rid}`);
@@ -85,6 +87,18 @@ export default function RetreatEditPage() {
 
   function set(k: string, v: unknown) { setForm(f => ({ ...f, [k]: v })); }
   function setCheck(k: string, v: boolean) { setChecks(c => ({ ...c, [k]: v })); }
+
+  async function deleteDeparture(depId: string) {
+    setDelId(null);
+    const res = await fetch(`/api/admin/departures?id=${depId}`, { method: "DELETE" });
+    if (res.ok) {
+      setMsg({ kind: "ok", text: "Departure deleted." });
+      await reloadDepartures(retreatId);
+    } else {
+      const j = await res.json().catch(() => ({}));
+      setMsg({ kind: "err", text: j.error || "Failed to delete departure." });
+    }
+  }
 
   async function save() {
     // Bug 3: build a clean PATCH body — null for empty optionals,
@@ -237,9 +251,50 @@ export default function RetreatEditPage() {
           {depts.length === 0 && <p className="text-sm text-stone-400">No departures yet.</p>}
           <div className="mt-2 divide-y divide-sage-mist rounded-xl border border-sage-mist">
             {depts.map((d) => (
-              <div key={d.id} className="flex items-center justify-between p-3 text-sm">
-                <span>{d.start_date} — {d.end_date} | {d.status} | {d.capacity ?? "—"} capacity</span>
-                <button onClick={() => navigator.clipboard.writeText(d.id)} className="text-xs text-link">Copy ID</button>
+              <div key={d.id} className="p-3 text-sm">
+                <div className="flex items-center justify-between">
+                  <span>{d.start_date} — {d.end_date} | {d.status} | {d.capacity ?? "—"} capacity</span>
+                  <span className="flex items-center gap-2">
+                    <button onClick={() => navigator.clipboard.writeText(d.id)} className="text-xs text-link">Copy</button>
+                    {delId === d.id ? (
+                      <span className="text-xs text-red-500">
+                        Are you sure?{" "}
+                        <button onClick={() => deleteDeparture(d.id)} className="font-semibold underline">Yes</button>
+                        {" / "}
+                        <button onClick={() => setDelId(null)} className="underline">No</button>
+                      </span>
+                    ) : (
+                      <button onClick={() => setDelId(d.id)} className="text-xs text-red-500">Delete</button>
+                    )}
+                  </span>
+                </div>
+                {/* Bug 3: inline edit */}
+                <div className="mt-2 grid grid-cols-3 gap-2">
+                  <select value={d.status} onChange={async e => {
+                    const res = await fetch("/api/admin/departures", {
+                      method: "PATCH", headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({ id: d.id, status: e.target.value }),
+                    });
+                    if (res.ok) reloadDepartures(retreatId);
+                    else { const j = await res.json().catch(() => ({})); setMsg({ kind: "err", text: j.error || "Update failed." }); }
+                  }} className="rounded border border-sage-mist px-1 py-0.5 text-xs">
+                    <option value="open">Open</option><option value="full">Full</option><option value="cancelled">Cancelled</option>
+                  </select>
+                  <input type="number" placeholder="Capacity" defaultValue={d.capacity ?? ""} className="rounded border border-sage-mist px-1 py-0.5 text-xs"
+                    onBlur={async e => {
+                      const v = e.target.value.trim();
+                      const body: Record<string, unknown> = { id: d.id };
+                      if (v === "") body.capacity = null; else body.capacity = Number(v);
+                      await fetch("/api/admin/departures", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+                    }} />
+                  <input type="number" placeholder="Spots left" defaultValue={d.spots_left ?? ""} className="rounded border border-sage-mist px-1 py-0.5 text-xs"
+                    onBlur={async e => {
+                      const v = e.target.value.trim();
+                      const body: Record<string, unknown> = { id: d.id };
+                      if (v === "") body.spots_left = null; else body.spots_left = Number(v);
+                      await fetch("/api/admin/departures", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+                    }} />
+                </div>
               </div>
             ))}
           </div>
@@ -248,31 +303,37 @@ export default function RetreatEditPage() {
             <form className="mt-2 grid gap-2 sm:grid-cols-5" onSubmit={async e => {
               e.preventDefault();
               const fd = new FormData(e.currentTarget);
-              // Bug 2: use the real uuid (retreatId), not the route param
+              const s = fd.get("start_date") as string;
+              const en = fd.get("end_date") as string;
+              if (en < s) { setMsg({ kind: "err", text: "End date must be on or after the start date." }); return; }
               const res = await fetch("/api/admin/departures", {
                 method: "POST", headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                   retreat_id: retreatId,
-                  start_date: fd.get("start_date"),
-                  end_date: fd.get("end_date"),
+                  start_date: s,
+                  end_date: en,
                   capacity: Number(fd.get("capacity")) || null,
                   status: fd.get("status") || "open",
                 }),
               });
               if (res.ok) {
-                // Bug 2: re-fetch and replace the list instead of appending the {ok,id} reply
                 await reloadDepartures(retreatId);
                 setMsg({ kind: "ok", text: "Departure added." });
                 (e.currentTarget as HTMLFormElement).reset();
+                setDepStart("");
               } else {
                 const j = await res.json().catch(() => ({}));
                 setMsg({ kind: "err", text: j.error || "Failed to add departure." });
               }
             }}>
-              <input name="start_date" type="date" required className="rounded-lg border border-sage-mist px-2 py-1 text-sm" />
-              <input name="end_date" type="date" required className="rounded-lg border border-sage-mist px-2 py-1 text-sm" />
+              <input name="start_date" type="date" required value={depStart} onChange={e => setDepStart(e.target.value)}
+                className="rounded-lg border border-sage-mist px-2 py-1 text-sm" />
+              <input name="end_date" type="date" required min={depStart || undefined}
+                className="rounded-lg border border-sage-mist px-2 py-1 text-sm" />
               <input name="capacity" type="number" placeholder="Capacity" className="rounded-lg border border-sage-mist px-2 py-1 text-sm" />
-              <select name="status" className="rounded-lg border border-sage-mist px-2 py-1 text-sm"><option value="open">Open</option><option value="full">Full</option></select>
+              <select name="status" className="rounded-lg border border-sage-mist px-2 py-1 text-sm">
+                <option value="open">Open</option><option value="full">Full</option><option value="cancelled">Cancelled</option>
+              </select>
               <button type="submit" className="rounded-lg bg-forest-green px-3 py-1 text-sm text-white">Add</button>
             </form>
           </details>
