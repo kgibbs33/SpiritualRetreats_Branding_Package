@@ -148,6 +148,39 @@ header — never in the URL or body.
 }
 ```
 
+
+### 9. `booking_request`
+
+| Route | `/api/retreat-enquiry` |
+|-------|------------------------|
+
+```json
+{
+  "form_type": "booking_request",
+  "submitted_at": "2026-10-10T12:00:00.000Z",
+  "source_url": "",
+  "contact": { "name": "Jane Doe", "email": "jane@example.com", "phone": "+447..." },
+  "data": { "retreatId": "uuid", "departureId": "uuid", "participants": 1, "message": "Any dietary needs?", "kind": "booking_request" },
+  "record_id": "uuid"
+}
+```
+
+### 10. `retreat_enquiry`
+
+| Route | `/api/retreat-enquiry` |
+|-------|------------------------|
+
+```json
+{
+  "form_type": "retreat_enquiry",
+  "submitted_at": "2026-10-10T12:00:00.000Z",
+  "source_url": "",
+  "contact": { "name": "Jane Doe", "email": "jane@example.com" },
+  "data": { "retreatId": "uuid", "message": "Is this suitable for beginners?", "kind": "enquiry" },
+  "record_id": "uuid"
+}
+```
+
 ## Mapping in GHL
 
 1. In GHL, create a **Webhook** trigger for each `form_type` value.

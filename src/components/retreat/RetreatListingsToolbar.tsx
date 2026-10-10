@@ -10,17 +10,11 @@ import {
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import {
-  parseRetreatListQuery,
+  parseRetreatListParams,
   RETREAT_INTENT_OPTIONS,
 } from "@/lib/retreats/retreat-filters";
 
-const CHIP_ITEMS = [
-  { id: "upcoming" as const, label: "Upcoming" },
-  { id: "affordable" as const, label: "Affordable" },
-  { id: "deluxe" as const, label: "Deluxe" },
-  { id: "top_rated" as const, label: "Top Rated" },
-  { id: "weekend" as const, label: "Weekend" },
-];
+const CHIP_ITEMS: readonly { id: string; label: string }[] = [];
 
 const chipBase =
   "inline-flex shrink-0 items-center rounded-full border px-3.5 py-2 text-xs font-semibold transition-all duration-150 motion-reduce:transition-none sm:px-4 sm:py-2.5 sm:text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2";
@@ -113,7 +107,7 @@ export function RetreatListingsToolbar() {
 
   const query = useMemo(
     () =>
-      parseRetreatListQuery(
+      parseRetreatListParams(
         Object.fromEntries(searchParams.entries()) as Record<
           string,
           string | string[] | undefined
@@ -156,7 +150,7 @@ export function RetreatListingsToolbar() {
 
   const onChipClick = (id: (typeof CHIP_ITEMS)[number]["id"]) => {
     replaceQuery((sp) => {
-      const current = parseRetreatListQuery(
+      const current = parseRetreatListParams(
         Object.fromEntries(sp.entries()) as Record<
           string,
           string | string[] | undefined

@@ -167,7 +167,7 @@ export function ContactForm() {
           disabled={status === "submitting"}
           aria-invalid={errors.name ? true : undefined}
           aria-describedby={errors.name ? "contact-name-error" : undefined}
-          className="mt-1 block w-full rounded-xl border border-beige px-4 py-3 text-stone-900 focus:border-forest focus:outline-none focus:ring-2 focus:ring-aqua disabled:bg-beige/30"
+          className="mt-1 block w-full rounded-xl border border-beige px-4 py-3 text-stone-900 focus:border-forest focus:outline-none focus:ring-2 focus:ring-teal disabled:bg-beige/30"
         />
         {errors.name && (
           <p id="contact-name-error" className="mt-1 text-sm text-red-600">
@@ -192,7 +192,7 @@ export function ContactForm() {
           disabled={status === "submitting"}
           aria-invalid={errors.email ? true : undefined}
           aria-describedby={errors.email ? "contact-email-error" : undefined}
-          className="mt-1 block w-full rounded-xl border border-beige px-4 py-3 text-stone-900 focus:border-forest focus:outline-none focus:ring-2 focus:ring-aqua disabled:bg-beige/30"
+          className="mt-1 block w-full rounded-xl border border-beige px-4 py-3 text-stone-900 focus:border-forest focus:outline-none focus:ring-2 focus:ring-teal disabled:bg-beige/30"
         />
         {errors.email && (
           <p id="contact-email-error" className="mt-1 text-sm text-red-600">
@@ -238,7 +238,7 @@ export function ContactForm() {
           disabled={status === "submitting"}
           aria-invalid={errors.message ? true : undefined}
           aria-describedby={messageDescribedBy}
-          className="mt-1 block w-full rounded-xl border border-beige px-4 py-3 text-stone-900 focus:border-forest focus:outline-none focus:ring-2 focus:ring-aqua disabled:bg-beige/30"
+          className="mt-1 block w-full rounded-xl border border-beige px-4 py-3 text-stone-900 focus:border-forest focus:outline-none focus:ring-2 focus:ring-teal disabled:bg-beige/30"
         />
         {errors.message && (
           <p id="contact-message-error" className="mt-1 text-sm text-red-600">

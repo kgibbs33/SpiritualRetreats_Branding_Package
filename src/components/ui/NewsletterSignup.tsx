@@ -117,7 +117,7 @@ export function NewsletterSignup({
             className={
               isDark
                 ? "w-full rounded-xl border border-white/20 bg-white/10 px-4 py-3 text-sm text-white placeholder:text-white/40 focus:border-white/40 focus:outline-none focus:ring-2 focus:ring-white/20 disabled:opacity-60"
-                : "w-full rounded-xl border border-beige bg-white px-4 py-3 text-sm text-stone-900 placeholder:text-stone-400 focus:border-forest focus:outline-none focus:ring-2 focus:ring-aqua disabled:opacity-60"
+                : "w-full rounded-xl border border-beige bg-white px-4 py-3 text-sm text-stone-900 placeholder:text-stone-400 focus:border-forest focus:outline-none focus:ring-2 focus:ring-teal disabled:opacity-60"
             }
           />
         </div>

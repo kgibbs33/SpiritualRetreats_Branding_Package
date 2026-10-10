@@ -1,7 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { notFound } from "next/navigation";
+
 export default function DesignPage() {
+  if (process.env.NODE_ENV === "production") notFound();
   return (
     <div className="mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
       <h1 className="text-3xl font-semibold tracking-tight text-stone-800">

@@ -18,7 +18,7 @@ function SelectChevron() {
 }
 
 const selectClass =
-  "h-12 w-full min-w-0 appearance-none rounded-xl border border-beige bg-white py-0 pl-4 pr-11 text-sm font-medium leading-normal text-stone-900 focus:border-forest focus:outline-none focus:ring-2 focus:ring-aqua disabled:cursor-not-allowed disabled:bg-beige/30 disabled:opacity-50";
+  "h-12 w-full min-w-0 appearance-none rounded-xl border border-beige bg-white py-0 pl-4 pr-11 text-sm font-medium leading-normal text-stone-900 focus:border-forest focus:outline-none focus:ring-2 focus:ring-teal disabled:cursor-not-allowed disabled:bg-beige/30 disabled:opacity-50";
 
 type StyledSelectProps = SelectHTMLAttributes<HTMLSelectElement> & {
   wrapperClassName?: string;

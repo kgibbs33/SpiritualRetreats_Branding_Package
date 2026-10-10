@@ -93,8 +93,8 @@ export function AdminShell({ children, title, subtitle, actions, counts }: Admin
     <aside className="w-56 shrink-0 bg-white border-r border-beige flex flex-col h-full">
       <div className="px-5 py-5 border-b border-beige">
         <Link href="/" className="block">
-          <p className="font-display text-lg text-forest leading-tight">Re: Treat</p>
-          <p className="text-xs text-muted tracking-wide uppercase">Admin Panel</p>
+          <p className="font-display text-lg text-forest leading-tight">Light Path Retreats</p>
+          <p className="text-xs text-muted tracking-wide uppercase">Admin</p>
         </Link>
       </div>
 

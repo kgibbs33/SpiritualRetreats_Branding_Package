@@ -14,7 +14,8 @@ export type GuardRouteKey =
   | "retreat-submission"
   | "venue-submission"
   | "facilitator-onboarding"
-  | "facilitator-matching";
+  | "facilitator-matching"
+  | "retreat-enquiry";
 
 const ROUTE_PREFIX = "api:";
 

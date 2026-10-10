@@ -145,7 +145,7 @@ export default function FindYourRetreatPage() {
         </div>
         <div className="mx-auto max-w-xl text-center">
           <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-warm-brown">
-            Retreat matching · Free · Human
+            Retreat matching · Free
           </p>
           <h1 className="font-[family-name:var(--font-display)] text-5xl font-semibold leading-tight tracking-tight text-stone-900 sm:text-6xl">
             The retreat that&apos;s<br />
@@ -163,7 +163,7 @@ export default function FindYourRetreatPage() {
               Find my retreat — 3 minutes, free
             </Link>
             <p className="mt-3 text-xs text-stone-400">
-              No account · No spam · Reply within A fewours
+              No account · No spam
             </p>
           </div>
         </div>
