@@ -27,6 +27,11 @@ export const retreatListParamsSchema = z.object({
   duration: z.enum(DURATION_SLUGS).optional(),
   sort: z.enum(SORT_OPTIONS).optional(),
   page: z.coerce.number().int().positive().max(500).optional(),
+  // Backward-compat from old toolbar
+  intent: z.string().optional(),
+  region: z.string().optional(),
+  from: z.string().optional(),
+  chip: z.string().optional(),
 });
 
 export type RetreatListParams = z.infer<typeof retreatListParamsSchema>;
@@ -68,3 +73,11 @@ export function budgetRange(
     default:            return null;
   }
 }
+
+/** Backward-compat for old toolbar — remove when toolbar is rewritten. */
+export const RETREAT_INTENT_OPTIONS = [
+  { value: "yoga", label: "Yoga" },
+  { value: "meditation", label: "Meditation" },
+  { value: "wellness", label: "Wellness" },
+  { value: "nature", label: "Nature" },
+];

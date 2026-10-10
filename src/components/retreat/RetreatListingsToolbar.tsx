@@ -10,7 +10,7 @@ import {
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import {
-  parseRetreatListQuery,
+  parseRetreatListParams,
   RETREAT_INTENT_OPTIONS,
 } from "@/lib/retreats/retreat-filters";
 
@@ -113,7 +113,7 @@ export function RetreatListingsToolbar() {
 
   const query = useMemo(
     () =>
-      parseRetreatListQuery(
+      parseRetreatListParams(
         Object.fromEntries(searchParams.entries()) as Record<
           string,
           string | string[] | undefined
@@ -156,7 +156,7 @@ export function RetreatListingsToolbar() {
 
   const onChipClick = (id: (typeof CHIP_ITEMS)[number]["id"]) => {
     replaceQuery((sp) => {
-      const current = parseRetreatListQuery(
+      const current = parseRetreatListParams(
         Object.fromEntries(sp.entries()) as Record<
           string,
           string | string[] | undefined

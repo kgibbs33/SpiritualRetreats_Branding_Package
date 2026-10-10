@@ -1,114 +1,127 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Suspense } from "react";
 import { RetreatCard } from "@/components/retreat/RetreatCard";
 import { RetreatListingsToolbar } from "@/components/retreat/RetreatListingsToolbar";
 import { listPublishedRetreats } from "@/lib/retreats/queries";
-import {
-  hasActiveRetreatFilters,
-  parseRetreatListQuery,
-} from "@/lib/retreats/retreat-filters";
-
-export const revalidate = 60;
 
 export const metadata: Metadata = {
+  title: "Discover Retreats",
+  description: "Browse spiritual retreats by destination, date, type and budget.",
   alternates: { canonical: "/retreat-listings" },
 };
 
-type PageProps = {
+export const revalidate = 60;
+
+type Props = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
 
-function ToolbarFallback() {
-  return (
-    <div className="border-b border-beige bg-white lg:sticky lg:top-[var(--site-header-height)] lg:z-40 lg:bg-white/95 lg:backdrop-blur-md">
-      <div className="mx-auto max-w-7xl px-5 py-3 sm:px-8 sm:py-4">
-        <div className="h-3 w-20 animate-pulse rounded bg-stone-100" />
-        <div className="mt-3 flex gap-2 overflow-hidden">
-          {[72, 88, 64, 96, 76].map((w) => (
-            <div
-              key={w}
-              className="h-9 shrink-0 animate-pulse rounded-full bg-stone-100"
-              style={{ width: w }}
-            />
-          ))}
-        </div>
-        <div className="mt-4 grid grid-cols-2 gap-2.5 border-t border-beige pt-4 sm:gap-3 md:grid-cols-3 lg:grid-cols-5">
-          {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="h-11 animate-pulse rounded-xl bg-stone-100" />
-          ))}
-          <div className="col-span-2 h-11 animate-pulse rounded-xl bg-stone-100 md:col-span-1" />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-export default async function RetreatListingsPage({ searchParams }: PageProps) {
+export default async function RetreatListingsPage({ searchParams }: Props) {
   const raw = await searchParams;
-  const q = parseRetreatListQuery(raw);
-  const filtered = hasActiveRetreatFilters(q);
-  const { cards, error } = await listPublishedRetreats(q);
+  const { cards, total, error } = await listPublishedRetreats(raw);
 
-  return (
-    <div className="min-h-screen bg-white">
-      <div className="border-b border-beige bg-white">
-        <div className="mx-auto max-w-7xl px-5 py-8 sm:px-8">
-          <h1 className="font-[family-name:var(--font-display)] text-3xl font-semibold text-stone-900">
-            Retreat Listings Directory
-          </h1>
-          <p className="mt-2 text-stone-600">
-            Curated transformative experiences worldwide. Find the retreat that
-            fits you.
-          </p>
-        </div>
-      </div>
+  const hasFilters =
+    raw.q || raw.destination || raw.month || raw.type || raw.budget || raw.duration;
 
-      <Suspense fallback={<ToolbarFallback />}>
-        <RetreatListingsToolbar />
-      </Suspense>
+  // ── Empty: no published retreats at all ────────────────────────────────
+  if (cards.length === 0 && !hasFilters && !error) {
+    return (
+      <div className="mx-auto max-w-2xl px-4 py-20 text-center sm:px-6">
+        <h1 className="font-[family-name:var(--font-display)] text-3xl font-semibold text-celestial-navy sm:text-4xl">
+          Our first retreats are being added.
+        </h1>
+        <p className="mt-4 text-stone-600">
+          The directory will be live soon. Leave your email and we will let you
+          know when the first retreats are published.
+        </p>
 
-      <div className="mx-auto max-w-7xl px-5 py-10 sm:px-8">
-        {error ? (
-          <div
-            className="rounded-lg border border-amber-200 bg-amber-50 p-6 text-stone-800"
-            role="alert"
-          >
-            <p className="font-medium">Retreats could not be loaded</p>
-            <p className="mt-2 text-sm text-stone-600">
-              Check Supabase connection and that the{" "}
-              <code className="rounded bg-white px-1 py-0.5 text-xs">
-                retreats
-              </code>{" "}
-              migration has been applied. ({error})
-            </p>
+        {/* Simple email capture — writes to search_alerts once Migration A applied */}
+        <form
+          action="/api/newsletter"
+          method="POST"
+          className="mx-auto mt-8 max-w-sm"
+        >
+          <input type="hidden" name="company" value="" />
+          <div className="flex gap-2">
+            <input
+              type="email"
+              name="email"
+              required
+              placeholder="your@email.com"
+              className="flex-1 rounded-xl border-2 border-sage-mist px-4 py-3 text-sm"
+            />
+            <button
+              type="submit"
+              className="rounded-xl bg-sacred-gold px-6 py-3 text-sm font-semibold text-celestial-navy"
+            >
+              Tell me when retreats are live
+            </button>
           </div>
-        ) : cards.length === 0 ? (
-          <p className="text-center text-stone-600">
-            {filtered
-              ? "No retreats match these filters. Try clearing a filter or choose a different region."
-              : "No published retreats yet. Add rows in Supabase or run migrations."}
-          </p>
-        ) : (
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {cards.map((r) => (
-              <RetreatCard key={String(r.id)} {...r} />
-            ))}
-          </div>
-        )}
+          <label className="mt-3 flex items-center gap-2 text-xs text-stone-500">
+            <input type="checkbox" required className="accent-river-teal" />
+            I agree to be contacted about retreat updates
+          </label>
+        </form>
 
-        <div className="mt-16 flex flex-col items-center gap-6 border-t border-beige pt-16">
-          <p className="text-center text-stone-600">
-            Prefer a personalized match? Tell us what you are looking for.
-          </p>
-          <Link
-            href="/retreat-discovery-form"
-            className="inline-flex h-12 items-center justify-center rounded-xl bg-forest px-8 font-semibold text-white transition-all hover:bg-[#345834]"
-          >
-            Get matched — Find Your Retreat
+        <p className="mt-6 text-sm text-stone-400">
+          Not sure what you are looking for?{" "}
+          <Link href="/find-your-retreat" className="text-link">
+            Tell us about your path
           </Link>
+        </p>
+      </div>
+    );
+  }
+
+  // ── Empty: filters returned nothing ─────────────────────────────────────
+  if (cards.length === 0 && hasFilters) {
+    return (
+      <div className="mx-auto max-w-7xl px-5 py-8 sm:px-8">
+        <RetreatListingsToolbar />
+        <div className="py-20 text-center">
+          <h2 className="font-[family-name:var(--font-display)] text-2xl font-semibold text-celestial-navy">
+            No retreats match these filters yet.
+          </h2>
+          <p className="mt-3 text-stone-600">
+            Try removing some filters or browse all available retreats.
+          </p>
+          <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+            <Link href="/retreat-listings" className="inline-flex h-12 items-center rounded-xl bg-sacred-gold px-6 text-sm font-semibold text-celestial-navy">
+              See all retreats
+            </Link>
+            <Link href="/find-your-retreat" className="text-link text-sm">
+              Get notified when a match is added
+            </Link>
+          </div>
         </div>
       </div>
+    );
+  }
+
+  // ── Normal results ──────────────────────────────────────────────────────
+  return (
+    <div className="mx-auto max-w-7xl px-5 py-8 sm:px-8">
+      <RetreatListingsToolbar />
+      <p className="mt-4 text-sm text-stone-500">{total} retreat{total !== 1 ? "s" : ""} found</p>
+
+      {error && (
+        <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">
+          {error}
+        </div>
+      )}
+
+      <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {cards.map((r) => (
+          <RetreatCard key={String(r.id)} {...r} />
+        ))}
+      </div>
+
+      {/* TODO(owner): pagination — use total and page param */}
+      {total > cards.length && (
+        <p className="mt-8 text-center text-sm text-stone-400">
+          {total} retreats total. Pagination coming soon.
+        </p>
+      )}
     </div>
   );
 }
