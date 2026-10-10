@@ -22,14 +22,12 @@ type Retreat = {
 export default function RetreatsPage() {
   const [items, setItems] = useState<Retreat[]>([]);
   const [total, setTotal] = useState(0);
-  const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [isPending, startTransition] = useTransition();
   const [msg, setMsg] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
 
   const fetchData = useCallback((p: number, s: string) => {
-    setLoading(true);
     fetch(`/api/admin/retreats?page=${p}&status=${s}`)
       .then(r => r.json()).then(json => {
         setItems(json.data ?? []); setTotal(json.total ?? 0); setLoading(false);
@@ -37,7 +35,6 @@ export default function RetreatsPage() {
   }, []);
 
   useEffect(() => { fetchData(1, statusFilter); }, [statusFilter, fetchData]);
-
   async function toggleStatus(retreat: Retreat) {
     const newStatus = retreat.status === "published" ? "draft" : "published";
     setMsg("");

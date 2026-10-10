@@ -23,17 +23,6 @@ if (!PATH) {
 // ── Schema ──────────────────────────────────────────────────────────────
 // price_display and image_path are optional — safe defaults are filled below.
 const REQUIRED = ["slug","title","type","dates_display"];
-const OPTIONAL = [
-  "categories","location","country","region",
-  "price_from","price_currency","price_notes",
-  "inclusions","exclusions","gallery_paths",
-  "description","itinerary",
-  "operator_name","operator_website",
-  "min_age","max_age","age_notes",
-  "capacity","bedrooms",
-  "booking_url","commercial_status",
-];
-
 function readJSON(path) {
   try {
     const raw = readFileSync(path, "utf-8");
