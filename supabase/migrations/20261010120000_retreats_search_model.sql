@@ -1,15 +1,24 @@
 -- Migration: retreat search model (ADDITIVE — safe to run on live DB)
 -- =============================================================================
--- Adds departures, enquiries, search_alerts, and new columns to retreats.
--- No DROPs, no renames, no policy/column/function alterations.
--- The old code on main reads retreats via select(*) — new columns are all
--- nullable or defaulted, so the old code sees no difference.
+-- Adds departures, enquiries, search_alerts, new columns to retreats,
+-- a public-safe view, and backfills existing published retreats.
+-- No DROPs, renames, policy/column/function alterations.
+--
+-- The CURRENT code on origin/main queries public.retreats directly with an
+-- anon client (explicit column list — does NOT include the sensitive columns
+-- added here). The old code continues to work unchanged because all new
+-- columns are nullable/defaulted and the old SELECT list never picks them up.
 -- =============================================================================
 
 -- ── New columns on retreats (all nullable or defaulted) ────────────────────
 
 ALTER TABLE public.retreats ADD COLUMN IF NOT EXISTS country text;
-ALTER TABLE public.retreats ADD COLUMN IF NOT EXISTS region text;
+ALTER TABLE public.retreats ADD COLUMN IF NOT EXISTS region text CHECK (
+  region IS NULL OR region IN (
+    'europe','latin_america','asia','africa',
+    'north_america','oceania','middle_east'
+  )
+);
 ALTER TABLE public.retreats ADD COLUMN IF NOT EXISTS price_from numeric;
 ALTER TABLE public.retreats ADD COLUMN IF NOT EXISTS price_currency text DEFAULT 'EUR';
 ALTER TABLE public.retreats ADD COLUMN IF NOT EXISTS price_notes text;
@@ -28,7 +37,6 @@ ALTER TABLE public.retreats ADD COLUMN IF NOT EXISTS qualification_status text D
 ALTER TABLE public.retreats ADD COLUMN IF NOT EXISTS qualification_checks jsonb DEFAULT '{}';
 ALTER TABLE public.retreats ADD COLUMN IF NOT EXISTS internal_notes text;
 
--- Full-text search (generated column, immutable only if using 'english' regconfig)
 ALTER TABLE public.retreats ADD COLUMN IF NOT EXISTS search_tsv tsvector
   GENERATED ALWAYS AS (
     setweight(to_tsvector('english', coalesce(title, '')), 'A') ||
@@ -43,7 +51,7 @@ CREATE INDEX IF NOT EXISTS idx_retreats_region ON public.retreats (region);
 CREATE INDEX IF NOT EXISTS idx_retreats_price_from ON public.retreats (price_from);
 CREATE INDEX IF NOT EXISTS idx_retreats_qualification_status ON public.retreats (qualification_status);
 
--- ── Backfill: currently published retreats → qualification_status = 'live' ──
+-- ── Backfill: published retreats → qualification_status = 'live' ────────────
 UPDATE public.retreats SET qualification_status = 'live' WHERE status = 'published';
 
 -- ── retreat_departures ──────────────────────────────────────────────────────
@@ -67,7 +75,6 @@ CREATE INDEX IF NOT EXISTS idx_departures_start_date ON public.retreat_departure
 
 ALTER TABLE public.retreat_departures ENABLE ROW LEVEL SECURITY;
 
--- Anon: read departures only when the retreat is published+live and departure is open/full.
 CREATE POLICY retreat_departures_anon_select ON public.retreat_departures
   FOR SELECT TO anon
   USING (
@@ -102,10 +109,7 @@ CREATE TABLE IF NOT EXISTS public.retreat_enquiries (
 );
 
 CREATE INDEX IF NOT EXISTS idx_enquiries_retreat_id ON public.retreat_enquiries (retreat_id);
-CREATE INDEX IF NOT EXISTS idx_enquiries_status ON public.retreat_enquiries (status);
-
 ALTER TABLE public.retreat_enquiries ENABLE ROW LEVEL SECURITY;
--- No SELECT policy for anon/authenticated — written only via service_role.
 
 -- ── search_alerts ───────────────────────────────────────────────────────────
 
@@ -118,11 +122,14 @@ CREATE TABLE IF NOT EXISTS public.search_alerts (
 );
 
 ALTER TABLE public.search_alerts ENABLE ROW LEVEL SECURITY;
--- No SELECT policy for anon/authenticated — written only via service_role.
 
--- ── retreats_public view (excludes internal columns) ────────────────────────
+-- ── retreats_public view (excludes internal columns, filters by status) ─────
+-- Uses security_invoker = true so callers see only their own RLS grants.
+-- Migration C will grant SELECT on this view; until then, nothing is exposed.
 
-CREATE OR REPLACE VIEW public.retreats_public AS
+CREATE OR REPLACE VIEW public.retreats_public
+WITH (security_invoker = true)
+AS
 SELECT
   id, slug, title, type, categories, location, country, region,
   dates_display, price_display, price_from, price_currency, price_notes,
@@ -131,37 +138,35 @@ SELECT
   inclusions, exclusions, itinerary,
   operator_name, operator_website,
   min_age, max_age, age_notes,
-  booking_url, commercial_status, qualification_status,
+  booking_url,
+  -- EXCLUDED: commercial_status, qualification_status, qualification_checks,
+  -- internal_notes, operator contact details not meant for public
   status, trust_tier, verified_at, credibility_note,
   sort_order, created_at, updated_at,
   search_tsv
-FROM public.retreats;
+FROM public.retreats
+WHERE status = 'published' AND qualification_status = 'live';
+
+REVOKE ALL ON public.retreats_public FROM anon, authenticated;
 
 -- ═════════════════════════════════════════════════════════════════════════════
--- ROLLBACK (commented — run only if needed)
+-- VERIFICATION (commented — run manually after applying)
+-- ═════════════════════════════════════════════════════════════════════════════
+-- set role anon;
+-- -- Should return 0 — view is REVOKE ALL until Migration C
+-- select count(*) from retreats_public;
+-- -- Should also return 0 — anon can't read base table for non-published rows
+-- select count(*) from retreats where status <> 'published';
+-- reset role;
+--
+-- EXPECTED: both SELECTs return 0 rows OR "permission denied"
+-- =============================================================================
+
+-- ═════════════════════════════════════════════════════════════════════════════
+-- ROLLBACK (commented)
 -- ═════════════════════════════════════════════════════════════════════════════
 -- DROP VIEW IF EXISTS public.retreats_public;
 -- DROP TABLE IF EXISTS public.search_alerts;
 -- DROP TABLE IF EXISTS public.retreat_enquiries;
 -- DROP TABLE IF EXISTS public.retreat_departures;
--- ALTER TABLE public.retreats
---   DROP COLUMN IF EXISTS search_tsv,
---   DROP COLUMN IF EXISTS internal_notes,
---   DROP COLUMN IF EXISTS qualification_checks,
---   DROP COLUMN IF EXISTS qualification_status,
---   DROP COLUMN IF EXISTS commercial_status,
---   DROP COLUMN IF EXISTS booking_url,
---   DROP COLUMN IF EXISTS age_notes,
---   DROP COLUMN IF EXISTS max_age,
---   DROP COLUMN IF EXISTS min_age,
---   DROP COLUMN IF EXISTS operator_website,
---   DROP COLUMN IF EXISTS operator_name,
---   DROP COLUMN IF EXISTS gallery_paths,
---   DROP COLUMN IF EXISTS itinerary,
---   DROP COLUMN IF EXISTS exclusions,
---   DROP COLUMN IF EXISTS inclusions,
---   DROP COLUMN IF EXISTS price_notes,
---   DROP COLUMN IF EXISTS price_currency,
---   DROP COLUMN IF EXISTS price_from,
---   DROP COLUMN IF EXISTS region,
---   DROP COLUMN IF EXISTS country;
+-- (column-level rollback not listed — non-destructive, keep columns)
