@@ -26,6 +26,18 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const admin = createAdminClient();
 
+  // Slug availability: /api/admin/retreats?slug_available=<slug>
+  const availSlug = searchParams.get("slug_available");
+  if (availSlug) {
+    const { data: existing, error: availErr } = await admin
+      .from("retreats")
+      .select("id")
+      .eq("slug", availSlug)
+      .maybeSingle();
+    if (availErr) return NextResponse.json({ error: availErr.message }, { status: 500 });
+    return NextResponse.json({ available: !existing });
+  }
+
   // Single retreat: /api/admin/retreats?id=<uuid or slug>
   const idParam = searchParams.get("id");
   if (idParam) {

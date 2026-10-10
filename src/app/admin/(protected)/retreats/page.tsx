@@ -79,7 +79,8 @@ export default function RetreatsPage() {
       <div className="px-4 py-6 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-semibold">Retreats</h1>
-          <div className="flex gap-3">
+          <div className="flex items-center gap-3">
+            <Link href="/admin/retreats/new" className="rounded-xl bg-sacred-gold px-4 py-2 text-sm font-semibold text-celestial-navy shadow-sm hover:bg-sacred-gold/90">+ Create retreat</Link>
             <Link href="/admin/retreat-submissions" className="text-sm text-link">Submissions</Link>
             <Link href="/admin/enquiries" className="text-sm text-link">Enquiries</Link>
             <Link href="/admin/search-alerts" className="text-sm text-link">Alerts</Link>
