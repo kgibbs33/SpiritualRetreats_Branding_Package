@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { AdminShell } from "@/components/admin/AdminShell";
 
@@ -8,6 +8,18 @@ const REGIONS = ["","europe","latin_america","asia","africa","north_america","oc
 const COMMERCIAL = ["","free_listing","promotion","commission","partnership","other"];
 const QUAL_LEVELS = ["submitted","reviewed","approved","live","inactive","archived"];
 const QUAL_CHECKS = ["Identity","Fit","Information","Quality and trust","Commercial terms","Media"];
+
+/** Fields the user may edit. Read-only fields are stripped before PATCH. */
+const EDITABLE_STRING_FIELDS = [
+  "slug","title","type","location","country","dates_display",
+  "price_display","price_currency","price_notes","description",
+  "operator_name","operator_website","age_notes","booking_url","internal_notes",
+  "image_path",
+] as const;
+
+const EDITABLE_SELECT_FIELDS = ["region","commercial_status","qualification_status"] as const;
+const EDITABLE_NUMBER_FIELDS = ["price_from","min_age","max_age"] as const;
+const EDITABLE_LIST_FIELDS = ["inclusions","exclusions","gallery_paths"] as const;
 
 type Departure = {
   id: string;
@@ -25,47 +37,93 @@ type Departure = {
 export default function RetreatEditPage() {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
-  const [isPending, startTransition] = useTransition();
   const [form, setForm] = useState<Record<string, unknown>>({});
+  const [retreatId, setRetreatId] = useState<string>("");
   const [depts, setDepts] = useState<Departure[]>([]);
   const [loading, setLoading] = useState(true);
-  const [msg, setMsg] = useState("");
+  const [saving, setSaving] = useState(false);
+  const [msg, setMsg] = useState<{ kind: "ok" | "err"; text: string } | null>(null);
   const [checks, setChecks] = useState<Record<string, boolean>>({});
 
+  async function reloadDepartures(rid: string) {
+    const res = await fetch(`/api/admin/departures?retreat_id=${rid}`);
+    const j = await res.json();
+    setDepts(j.data ?? []);
+  }
+
   useEffect(() => {
-    fetch(`/api/admin/retreats`)
-      .then(r => r.json()).then(j => {
-        const found = (j.data ?? []).find((r: Record<string, unknown>) => r.id === id || r.slug === id);
-        if (found) {
-          setForm(found);
-          const qc = found.qualification_checks || {};
+    let cancelled = false;
+    // Bug 4: single-retreat endpoint works for any id, not just page 1 of the list
+    fetch(`/api/admin/retreats?id=${encodeURIComponent(id as string)}`)
+      .then(r => r.json())
+      .then(j => {
+        if (cancelled) return;
+        if (j.data) {
+          setRetreatId(j.data.id as string);
+          setForm(j.data);
+
+          // Bug 1 defensive parse: qualification_checks may arrive stringified
+          let qc = j.data.qualification_checks;
+          if (typeof qc === "string" && qc.trim().length) {
+            try { qc = JSON.parse(qc); } catch { qc = {}; }
+          }
+          qc = (qc && typeof qc === "object") ? qc : {};
           const c: Record<string, boolean> = {};
           QUAL_CHECKS.forEach(k => { c[k] = !!qc[k]; });
           setChecks(c);
-          // Load departures
-          fetch(`/api/admin/departures?retreat_id=${found.id}`)
-            .then(r => r.json()).then(dj => {
-            setDepts(dj.data ?? []);
-          });
+          reloadDepartures(j.data.id as string);
+        } else {
+          setMsg({ kind: "err", text: j.error || "Retreat not found." });
         }
         setLoading(false);
+      })
+      .catch(() => {
+        if (!cancelled) { setMsg({ kind: "err", text: "Failed to load retreat." }); setLoading(false); }
       });
+    return () => { cancelled = true; };
   }, [id]);
 
   function set(k: string, v: unknown) { setForm(f => ({ ...f, [k]: v })); }
   function setCheck(k: string, v: boolean) { setChecks(c => ({ ...c, [k]: v })); }
 
   async function save() {
-    setMsg("");
-    startTransition(async () => {
-      const payload = { ...form, qualification_checks: checks, id };
+    // Bug 3: build a clean PATCH body — null for empty optionals,
+    // numbers as numbers, no read-only fields (created_at, updated_at, id…)
+    const body: Record<string, unknown> = { id: retreatId };
+
+    for (const k of EDITABLE_STRING_FIELDS) {
+      const v = (form[k as string] as string | undefined) ?? "";
+      body[k] = v.trim() === "" ? null : v;
+    }
+    for (const k of EDITABLE_SELECT_FIELDS) {
+      const v = (form[k as string] as string | undefined) ?? "";
+      body[k] = v === "" ? null : v;
+    }
+    for (const k of EDITABLE_NUMBER_FIELDS) {
+      const raw = form[k as string];
+      if (raw === "" || raw === null || raw === undefined) body[k] = null;
+      else body[k] = Number(raw);
+    }
+    for (const k of EDITABLE_LIST_FIELDS) {
+      const v = form[k as string];
+      body[k] = Array.isArray(v) && v.length ? v : (v ?? null);
+    }
+    body.qualification_checks = checks;
+
+    setSaving(true);
+    setMsg(null);
+    try {
       const res = await fetch("/api/admin/retreats", {
         method: "PATCH", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(body),
       });
       const json = await res.json();
-      setMsg(res.ok ? "Saved." : `Error: ${json.error}`);
-    });
+      setMsg(res.ok ? { kind: "ok", text: "Saved." } : { kind: "err", text: `Error: ${json.error}` });
+    } catch {
+      setMsg({ kind: "err", text: "Network error. Not saved." });
+    } finally {
+      setSaving(false);
+    }
   }
 
   const publishMissing: string[] = [];
@@ -77,14 +135,19 @@ export default function RetreatEditPage() {
   if (loading) return <AdminShell title="Edit Retreat"><p className="p-8">Loading…</p></AdminShell>;
 
   const f = (k: string, type = "text") => (
-    <input type={type} value={(form[k] as string) ?? ""} onChange={e => set(k, e.target.value)}
-      className="w-full rounded-lg border border-sage-mist px-3 py-2 text-sm" />
+    <input type={type} value={(form[k] as string | number | null) ?? ""} onChange={e => set(k, e.target.value)}
+      className="mt-1 w-full rounded-lg border border-sage-mist px-3 py-2 text-sm" />
   );
 
   return (
     <AdminShell title={`Edit: ${form.title || "Retreat"}`}>
       <div className="px-4 py-6 sm:px-6 lg:px-8 max-w-3xl">
-        {msg && <div className="mb-4 rounded-lg bg-emerald-50 px-4 py-2 text-sm text-emerald-700">{msg}</div>}
+        {/* Bug 5: visible feedback */}
+        {msg && (
+          <div role="alert" className={`mb-4 rounded-lg px-4 py-2 text-sm ${msg.kind === "ok" ? "bg-emerald-50 text-emerald-700" : "bg-red-50 text-red-600"}`}>
+            {msg.text}
+          </div>
+        )}
 
         <div className="grid gap-4 sm:grid-cols-2">
           <label className="text-xs font-semibold text-stone-500">Title<input className="mt-1 w-full rounded-lg border border-sage-mist px-3 py-2 text-sm" value={(form.title as string) ?? ""} onChange={e => set("title", e.target.value)} /></label>
@@ -180,16 +243,16 @@ export default function RetreatEditPage() {
               </div>
             ))}
           </div>
-          {/* Add departure simplified */}
           <details className="mt-3">
             <summary className="text-sm text-link cursor-pointer">+ Add departure</summary>
             <form className="mt-2 grid gap-2 sm:grid-cols-5" onSubmit={async e => {
               e.preventDefault();
               const fd = new FormData(e.currentTarget);
+              // Bug 2: use the real uuid (retreatId), not the route param
               const res = await fetch("/api/admin/departures", {
                 method: "POST", headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                  retreat_id: id,
+                  retreat_id: retreatId,
                   start_date: fd.get("start_date"),
                   end_date: fd.get("end_date"),
                   capacity: Number(fd.get("capacity")) || null,
@@ -197,9 +260,13 @@ export default function RetreatEditPage() {
                 }),
               });
               if (res.ok) {
-                const j = await res.json();
-                setDepts(prev => [...prev, j]);
-                setMsg("Departure added.");
+                // Bug 2: re-fetch and replace the list instead of appending the {ok,id} reply
+                await reloadDepartures(retreatId);
+                setMsg({ kind: "ok", text: "Departure added." });
+                (e.currentTarget as HTMLFormElement).reset();
+              } else {
+                const j = await res.json().catch(() => ({}));
+                setMsg({ kind: "err", text: j.error || "Failed to add departure." });
               }
             }}>
               <input name="start_date" type="date" required className="rounded-lg border border-sage-mist px-2 py-1 text-sm" />
@@ -211,8 +278,12 @@ export default function RetreatEditPage() {
           </details>
         </section>
 
+        {/* Bug 5: disabled while saving */}
         <div className="mt-8 flex gap-3">
-          <button onClick={save} disabled={isPending} className="rounded-xl bg-sacred-gold px-6 py-3 text-sm font-semibold text-celestial-navy">Save changes</button>
+          <button onClick={save} disabled={saving} aria-busy={saving}
+            className="rounded-xl bg-sacred-gold px-6 py-3 text-sm font-semibold text-celestial-navy disabled:opacity-50">
+            {saving ? "Saving…" : "Save changes"}
+          </button>
           <button onClick={() => router.push("/admin/retreats")} className="rounded-xl border border-sage-mist px-6 py-3 text-sm text-stone-500">Cancel</button>
         </div>
       </div>

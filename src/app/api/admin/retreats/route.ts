@@ -24,11 +24,25 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   const { searchParams } = new URL(request.url);
+  const admin = createAdminClient();
+
+  // Single retreat: /api/admin/retreats?id=<uuid or slug>
+  const idParam = searchParams.get("id");
+  if (idParam) {
+    const { data, error } = await admin
+      .from("retreats")
+      .select(ADM_COLS)
+      .or(`id.eq.${idParam},slug.eq.${idParam}`)
+      .maybeSingle();
+    if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+    if (!data) return NextResponse.json({ error: "Not found" }, { status: 404 });
+    return NextResponse.json({ data });
+  }
+
   const page = Math.max(1, parseInt(searchParams.get("page") ?? "1", 10));
   const status = searchParams.get("status") ?? "all";
   const limit = 20;
 
-  const admin = createAdminClient();
   let query = admin.from("retreats").select(ADM_COLS, { count: "exact" })
     .order("sort_order", { ascending: true }).order("created_at", { ascending: false })
     .range((page - 1) * limit, page * limit - 1);
@@ -73,10 +87,8 @@ export async function PATCH(request: Request) {
   for (const [k, v] of Object.entries(fields)) {
     if (v !== undefined) update[k] = v;
   }
-  // qualification_checks must be jsonb
-  if (typeof update.qualification_checks === "object") {
-    update.qualification_checks = JSON.stringify(update.qualification_checks);
-  }
+  // qualification_checks is a jsonb column — send the object as-is,
+  // NOT stringified, so it is stored as JSON and round-trips correctly.
 
   const { error } = await admin.from("retreats").update(update).eq("id", id);
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
