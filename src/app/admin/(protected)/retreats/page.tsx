@@ -4,24 +4,19 @@ import { useEffect, useState, useCallback, useTransition } from "react";
 import Link from "next/link";
 import { AdminShell } from "@/components/admin/AdminShell";
 import { StatusBadge } from "@/components/admin/StatusBadge";
-import { Pagination } from "@/components/admin/Pagination";
 
 type Retreat = {
-  id: string;
-  slug: string;
-  title: string;
-  type: string;
-  location: string | null;
-  dates_display: string;
-  price_display: string;
-  status: string;
-  sort_order: number;
-  trust_tier: string | null;
-  badge: string | null;
-  rating: number | null;
-  review_count: number | null;
-  created_at: string;
-  updated_at: string;
+  id: string; slug: string; title: string; type: string;
+  location: string | null; country: string | null; region: string | null;
+  dates_display: string; price_display: string;
+  price_from: number | null; price_currency: string | null;
+  status: string; qualification_status: string | null;
+  commercial_status: string | null;
+  sort_order: number; trust_tier: string | null;
+  rating: number | null; review_count: number | null;
+  gallery_paths: string[] | null; image_path: string | null;
+  operator_name: string | null;
+  created_at: string; updated_at: string;
 };
 
 export default function RetreatsPage() {
@@ -36,15 +31,11 @@ export default function RetreatsPage() {
   const fetchData = useCallback((p: number, s: string) => {
     setLoading(true);
     fetch(`/api/admin/retreats?page=${p}&status=${s}`)
-      .then(r => r.json())
-      .then(json => {
-        setItems(json.data ?? []);
-        setTotal(json.total ?? 0);
-        setLoading(false);
+      .then(r => r.json()).then(json => {
+        setItems(json.data ?? []); setTotal(json.total ?? 0); setLoading(false);
       });
   }, []);
 
-  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => { fetchData(1, statusFilter); }, [statusFilter, fetchData]);
 
   async function toggleStatus(retreat: Retreat) {
@@ -52,134 +43,114 @@ export default function RetreatsPage() {
     setMsg("");
     startTransition(async () => {
       const res = await fetch("/api/admin/retreats", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+        method: "PATCH", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: retreat.id, status: newStatus }),
       });
       const json = await res.json();
       if (res.ok) {
-        setMsg(`"${retreat.title}" set to ${newStatus}.`);
-        fetchData(page, statusFilter);
+        setItems(prev => prev.map(r => r.id === retreat.id ? { ...r, status: newStatus } : r));
+        setMsg(`${retreat.title} → ${newStatus}`);
       } else {
         setMsg(`Error: ${json.error}`);
       }
     });
   }
 
-  // SCOPE-044: admin sets the retreat trust tier (verified ↔ listed).
-  async function toggleVerified(retreat: Retreat) {
-    const verified = /verified|^partner$/i.test(retreat.trust_tier ?? "");
-    const trust_tier = verified ? "listed" : "verified_partner";
-    setMsg("");
+  async function updateQualification(id: string, qs: string) {
     startTransition(async () => {
       const res = await fetch("/api/admin/retreats", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id: retreat.id, trust_tier }),
+        method: "PATCH", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, qualification_status: qs }),
       });
       const json = await res.json();
+      setMsg(res.ok ? `Qualification → ${qs}` : `Error: ${json.error}`);
       if (res.ok) {
-        setMsg(`"${retreat.title}" ${verified ? "unverified" : "verified"}.`);
-        fetchData(page, statusFilter);
-      } else {
-        setMsg(`Error: ${json.error}`);
+        setItems(prev => prev.map(r => r.id === id ? { ...r, qualification_status: qs } : r));
       }
     });
   }
 
-  const FILTERS = [
-    { label: "All", value: "all" },
-    { label: "Published", value: "published" },
-    { label: "Draft", value: "draft" },
-  ];
+  const canPublish = (r: Retreat) => {
+    const qs = r.qualification_status;
+    if (qs !== "approved" && qs !== "live") return false;
+    if (!r.gallery_paths?.length && !r.image_path) return false;
+    return true;
+  };
 
   return (
-    <AdminShell title="Published Retreats" subtitle="Manage the live retreat directory">
-      <div className="flex items-center gap-1 mb-5 bg-white rounded-xl border border-beige p-1 w-fit">
-        {FILTERS.map((f) => (
-          <button
-            key={f.value}
-            onClick={() => setStatusFilter(f.value)}
-            className={`px-4 py-1.5 rounded-lg text-sm transition-colors ${statusFilter === f.value ? "bg-forest text-cream font-medium" : "text-muted hover:text-foreground"}`}
-          >
-            {f.label}
-          </button>
-        ))}
-      </div>
-
-      {msg && (
-        <div className={`mb-4 px-4 py-3 rounded-xl text-sm ${msg.startsWith("Error") ? "bg-red-50 text-red-600 border border-red-200" : "bg-emerald-50 text-emerald-700 border border-emerald-200"}`}>
-          {msg}
+    <AdminShell title="Retreats">
+      <div className="px-4 py-6 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between">
+          <h1 className="text-2xl font-semibold">Retreats</h1>
+          <div className="flex gap-3">
+            <Link href="/admin/retreat-submissions" className="text-sm text-link">Submissions</Link>
+            <Link href="/admin/enquiries" className="text-sm text-link">Enquiries</Link>
+            <Link href="/admin/search-alerts" className="text-sm text-link">Alerts</Link>
+          </div>
         </div>
-      )}
 
-      <div className="bg-white rounded-2xl border border-beige shadow-[var(--shadow-card)] overflow-hidden">
-        {loading ? (
-          <div className="py-16 text-center text-sm text-muted">Loading…</div>
-        ) : items.length === 0 ? (
-          <div className="py-16 text-center text-sm text-muted">No retreats found.</div>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-beige bg-cream/50">
-                  <th className="text-left px-5 py-3 text-xs font-semibold text-muted uppercase tracking-wide">Title</th>
-                  <th className="text-left px-5 py-3 text-xs font-semibold text-muted uppercase tracking-wide">Type</th>
-                  <th className="text-left px-5 py-3 text-xs font-semibold text-muted uppercase tracking-wide">Location</th>
-                  <th className="text-left px-5 py-3 text-xs font-semibold text-muted uppercase tracking-wide">Dates</th>
-                  <th className="text-left px-5 py-3 text-xs font-semibold text-muted uppercase tracking-wide">Price</th>
-                  <th className="text-left px-5 py-3 text-xs font-semibold text-muted uppercase tracking-wide">Status</th>
-                  <th className="text-left px-5 py-3 text-xs font-semibold text-muted uppercase tracking-wide">Sort</th>
-                  <th className="px-5 py-3" />
+        {msg && <div className="mt-3 rounded-lg bg-emerald-50 px-4 py-2 text-sm text-emerald-700">{msg}</div>}
+
+        <div className="mt-4 flex gap-2">
+          {["all","published","draft"].map(s => (
+            <button key={s} onClick={() => setStatusFilter(s)}
+              className={`rounded-full px-3 py-1 text-xs font-medium ${statusFilter === s ? "bg-forest-green text-white" : "bg-sage-mist text-stone-600"}`}>
+              {s}
+            </button>
+          ))}
+        </div>
+
+        {loading ? <p className="mt-6 text-sm text-stone-400">Loading…</p> : (
+          <div className="mt-4 overflow-x-auto">
+            <table className="w-full text-sm text-left">
+              <thead className="border-b border-sage-mist text-xs uppercase text-stone-400">
+                <tr>
+                  <th className="py-2 pr-3">Title</th>
+                  <th className="py-2 px-2">Country</th>
+                  <th className="py-2 px-2">Price</th>
+                  <th className="py-2 px-2">Status</th>
+                  <th className="py-2 px-2">Qualification</th>
+                  <th className="py-2 px-2">Operator</th>
+                  <th className="py-2 pl-2">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-beige">
-                {items.map((item) => (
-                  <tr key={item.id} className="hover:bg-cream/30 transition-colors">
-                    <td className="px-5 py-3">
-                      <div className="font-medium text-foreground truncate max-w-[200px]">{item.title}</div>
-                      {item.badge && <span className="text-xs text-gold font-medium">{item.badge}</span>}
+              <tbody>
+                {items.map(r => (
+                  <tr key={r.id} className="border-b border-sage-mist/50 hover:bg-warm-cream/50">
+                    <td className="py-2 pr-3 font-medium">
+                      <Link href={`/admin/retreats/${r.id}`} className="text-link hover:underline">{r.title}</Link>
+                      <br /><span className="text-xs text-stone-400">{r.slug}</span>
                     </td>
-                    <td className="px-5 py-3 text-muted capitalize">{item.type}</td>
-                    <td className="px-5 py-3 text-muted">{item.location ?? "—"}</td>
-                    <td className="px-5 py-3 text-muted whitespace-nowrap">{item.dates_display}</td>
-                    <td className="px-5 py-3 text-muted">{item.price_display}</td>
-                    <td className="px-5 py-3"><StatusBadge status={item.status} /></td>
-                    <td className="px-5 py-3 text-muted">{item.sort_order}</td>
-                    <td className="px-5 py-3">
-                      <div className="flex items-center gap-3">
-                        <button
-                          onClick={() => toggleStatus(item)}
-                          disabled={isPending}
-                          className={`text-xs font-medium hover:underline disabled:opacity-60 ${item.status === "published" ? "text-amber-600" : "text-forest"}`}
-                        >
-                          {item.status === "published" ? "Unpublish" : "Publish"}
-                        </button>
-                        <button
-                          onClick={() => toggleVerified(item)}
-                          disabled={isPending}
-                          className="text-xs font-medium text-forest hover:underline disabled:opacity-60"
-                        >
-                          {/verified|^partner$/i.test(item.trust_tier ?? "") ? "Unverify" : "Verify"}
-                        </button>
-                        <Link
-                          href={`/retreat/${item.slug}`}
-                          target="_blank"
-                          className="text-xs text-muted hover:text-forest transition-colors"
-                        >
-                          View ↗
-                        </Link>
-                      </div>
+                    <td className="py-2 px-2">{r.country || r.location || "—"}</td>
+                    <td className="py-2 px-2">{r.price_from ? `${r.price_currency || "EUR"} ${r.price_from}` : r.price_display || "—"}</td>
+                    <td className="py-2 px-2"><StatusBadge status={r.status} /></td>
+                    <td className="py-2 px-2">
+                      <select value={r.qualification_status || "submitted"} onChange={e => updateQualification(r.id, e.target.value)}
+                        className="rounded border border-sage-mist px-1 py-0.5 text-xs">
+                        <option value="submitted">Submitted</option>
+                        <option value="reviewed">Reviewed</option>
+                        <option value="approved">Approved</option>
+                        <option value="live">Live</option>
+                        <option value="inactive">Inactive</option>
+                        <option value="archived">Archived</option>
+                      </select>
+                    </td>
+                    <td className="py-2 px-2 text-xs">{r.operator_name || "—"}</td>
+                    <td className="py-2 pl-2">
+                      <button onClick={() => toggleStatus(r)} disabled={isPending}
+                        className={`rounded-full px-3 py-1 text-xs font-medium ${r.status === "published" ? "bg-red-50 text-red-600" : "bg-emerald-50 text-emerald-600"} disabled:opacity-50`}
+                        title={r.status === "published" ? "Unpublish" : canPublish(r) ? "Publish" : "Cannot publish: needs approved/live + image + departure"}>
+                        {r.status === "published" ? "Unpublish" : "Publish"}
+                      </button>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
+            <p className="mt-3 text-xs text-stone-400">{total} retreats total</p>
           </div>
         )}
       </div>
-
-      <Pagination page={page} total={total} limit={20} onPageChange={(p) => { setPage(p); fetchData(p, statusFilter); }} />
     </AdminShell>
   );
 }

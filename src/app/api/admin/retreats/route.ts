@@ -1,40 +1,40 @@
 import { NextResponse } from "next/server";
-import { revalidateTag } from "next/cache";
-
 import { getAdminSession } from "@/lib/admin/auth";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { CACHE_TAG_RETREATS_LIST, retreatDetailCacheTag } from "@/lib/retreats/cache-tags";
 
 export const runtime = "nodejs";
+
+const ADM_COLS = [
+  "id","slug","title","type","categories","location","country","region",
+  "dates_display","price_display","price_from","price_currency","price_notes",
+  "image_path","gallery_paths",
+  "rating","review_count","badge","description",
+  "inclusions","exclusions","itinerary",
+  "operator_name","operator_website",
+  "min_age","max_age","age_notes",
+  "booking_url","commercial_status","qualification_status","qualification_checks",
+  "internal_notes",
+  "status","sort_order","trust_tier","verified_at","credibility_note",
+  "created_at","updated_at",
+].join(",");
 
 export async function GET(request: Request) {
   if (!(await getAdminSession())) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-
   const { searchParams } = new URL(request.url);
   const page = Math.max(1, parseInt(searchParams.get("page") ?? "1", 10));
   const status = searchParams.get("status") ?? "all";
   const limit = 20;
-  const from = (page - 1) * limit;
 
   const admin = createAdminClient();
-  let query = admin
-    .from("retreats")
-    .select("*", { count: "exact" })
-    .order("sort_order", { ascending: true })
-    .order("created_at", { ascending: false })
-    .range(from, from + limit - 1);
-
-  if (status !== "all") {
-    query = query.eq("status", status);
-  }
+  let query = admin.from("retreats").select(ADM_COLS, { count: "exact" })
+    .order("sort_order", { ascending: true }).order("created_at", { ascending: false })
+    .range((page - 1) * limit, page * limit - 1);
+  if (status !== "all") query = query.eq("status", status);
 
   const { data, count, error } = await query;
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
-  }
-
+  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
   return NextResponse.json({ data, total: count ?? 0, page, limit });
 }
 
@@ -42,34 +42,44 @@ export async function PATCH(request: Request) {
   if (!(await getAdminSession())) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-
   const body = await request.json().catch(() => ({}));
-  const { id, status, sort_order, trust_tier } = body;
-
-  if (!id) {
-    return NextResponse.json({ error: "Missing id" }, { status: 400 });
-  }
+  const { id, ...fields } = body;
+  if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 });
 
   const admin = createAdminClient();
+
+  // Publishing validation: if changing to 'published', must be approved/live + >=1 departure + >=1 image
+  if (fields.status === "published") {
+    const { data: row } = await admin.from("retreats").select("qualification_status, gallery_paths, image_path").eq("id", id).single();
+    if (!row) return NextResponse.json({ error: "Retreat not found" }, { status: 404 });
+    const qs = row.qualification_status as string | null;
+    if (qs !== "approved" && qs !== "live") {
+      return NextResponse.json({ error: "Retreat must be approved or live before publishing. Change qualification_status first." }, { status: 400 });
+    }
+    const hasImage = (row.gallery_paths as string[] | null)?.length || row.image_path;
+    if (!hasImage) {
+      return NextResponse.json({ error: "At least one image (gallery or main) is required before publishing." }, { status: 400 });
+    }
+    try {
+      const { count } = await admin.from("retreat_departures").select("id", { count: "exact", head: true }).eq("retreat_id", id);
+      if ((count ?? 0) < 1) {
+        return NextResponse.json({ error: "At least one departure is required before publishing." }, { status: 400 });
+      }
+    } catch { /* departures table may not exist yet */ }
+  }
+
   const update: Record<string, unknown> = { updated_at: new Date().toISOString() };
-  if (status) update.status = status;
-  if (sort_order !== undefined) update.sort_order = sort_order;
-  // SCOPE-044: admin sets the trust tier; verified_at tracks a verified tier.
-  if (typeof trust_tier === "string") {
-    update.trust_tier = trust_tier;
-    const isVerified = /verified|^partner$/i.test(trust_tier);
-    update.verified_at = isVerified ? new Date().toISOString() : null;
+  for (const [k, v] of Object.entries(fields)) {
+    if (v !== undefined) update[k] = v;
+  }
+  // qualification_checks must be jsonb
+  if (typeof update.qualification_checks === "object") {
+    update.qualification_checks = JSON.stringify(update.qualification_checks);
   }
 
-  const { data, error } = await admin.from("retreats").update(update).eq("id", id).select("slug").maybeSingle();
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
-  }
+  const { error } = await admin.from("retreats").update(update).eq("id", id);
+  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 
-  if (data?.slug) {
-    revalidateTag(CACHE_TAG_RETREATS_LIST, "max");
-    revalidateTag(retreatDetailCacheTag(data.slug), "max");
-  }
 
   return NextResponse.json({ ok: true });
 }
