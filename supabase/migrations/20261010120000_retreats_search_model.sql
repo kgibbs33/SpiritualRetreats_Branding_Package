@@ -1,7 +1,7 @@
 -- Migration: retreat search model (ADDITIVE — safe to run on live DB)
 -- =============================================================================
--- Adds departures, enquiries, search_alerts, new columns to retreats,
--- a public-safe view, and backfills existing published retreats.
+-- Adds departures, enquiries, search_alerts, new columns to retreats
+-- and backfills existing published retreats.
 -- No DROPs, renames, policy/column/function alterations.
 --
 -- The CURRENT code on origin/main queries public.retreats directly with an
