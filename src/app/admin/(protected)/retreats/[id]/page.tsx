@@ -9,12 +9,25 @@ const COMMERCIAL = ["","free_listing","promotion","commission","partnership","ot
 const QUAL_LEVELS = ["submitted","reviewed","approved","live","inactive","archived"];
 const QUAL_CHECKS = ["Identity","Fit","Information","Quality and trust","Commercial terms","Media"];
 
+type Departure = {
+  id: string;
+  retreat_id: string;
+  start_date: string;
+  end_date: string;
+  capacity: number | null;
+  spots_left: number | null;
+  price_override: number | null;
+  status: string;
+  notes: string | null;
+  created_at?: string;
+};
+
 export default function RetreatEditPage() {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [form, setForm] = useState<Record<string, unknown>>({});
-  const [depts, setDepts] = useState<Array<Record<string, unknown>>>([]);
+  const [depts, setDepts] = useState<Departure[]>([]);
   const [loading, setLoading] = useState(true);
   const [msg, setMsg] = useState("");
   const [checks, setChecks] = useState<Record<string, boolean>>({});
@@ -160,7 +173,7 @@ export default function RetreatEditPage() {
           <h2 className="text-lg font-semibold">Departures</h2>
           {depts.length === 0 && <p className="text-sm text-stone-400">No departures yet.</p>}
           <div className="mt-2 divide-y divide-sage-mist rounded-xl border border-sage-mist">
-            {depts.map((d: Record<string, unknown>) => (
+            {depts.map((d) => (
               <div key={d.id} className="flex items-center justify-between p-3 text-sm">
                 <span>{d.start_date} — {d.end_date} | {d.status} | {d.capacity ?? "—"} capacity</span>
                 <button onClick={() => navigator.clipboard.writeText(d.id)} className="text-xs text-link">Copy ID</button>
