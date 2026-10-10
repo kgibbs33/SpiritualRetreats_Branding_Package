@@ -44,8 +44,8 @@ const steps = [
   {
     number: "02",
     heading: "We review it personally",
-    body: "Our team reviews every submission within 48 hours. We may follow up with a short clarifying question before listing.",
-    accent: "48 h review",
+    body: "Our team reviews every submission and may follow up with a short clarifying question before listing.",
+    accent: "team review",
   },
   {
     number: "03",
@@ -434,7 +434,7 @@ export default function ForRetreatOwnersPage() {
             Ready to fill your next retreat?
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-[15px] leading-relaxed text-white/75">
-            Submission takes 5 minutes. Our team reviews within 48 hours and
+            Submission takes 5 minutes. Our team reviews and
             will follow up by email to confirm listing details.
           </p>
           <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
