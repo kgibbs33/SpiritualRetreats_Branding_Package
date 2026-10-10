@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getRetreatBySlug, getRetreatBySlugAdmin } from "@/lib/retreats/queries";
 import { getAdminSession } from "@/lib/admin/auth";

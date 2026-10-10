@@ -123,43 +123,22 @@ CREATE TABLE IF NOT EXISTS public.search_alerts (
 
 ALTER TABLE public.search_alerts ENABLE ROW LEVEL SECURITY;
 
--- ── retreats_public view (excludes internal columns, filters by status) ─────
--- Uses security_invoker = true so callers see only their own RLS grants.
--- Migration C will grant SELECT on this view; until then, nothing is exposed.
 
-CREATE OR REPLACE VIEW public.retreats_public
-WITH (security_invoker = true)
-AS
-SELECT
-  id, slug, title, type, categories, location, country, region,
-  dates_display, price_display, price_from, price_currency, price_notes,
-  image_path, gallery_paths,
-  rating, review_count, badge, description,
-  inclusions, exclusions, itinerary,
-  operator_name, operator_website,
-  min_age, max_age, age_notes,
-  booking_url,
-  -- EXCLUDED: commercial_status, qualification_status, qualification_checks,
-  -- internal_notes, operator contact details not meant for public
-  status, trust_tier, verified_at, credibility_note,
-  sort_order, created_at, updated_at,
-  search_tsv
-FROM public.retreats
-WHERE status = 'published' AND qualification_status = 'live';
-
-REVOKE ALL ON public.retreats_public FROM anon, authenticated;
 
 -- ═════════════════════════════════════════════════════════════════════════════
 -- VERIFICATION (commented — run manually after applying)
 -- ═════════════════════════════════════════════════════════════════════════════
 -- set role anon;
--- -- Should return 0 — view is REVOKE ALL until Migration C
--- select count(*) from retreats_public;
--- -- Should also return 0 — anon can't read base table for non-published rows
--- select count(*) from retreats where status <> 'published';
+-- -- Before Migration C: anon still has SELECT on retreats (RLS: only published).
+-- -- After Migration C: anon has no SELECT on retreats (public reads use service-role).
+-- select count(*) from retreats;
+-- -- Count of retreats that will appear on the public site:
+-- select count(*) from retreats where status='published' and qualification_status='live';
 -- reset role;
 --
--- EXPECTED: both SELECTs return 0 rows OR "permission denied"
+-- EXPECTED (before C): first SELECT returns published-only rows via RLS.
+-- EXPECTED (after C):  first SELECT returns 'permission denied'.
+-- EXPECTED (always):   second SELECT returns the number of published+live retreats.
 -- =============================================================================
 
 -- ═════════════════════════════════════════════════════════════════════════════

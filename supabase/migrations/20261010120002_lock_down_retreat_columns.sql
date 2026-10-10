@@ -20,8 +20,7 @@
 -- Apply AFTER merging milestone-3 to main and verifying the Vercel deploy.
 -- =============================================================================
 
+-- Public pages read through server-only code using the service-role key;
+-- the anon key is not used for retreats after Migration C.
 REVOKE SELECT ON public.retreats FROM anon;
 REVOKE SELECT ON public.retreats FROM authenticated;
-
-GRANT SELECT ON public.retreats_public TO anon;
-GRANT SELECT ON public.retreats_public TO authenticated;

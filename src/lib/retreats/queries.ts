@@ -1,9 +1,10 @@
+import "server-only";
+
 import { unstable_cache } from "next/cache";
-import { createPublicSupabaseClient } from "@/lib/supabase/public-server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import type { RetreatCardProps } from "@/components/retreat/RetreatCard";
 import { retreatTrustVariant } from "@/components/ui/TrustBadge";
 import { CACHE_TAG_RETREATS_LIST, retreatDetailCacheTag } from "@/lib/retreats/cache-tags";
-import { createAdminClient } from "@/lib/supabase/admin";
 import {
   parseRetreatListParams, budgetRange, PER_PAGE,
   type RetreatListParams,
@@ -11,6 +12,36 @@ import {
 import type { RetreatRow, DepartureRow } from "@/lib/retreats/types";
 
 export type { RetreatRow } from "@/lib/retreats/types";
+
+// ── Column lists (server-only — never expose internal/sensitive cols to client) ──
+
+/** Public-safe column list: excludes internal_notes, qualification_checks,
+ *  commercial_status, operator_name, operator_website. */
+const PUBLIC_SELECT = [
+  "id", "slug", "title", "type", "categories", "location", "country", "region",
+  "dates_display", "price_display", "price_from", "price_currency", "price_notes",
+  "image_path", "gallery_paths",
+  "rating", "review_count", "badge", "description",
+  "inclusions", "exclusions", "itinerary",
+  "min_age", "max_age", "age_notes",
+  "booking_url", "qualification_status",
+  "status", "trust_tier", "verified_at", "credibility_note",
+  "sort_order",
+].join(",");
+
+/** Full column list for admin-only reads (includes operator + sensitive). */
+const ADMIN_SELECT = [
+  "id", "slug", "title", "type", "categories", "location", "country", "region",
+  "dates_display", "price_display", "price_from", "price_currency", "price_notes",
+  "image_path", "gallery_paths",
+  "rating", "review_count", "badge", "description",
+  "inclusions", "exclusions", "itinerary",
+  "operator_name", "operator_website",
+  "min_age", "max_age", "age_notes",
+  "booking_url", "commercial_status", "qualification_status", "qualification_checks",
+  "status", "trust_tier", "verified_at", "credibility_note",
+  "sort_order",
+].join(",");
 
 // ── Card mapping ──────────────────────────────────────────────────────────
 
@@ -31,16 +62,14 @@ function mapRowToCardProps(row: RetreatRow): RetreatCardProps {
   };
 }
 
-// ── Detect if Migration A has been applied ────────────────────────────────
-// We probe by trying to select the `country` column. If it fails with a
-// "column not found" error, we fall back to the old query path.
+// ── Detect if Migration A has been applied (use admin client) ─────────────
 
 let _migrationAApplied: boolean | null = null;
 
 async function isMigrationAApplied(): Promise<boolean> {
   if (_migrationAApplied !== null) return _migrationAApplied;
   try {
-    const supabase = createPublicSupabaseClient();
+    const supabase = createAdminClient();
     const { error } = await supabase
       .from("retreats")
       .select("country")
@@ -53,37 +82,20 @@ async function isMigrationAApplied(): Promise<boolean> {
   }
 }
 
-// ── Full select (new columns included; safe — all nullable/defaulted) ────
-
-const FULL_SELECT = [
-  "id", "slug", "title", "type", "categories", "location", "country", "region",
-  "dates_display", "price_display", "price_from", "price_currency", "price_notes",
-  "image_path", "gallery_paths",
-  "rating", "review_count", "badge", "description",
-  "inclusions", "exclusions", "itinerary",
-  "operator_name", "operator_website",
-  "min_age", "max_age", "age_notes",
-  "booking_url", "commercial_status", "qualification_status",
-  "status", "trust_tier", "verified_at", "credibility_note",
-  "sort_order",
-].join(",");
-
-// ── Published retreat list (server-side SQL filtering) ────────────────────
+// ── Published retreat list (server-side SQL filtering, service-role) ──────
 
 async function searchPublishedRetreats(
   params: RetreatListParams,
   page: number,
 ): Promise<{ cards: RetreatCardProps[]; total: number; error: string | null }> {
-  const supabase = createPublicSupabaseClient();
+  const supabase = createAdminClient();
 
-  // Build query — base: published + live
   let query = supabase
-    .from("retreats_public")
-    .select("*", { count: "exact", head: false })
+    .from("retreats")
+    .select(PUBLIC_SELECT, { count: "exact", head: false })
     .eq("status", "published")
     .eq("qualification_status", "live");
 
-  // Free-text search
   if (params.q) {
     query = query.textSearch("search_tsv", params.q, {
       type: "websearch",
@@ -91,34 +103,26 @@ async function searchPublishedRetreats(
     });
   }
 
-  // Country / region
   if (params.destination) {
     const d = params.destination.toLowerCase();
     query = query.or(`country.ilike.${d},region.eq.${d}`);
   }
 
-  // Type
   if (params.type && params.type !== "All types") {
     query = query.eq("type", params.type.toLowerCase());
   }
 
-  // Budget — price_from OR departure price_override
   const budget = params.budget ? budgetRange(params.budget) : null;
   if (budget) {
     query = query.gte("price_from", budget.min).lt("price_from", budget.max + 1);
   }
 
-  // Duration — TODO: requires JOIN on departures. Skipped in MVP.
-  // Month — TODO: requires JOIN on departures. Skipped in MVP.
-
-  // Sort
   switch (params.sort ?? "soonest") {
     case "price_asc":  query = query.order("price_from", { ascending: true, nullsFirst: false }); break;
     case "price_desc": query = query.order("price_from", { ascending: false, nullsFirst: true }); break;
     default:           query = query.order("sort_order", { ascending: true });
   }
 
-  // Pagination
   const from = (page - 1) * PER_PAGE;
   const to = from + PER_PAGE - 1;
   query = query.range(from, to);
@@ -129,7 +133,7 @@ async function searchPublishedRetreats(
     return { cards: [], total: 0, error: error.message };
   }
 
-  const rows = (data ?? []) as RetreatRow[];
+  const rows = (data ?? []) as unknown as RetreatRow[];
   return { cards: rows.map(mapRowToCardProps), total: count ?? rows.length, error: null };
 }
 
@@ -138,14 +142,14 @@ async function searchPublishedRetreats(
 const LEGACY_SELECT = "id, slug, title, type, categories, location, dates_display, price_display, image_path, rating, review_count, badge, description, status, sort_order, trust_tier, verified_at, credibility_note";
 
 async function listPublishedRetreatsLegacy(): Promise<{ cards: RetreatCardProps[]; error: string | null }> {
-  const supabase = createPublicSupabaseClient();
+  const supabase = createAdminClient();
   const { data, error } = await supabase
     .from("retreats")
     .select(LEGACY_SELECT)
     .eq("status", "published")
     .order("sort_order", { ascending: true });
   if (error) return { cards: [], error: error.message };
-  const rows = (data ?? []) as RetreatRow[];
+  const rows = (data ?? []) as unknown as RetreatRow[];
   return { cards: rows.map(mapRowToCardProps), error: null };
 }
 
@@ -160,9 +164,7 @@ export async function listPublishedRetreats(
   let useNew = false;
   try {
     useNew = await isMigrationAApplied();
-  } catch {
-    // Missing env vars or network error — fall back to legacy
-  }
+  } catch { /* fall back */ }
   if (!useNew) {
     try {
       const { cards, error } = await listPublishedRetreatsLegacy();
@@ -175,7 +177,7 @@ export async function listPublishedRetreats(
   try {
     const result = await unstable_cache(
       async () => searchPublishedRetreats(params, page),
-      ["retreats-search", "v1", JSON.stringify(params), String(page)],
+      ["retreats-search", "v2", JSON.stringify(params), String(page)],
       { tags: [CACHE_TAG_RETREATS_LIST], revalidate: 60 }
     )();
     return { ...result, page };
@@ -184,18 +186,19 @@ export async function listPublishedRetreats(
   }
 }
 
-// ── Retreat by slug ───────────────────────────────────────────────────────
+// ── Retreat by slug (public, service-role) ────────────────────────────────
 
 async function getRetreatBySlugUncached(
   slug: string
 ): Promise<{ row: RetreatRow | null; departures: DepartureRow[]; error: string | null }> {
-  const supabase = createPublicSupabaseClient();
+  const supabase = createAdminClient();
 
   const { data: rawRow, error: slugError } = await supabase
-    .from("retreats_public")
-    .select(FULL_SELECT)
+    .from("retreats")
+    .select(PUBLIC_SELECT)
     .eq("slug", slug)
     .eq("status", "published")
+    .eq("qualification_status", "live")
     .maybeSingle();
 
   const row = rawRow as unknown as RetreatRow | null;
@@ -203,7 +206,6 @@ async function getRetreatBySlugUncached(
     return { row: null, departures: [], error: slugError?.message ?? "Not found" };
   }
 
-  // Fetch departures (graceful if table doesn't exist)
   let departures: DepartureRow[] = [];
   try {
     const { data: deps } = await supabase
@@ -213,9 +215,7 @@ async function getRetreatBySlugUncached(
       .in("status", ["open", "full"])
       .order("start_date", { ascending: true });
     departures = (deps ?? []) as DepartureRow[];
-  } catch {
-    // Table doesn't exist yet — fine
-  }
+  } catch { /* before Migration A */ }
 
   return { row, departures, error: null };
 }
@@ -229,20 +229,22 @@ export async function getRetreatBySlug(
   try {
     return await unstable_cache(
       async () => getRetreatBySlugUncached(trimmed),
-      ["retreat-by-slug", "v3", trimmed],
+      ["retreat-by-slug", "v4", trimmed],
       { tags: [CACHE_TAG_RETREATS_LIST, retreatDetailCacheTag(trimmed)], revalidate: 60 }
     )();
   } catch (e) {
     return { row: null, departures: [], error: String(e) };
   }
 }
-// ── Admin: get retreat by slug (no status filter) ───────────────────────
+
+// ── Admin: get retreat by slug (no status filter, all columns) ────────────
+
 export async function getRetreatBySlugAdmin(slug: string): Promise<{ row: RetreatRow | null; departures: DepartureRow[]; error: string | null }> {
   const supabase = createAdminClient();
 
   const { data: rawRow, error } = await supabase
-    .from("retreats_public")
-    .select(FULL_SELECT)
+    .from("retreats")
+    .select(ADMIN_SELECT)
     .eq("slug", slug)
     .maybeSingle();
 
