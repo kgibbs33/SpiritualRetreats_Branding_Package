@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getAdminSession } from "@/lib/admin/auth";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { adminRetreatCreateSchema } from "@/validation/adminRetreatCreate";
 
 export const runtime = "nodejs";
 
@@ -82,4 +83,59 @@ export async function PATCH(request: Request) {
 
 
   return NextResponse.json({ ok: true });
+}
+
+export async function POST(request: Request) {
+  if (!(await getAdminSession())) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  const body = await request.json().catch(() => ({}));
+  const parsed = adminRetreatCreateSchema.safeParse(body);
+  if (!parsed.success) {
+    const first = parsed.error.flatten().fieldErrors;
+    const msg = Object.values(first)[0]?.[0] ?? "Validation failed";
+    return NextResponse.json({ error: msg }, { status: 400 });
+  }
+
+  const d = parsed.data;
+  const admin = createAdminClient();
+  const { data, error } = await admin
+    .from("retreats")
+    .insert({
+      slug: d.slug,
+      title: d.title,
+      type: d.type,
+      categories: d.categories ?? [],
+      location: d.location ?? null,
+      country: d.country ?? null,
+      region: d.region ?? null,
+      dates_display: d.dates_display ?? "",
+      price_display: d.price_display ?? "Price on request",
+      price_from: d.price_from ?? null,
+      price_currency: d.price_currency ?? "EUR",
+      price_notes: d.price_notes ?? null,
+      image_path: d.image_path ?? "/brand/og-share.png",
+      gallery_paths: d.gallery_paths ?? null,
+      description: d.description ?? null,
+      inclusions: d.inclusions ?? null,
+      exclusions: d.exclusions ?? null,
+      itinerary: d.itinerary ?? null,
+      operator_name: d.operator_name ?? null,
+      operator_website: d.operator_website ?? null,
+      min_age: d.min_age ?? null,
+      max_age: d.max_age ?? null,
+      age_notes: d.age_notes ?? null,
+      booking_url: d.booking_url ?? null,
+      commercial_status: d.commercial_status ?? null,
+      internal_notes: d.internal_notes ?? null,
+      status: "draft",
+      qualification_status: "submitted",
+      qualification_checks: {},
+      sort_order: 0,
+    })
+    .select("id, slug")
+    .single();
+
+  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  return NextResponse.json({ ok: true, id: data.id, slug: data.slug }, { status: 201 });
 }

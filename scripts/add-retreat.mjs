@@ -21,7 +21,8 @@ if (!PATH) {
 }
 
 // ── Schema ──────────────────────────────────────────────────────────────
-const REQUIRED = ["slug","title","type","dates_display","price_display","image_path"];
+// price_display and image_path are optional — safe defaults are filled below.
+const REQUIRED = ["slug","title","type","dates_display"];
 const OPTIONAL = [
   "categories","location","country","region",
   "price_from","price_currency","price_notes",
@@ -79,11 +80,11 @@ const retreat = {
   country: data.country ?? null,
   region: data.region ?? null,
   dates_display: data.dates_display,
-  price_display: data.price_display,
+  price_display: data.price_display ?? "Price on request",
   price_from: data.price_from ?? null,
   price_currency: data.price_currency ?? "EUR",
   price_notes: data.price_notes ?? null,
-  image_path: data.image_path,
+  image_path: data.image_path ?? "/brand/og-share.png",
   gallery_paths: data.gallery_paths ?? null,
   inclusions: data.inclusions ?? null,
   exclusions: data.exclusions ?? null,
@@ -126,21 +127,40 @@ if (DRY_RUN) {
   process.exit(0);
 }
 
-// Insert via admin API (requires the app to be running)
-const BASE = process.env.APP_URL ?? "http://localhost:3000";
-console.log(`\nInserting into ${BASE}...`);
 
-// Since we can't auth via CLI, we print the curl commands
-console.log("\nManual insert — run these with a valid admin session cookie:");
-console.log(`\\n# 1. Insert retreat`);
-console.log(`curl -X POST ${BASE}/api/admin/retreats \\\\`);
-console.log(`  -H 'Content-Type: application/json' \\\\`);
-console.log(`  -H 'Cookie: admin_session=<your-session>' \\\\`);
-console.log(`  -d '${JSON.stringify(retreat)}'`);
-console.log(`\\n# 2. Insert departures (repeat for each, using the returned retreat id)`);
-departures.forEach((d, i) => {
-  console.log(`curl -X POST ${BASE}/api/admin/departures \\\\`);
-  console.log(`  -H 'Content-Type: application/json' \\\\`);
-  console.log(`  -H 'Cookie: admin_session=<your-session>' \\\\`);
-  console.log(`  -d '${JSON.stringify({...d, retreat_id: "<RETREAT_ID>"})}'`);
-});
+// Insert using the service-role key from env (never printed or logged).
+const url = process.env.SUPABASE_URL ?? process.env.NEXT_PUBLIC_SUPABASE_URL;
+const key = process.env.SUPABASE_SECRET_KEY;
+if (!url || !key) {
+  console.log("\nNo SUPABASE_URL + SUPABASE_SECRET_KEY in env.");
+  console.log("This script only VALIDATED the file — nothing was inserted.");
+  console.log("Set both env vars to insert via the service-role key,");
+  console.log("or use the admin UI with a valid admin session.");
+  process.exit(0);
+}
+
+const { createClient } = await import("@supabase/supabase-js");
+const sb = createClient(url, key, { auth: { persistSession: false } });
+
+const { data: retreatRow, error: rErr } = await sb
+  .from("retreats")
+  .insert({ ...retreat, status: "draft", qualification_status: "submitted" })
+  .select("id")
+  .single();
+if (rErr) {
+  console.error("Retreat insert failed:", rErr.message);
+  process.exit(1);
+}
+console.log(`Inserted retreat ${retreatRow.id}`);
+
+let depErrors = 0;
+for (const d of departures) {
+  const { error: dErr } = await sb
+    .from("retreat_departures")
+    .insert({ ...d, retreat_id: retreatRow.id });
+  if (dErr) {
+    console.error("Departure insert failed:", dErr.message);
+    depErrors++;
+  }
+}
+console.log(`Inserted ${departures.length - depErrors}/${departures.length} departures.`);
