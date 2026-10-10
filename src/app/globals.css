@@ -22,6 +22,16 @@
   --color-muted: #5B6A7A;
   --color-border: #DDE9D8;
 
+  /* Shorthand aliases — components use bg-forest, text-cream, etc. */
+  --color-forest: #0B4A36;
+  --color-cream: #F8F2E7;
+  --color-sage: #DDE9D8;
+  --color-navy: #061A33;
+  --color-gold: #D9A233;
+  --color-teal: #1E7A78;
+  --color-warm-brown: #8b654d;
+  --color-beige: #e1d3c8;
+
   /* Typography — EB Garamond (headings) + Lato (body/nav/buttons/forms) */
   --font-sans: var(--font-sans-body), Arial, ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-display), Georgia, ui-serif, serif;
