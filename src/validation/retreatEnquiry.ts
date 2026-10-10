@@ -9,6 +9,10 @@ export const retreatEnquirySchema = z.object({
   phone: z.string().max(40).optional().nullable(),
   participants: z.coerce.number().int().positive().max(1000).optional().nullable(),
   message: z.string().max(5000).optional().nullable(),
+  utmSource: z.string().max(200).optional().nullable(),
+  utmMedium: z.string().max(200).optional().nullable(),
+  utmCampaign: z.string().max(200).optional().nullable(),
+  referrer: z.string().max(500).optional().nullable(),
   consent: z.literal(true, "Consent is required"),
   company: z.string().max(0).optional(),
 });

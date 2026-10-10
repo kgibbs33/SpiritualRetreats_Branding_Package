@@ -39,6 +39,10 @@ export async function POST(request: Request) {
         phone: d.phone ?? null,
         participants: d.participants ?? null,
         message: d.message ?? null,
+        utm_source: d.utmSource ?? null,
+        utm_medium: d.utmMedium ?? null,
+        utm_campaign: d.utmCampaign ?? null,
+        referrer: d.referrer ?? null,
         consent: d.consent,
       })
       .select("id")

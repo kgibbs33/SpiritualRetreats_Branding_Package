@@ -78,7 +78,7 @@ async function searchPublishedRetreats(
 
   // Build query — base: published + live
   let query = supabase
-    .from("retreats")
+    .from("retreats_public")
     .select("*", { count: "exact", head: false })
     .eq("status", "published")
     .eq("qualification_status", "live");
@@ -192,7 +192,7 @@ async function getRetreatBySlugUncached(
   const supabase = createPublicSupabaseClient();
 
   const { data: rawRow, error: slugError } = await supabase
-    .from("retreats")
+    .from("retreats_public")
     .select(FULL_SELECT)
     .eq("slug", slug)
     .eq("status", "published")
@@ -241,7 +241,7 @@ export async function getRetreatBySlugAdmin(slug: string): Promise<{ row: Retrea
   const supabase = createAdminClient();
 
   const { data: rawRow, error } = await supabase
-    .from("retreats")
+    .from("retreats_public")
     .select(FULL_SELECT)
     .eq("slug", slug)
     .maybeSingle();
