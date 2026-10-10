@@ -100,14 +100,14 @@ export async function POST(request: Request) {
       } catch (teamErr) {
         console.error("retreat team notification mail:", teamErr);
       }
-      fireFormWebhook({
+      await fireFormWebhook({
         form_type: "retreat_submission",
         submitted_at: new Date().toISOString(),
         source_url: "",
         contact: { name: d.contactName, email: d.email },
         data: { retreatTitle: d.retreatTitle, location: d.location },
         record_id: String(row.id),
-      }).catch(function() {});
+      });
     });
 
     return NextResponse.json({ success: true, id: row.id }, { status: 201 });

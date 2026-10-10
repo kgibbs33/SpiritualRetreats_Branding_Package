@@ -93,8 +93,7 @@ export async function POST(request: Request) {
       } catch (teamErr) {
         console.error("facilitator team notification mail:", teamErr);
       }
-      try {
-        fireFormWebhook({
+        await fireFormWebhook({
           form_type: "facilitator_onboarding",
           submitted_at: new Date().toISOString(),
           source_url: "",
@@ -102,9 +101,6 @@ export async function POST(request: Request) {
           data: { practiceAreas: d.practiceAreas, city: d.city },
           record_id: String(row.id),
         });
-      } catch {
-        // fire-and-forget — never fail the submission
-      }
     });
 
     return NextResponse.json({ success: true, id: row.id }, { status: 201 });

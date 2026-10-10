@@ -68,24 +68,20 @@ export async function POST(request: Request) {
       try {
         await sendTeamSubmissionNotification({
           formType: "Newsletter signup",
-          recordId: newRow?.id || email,
+          recordId: newRow.id,
           fields: { Email: email },
         });
       } catch (teamErr) {
         console.error("newsletter team notification mail:", teamErr);
       }
-      try {
-        fireFormWebhook({
+        await fireFormWebhook({
           form_type: "newsletter",
           submitted_at: new Date().toISOString(),
           source_url: "",
           contact: { name: "", email },
           data: {},
-          record_id: newRow?.id || email,
+          record_id: newRow.id,
         });
-      } catch {
-        // fire-and-forget — never fail the submission
-      }
     });
 
     return NextResponse.json({ success: true }, { status: 201 });

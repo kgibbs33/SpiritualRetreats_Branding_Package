@@ -86,14 +86,14 @@ export async function POST(request: Request) {
       } catch (confirmErr) {
         console.error("contact user confirmation mail:", confirmErr);
       }
-      fireFormWebhook({
+      await fireFormWebhook({
         form_type: "contact",
         submitted_at: new Date().toISOString(),
         source_url: "",
         contact: { name, email },
         data: { subject, message },
         record_id: String(inquiry.id),
-      }).catch(function() {});
+      });
     });
 
     return NextResponse.json({ success: true }, { status: 201 });

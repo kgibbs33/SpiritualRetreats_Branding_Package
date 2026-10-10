@@ -121,14 +121,14 @@ export async function POST(request: Request) {
       } catch (teamErr) {
         console.error("seeker team notification mail:", teamErr);
       }
-      fireFormWebhook({
+      await fireFormWebhook({
         form_type: "seeker_discovery",
         submitted_at: new Date().toISOString(),
         source_url: "",
         contact: { name: d.fullName, email: d.email, phone: d.phoneWhatsapp ?? null },
         data: { answers: d.answers, purpose: d.purpose, budget: d.budgetRange, destination: d.destinationRegion },
         record_id: String(row.id),
-      }).catch(function() {});
+      });
     });
 
     return NextResponse.json({ success: true, id: row.id }, { status: 201 });

@@ -104,8 +104,7 @@ export async function POST(request: Request) {
       } catch (teamErr) {
         console.error("home-quick-capture team notification mail:", teamErr);
       }
-      try {
-        fireFormWebhook({
+        await fireFormWebhook({
           form_type: "home_quick_capture",
           submitted_at: new Date().toISOString(),
           source_url: "",
@@ -113,9 +112,6 @@ export async function POST(request: Request) {
           data: { purpose: d.purpose, budget: d.budgetRange, destination: d.destinationRegion },
           record_id: String(row.id),
         });
-      } catch {
-        // fire-and-forget — never fail the submission
-      }
     });
 
     return NextResponse.json({ success: true, id: row.id }, { status: 201 });

@@ -7,7 +7,7 @@
  * CRITICAL: a webhook failure or timeout must NEVER fail or delay the
  * user's submission.  The fetch has an 8 s timeout; non-2xx responses are
  * logged (form_type + status only, no personal data) and treated as soft
- * failures.  The caller should always fire-and-forget (never await this).
+ * failures.  Call with await inside after(); never call it before the response is returned.
  */
 
 const WEBHOOK_URL =
