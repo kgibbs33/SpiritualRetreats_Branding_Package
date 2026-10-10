@@ -111,12 +111,12 @@ export default function RetreatEditPage() {
     try {
       const res = await fetch("/api/admin/retreats", {
         method: "PATCH", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id: retreatId, status: "archived", qualification_status: "archived" }),
+        body: JSON.stringify({ id: retreatId, status: "draft", qualification_status: "archived" }),
       });
       const j = await res.json();
       if (res.ok) {
         setMsg({ kind: "ok", text: "Retreat archived." });
-        setForm(f => ({ ...f, status: "archived", qualification_status: "archived" }));
+        setForm(f => ({ ...f, status: "draft", qualification_status: "archived" }));
       } else {
         setMsg({ kind: "err", text: j.error || "Archive failed." });
       }
@@ -127,7 +127,29 @@ export default function RetreatEditPage() {
     }
   }
 
-  async function deleteDeparture(depId: string) {
+  async function restoreRetreat() {
+    setSaving(true);
+    setMsg(null);
+    try {
+      const res = await fetch("/api/admin/retreats", {
+        method: "PATCH", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: retreatId, qualification_status: "submitted" }),
+      });
+      const j = await res.json();
+      if (res.ok) {
+        setMsg({ kind: "ok", text: "Retreat restored to draft." });
+        setForm(f => ({ ...f, qualification_status: "submitted" }));
+      } else {
+        setMsg({ kind: "err", text: j.error || "Restore failed." });
+      }
+    } catch {
+      setMsg({ kind: "err", text: "Network error." });
+    } finally {
+      setSaving(false);
+    }
+  }
+
+    async function deleteDeparture(depId: string) {
     setDelId(null);
     const res = await fetch(`/api/admin/departures?id=${depId}`, { method: "DELETE" });
     if (res.ok) {
@@ -409,15 +431,26 @@ export default function RetreatEditPage() {
                 {deleting ? "Deleting…" : "Delete draft"}
               </button>
             </div>
+          ) : form.qualification_status === "archived" ? (
+            <div className="mt-2">
+              <p className="text-xs text-stone-500">This retreat is archived and hidden from the public site.</p>
+              <button
+                onClick={restoreRetreat}
+                disabled={saving}
+                className="mt-2 rounded-lg bg-emerald-500 px-6 py-2 text-sm font-semibold text-white disabled:opacity-40"
+              >
+                Restore to draft
+              </button>
+            </div>
           ) : (
             <div className="mt-2">
-              <p className="text-xs text-stone-500">This retreat cannot be deleted. Archive it to remove it from the public site.</p>
+              <p className="text-xs text-stone-500">Remove this retreat from the public site while preserving all data.</p>
               <button
                 onClick={archiveRetreat}
                 disabled={saving || form.qualification_status === "archived"}
                 className="mt-2 rounded-lg bg-amber-500 px-6 py-2 text-sm font-semibold text-white disabled:opacity-40"
               >
-                {form.qualification_status === "archived" ? "Already archived" : "Archive retreat"}
+                Archive retreat (hides from public site)
               </button>
             </div>
           )}

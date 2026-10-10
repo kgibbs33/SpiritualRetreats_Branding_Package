@@ -83,6 +83,11 @@ export async function PATCH(request: Request) {
     } catch { /* departures table may not exist yet */ }
   }
 
+  // Validate status — only 'draft' and 'published' are allowed by the DB CHECK
+  if (fields.status && !["draft", "published"].includes(fields.status as string)) {
+    return NextResponse.json({ error: "Status must be 'draft' or 'published'." }, { status: 400 });
+  }
+
   const update: Record<string, unknown> = { updated_at: new Date().toISOString() };
   for (const [k, v] of Object.entries(fields)) {
     if (v !== undefined) update[k] = v;
