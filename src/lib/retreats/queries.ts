@@ -3,6 +3,7 @@ import { createPublicSupabaseClient } from "@/lib/supabase/public-server";
 import type { RetreatCardProps } from "@/components/retreat/RetreatCard";
 import { retreatTrustVariant } from "@/components/ui/TrustBadge";
 import { CACHE_TAG_RETREATS_LIST, retreatDetailCacheTag } from "@/lib/retreats/cache-tags";
+import { createAdminClient } from "@/lib/supabase/admin";
 import {
   parseRetreatListParams, budgetRange, PER_PAGE,
   type RetreatListParams,
@@ -234,4 +235,29 @@ export async function getRetreatBySlug(
   } catch (e) {
     return { row: null, departures: [], error: String(e) };
   }
+}
+// ── Admin: get retreat by slug (no status filter) ───────────────────────
+export async function getRetreatBySlugAdmin(slug: string): Promise<{ row: RetreatRow | null; departures: DepartureRow[]; error: string | null }> {
+  const supabase = createAdminClient();
+
+  const { data: rawRow, error } = await supabase
+    .from("retreats")
+    .select(FULL_SELECT)
+    .eq("slug", slug)
+    .maybeSingle();
+
+  const row = rawRow as unknown as RetreatRow | null;
+  if (error || !row) return { row: null, departures: [], error: error?.message ?? "Not found" };
+
+  let departures: DepartureRow[] = [];
+  try {
+    const { data: deps } = await supabase
+      .from("retreat_departures")
+      .select("id, start_date, end_date, capacity, spots_left, price_override, status")
+      .eq("retreat_id", row.id)
+      .order("start_date", { ascending: true });
+    departures = (deps ?? []) as DepartureRow[];
+  } catch {}
+
+  return { row, departures, error: null };
 }
