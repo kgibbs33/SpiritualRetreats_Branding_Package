@@ -151,3 +151,53 @@ export async function POST(request: Request) {
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
   return NextResponse.json({ ok: true, id: data.id, slug: data.slug }, { status: 201 });
 }
+
+
+export async function DELETE(request: Request) {
+  if (!(await getAdminSession())) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  const { searchParams } = new URL(request.url);
+  const id = searchParams.get("id");
+  if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 });
+
+  const admin = createAdminClient();
+
+  // Fetch retreat to check status
+  const { data: row } = await admin
+    .from("retreats")
+    .select("status, qualification_status")
+    .eq("id", id)
+    .maybeSingle();
+  if (!row) return NextResponse.json({ error: "Not found" }, { status: 404 });
+
+  const status = row.status as string;
+  const qs = row.qualification_status as string;
+
+  // Only allow deleting drafts that are submitted/reviewed
+  if (status !== "draft" || (qs !== "submitted" && qs !== "reviewed")) {
+    return NextResponse.json({
+      error: "Only unpublished drafts can be deleted. Use Archive instead."
+    }, { status: 409 });
+  }
+
+  // Block if any retreat_enquiries reference it (search_alerts has no retreat_id column)
+  const { count: enqCount, error: enqErr } = await admin
+    .from("retreat_enquiries")
+    .select("id", { count: "exact", head: true })
+    .eq("retreat_id", id);
+  if (enqErr) return NextResponse.json({ error: enqErr.message }, { status: 500 });
+  if ((enqCount ?? 0) > 0) {
+    return NextResponse.json({
+      error: "This retreat has enquiries. Use Archive instead."
+    }, { status: 409 });
+  }
+
+  // Delete departures first
+  await admin.from("retreat_departures").delete().eq("retreat_id", id);
+
+  // Delete the retreat
+  const { error } = await admin.from("retreats").delete().eq("id", id);
+  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  return NextResponse.json({ ok: true });
+}

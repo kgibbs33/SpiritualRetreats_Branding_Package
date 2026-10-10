@@ -46,6 +46,8 @@ export default function RetreatEditPage() {
   const [checks, setChecks] = useState<Record<string, boolean>>({});
   const [depStart, setDepStart] = useState("");
   const [delId, setDelId] = useState<string | null>(null);
+  const [deleteConfirm, setDeleteConfirm] = useState("");
+  const [deleting, setDeleting] = useState(false);
 
   async function reloadDepartures(rid: string) {
     const res = await fetch(`/api/admin/departures?retreat_id=${rid}`);
@@ -87,6 +89,43 @@ export default function RetreatEditPage() {
 
   function set(k: string, v: unknown) { setForm(f => ({ ...f, [k]: v })); }
   function setCheck(k: string, v: boolean) { setChecks(c => ({ ...c, [k]: v })); }
+
+  async function deleteRetreat() {
+    if (deleteConfirm !== "DELETE") return;
+    setDeleting(true);
+    setMsg(null);
+    const res = await fetch(`/api/admin/retreats?id=${retreatId}`, { method: "DELETE" });
+    const j = await res.json().catch(() => ({}));
+    if (res.ok) {
+      router.push("/admin/retreats");
+    } else {
+      setMsg({ kind: "err", text: j.error || "Failed to delete." });
+      setDeleting(false);
+      setDeleteConfirm("");
+    }
+  }
+
+  async function archiveRetreat() {
+    setSaving(true);
+    setMsg(null);
+    try {
+      const res = await fetch("/api/admin/retreats", {
+        method: "PATCH", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: retreatId, status: "archived", qualification_status: "archived" }),
+      });
+      const j = await res.json();
+      if (res.ok) {
+        setMsg({ kind: "ok", text: "Retreat archived." });
+        setForm(f => ({ ...f, status: "archived", qualification_status: "archived" }));
+      } else {
+        setMsg({ kind: "err", text: j.error || "Archive failed." });
+      }
+    } catch {
+      setMsg({ kind: "err", text: "Network error." });
+    } finally {
+      setSaving(false);
+    }
+  }
 
   async function deleteDeparture(depId: string) {
     setDelId(null);
@@ -346,6 +385,42 @@ export default function RetreatEditPage() {
             {saving ? "Saving…" : "Save changes"}
           </button>
           <button onClick={() => router.push("/admin/retreats")} className="rounded-xl border border-sage-mist px-6 py-3 text-sm text-stone-500">Cancel</button>
+        </div>
+
+        {/* Danger zone */}
+        <div className="mt-10 border-t border-sage-mist pt-6">
+          <h3 className="text-sm font-semibold text-red-500">Danger zone</h3>
+          {form.status === "draft" && ["submitted", "reviewed"].includes(form.qualification_status as string) ? (
+            <div className="mt-2 space-y-3">
+              <p className="text-xs text-stone-500">This draft can be deleted. Type DELETE to confirm.</p>
+              <input
+                type="text"
+                value={deleteConfirm}
+                onChange={e => setDeleteConfirm(e.target.value)}
+                placeholder="Type DELETE to confirm"
+                disabled={deleting}
+                className="w-full max-w-xs rounded-lg border border-red-200 px-3 py-2 text-sm"
+              />
+              <button
+                onClick={deleteRetreat}
+                disabled={deleteConfirm !== "DELETE" || deleting}
+                className="rounded-lg bg-red-500 px-6 py-2 text-sm font-semibold text-white disabled:opacity-40"
+              >
+                {deleting ? "Deleting…" : "Delete draft"}
+              </button>
+            </div>
+          ) : (
+            <div className="mt-2">
+              <p className="text-xs text-stone-500">This retreat cannot be deleted. Archive it to remove it from the public site.</p>
+              <button
+                onClick={archiveRetreat}
+                disabled={saving || form.qualification_status === "archived"}
+                className="mt-2 rounded-lg bg-amber-500 px-6 py-2 text-sm font-semibold text-white disabled:opacity-40"
+              >
+                {form.qualification_status === "archived" ? "Already archived" : "Archive retreat"}
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </AdminShell>
