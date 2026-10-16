@@ -3,7 +3,7 @@ import { BrandLogo } from "@/components/layout/BrandLogo";
 import { NewsletterSignup } from "@/components/ui/NewsletterSignup";
 import { BRAND_NAME } from "@/lib/brand";
 import { SITE_CONFIG } from "@/config/site";
-import { CONTACT_EMAIL, LEGAL_PAGES_VISIBLE } from "@/lib/constants";
+import { LEGAL_PAGES_VISIBLE } from "@/lib/constants";
 
 const exploreLinks = [
   { href: "/#search", label: "Find Your Retreat" },
@@ -120,23 +120,12 @@ export function Footer() {
                 <p className="mt-1 text-sm text-stone-600">{SITE_CONFIG.contact_number}</p>
               ) : null}
 
-              {CONTACT_EMAIL ? (
-                <p className="mt-4">
-                  <a
-                    href={`mailto:${CONTACT_EMAIL}`}
-                    className="text-link text-sm font-medium"
-                  >
-                    {CONTACT_EMAIL}
-                  </a>
-                </p>
-              ) : (
-                <p className="mt-4 text-sm text-stone-500">
-                  Contact us via the{" "}
-                  <Link href="/contact" className="text-link">
-                    contact form
-                  </Link>
-                </p>
-              )}
+              <p className="mt-4 text-sm text-stone-500">
+                Contact us via the{" "}
+                <Link href="/contact" className="text-link">
+                  contact form
+                </Link>
+              </p>
             </div>
 
             <FooterNavGroup title="Explore" links={exploreLinks} />
