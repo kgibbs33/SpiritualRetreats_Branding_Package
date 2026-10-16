@@ -1,4 +1,3 @@
-import { SITE_CONFIG } from "@/config/site";
 
 /** E-04 — static marketing packages block (no live billing). */
 const PACKAGES = [

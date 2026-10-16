@@ -1,6 +1,5 @@
 import Link from "next/link";
 
-import { TrustBadge } from "@/components/ui/TrustBadge";
 import { PRACTICE_AREA_LABELS } from "@/lib/facilitators/practice-areas";
 
 export type FacilitatorCardProps = {
@@ -11,7 +10,6 @@ export type FacilitatorCardProps = {
   practiceAreas?: string[] | null;
   hasPhoto?: boolean;
   openToWork?: boolean;
-  verified?: boolean;
 };
 
 function initials(name: string): string {
@@ -35,7 +33,6 @@ export function FacilitatorCard({
   practiceAreas,
   hasPhoto,
   openToWork,
-  verified,
 }: FacilitatorCardProps) {
   const areas = (practiceAreas ?? []).slice(0, 4);
   const extra = (practiceAreas ?? []).length - areas.length;
