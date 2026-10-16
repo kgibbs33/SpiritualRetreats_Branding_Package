@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE_CONFIG } from "@/config/site";
+import { MarketingPackages } from "@/components/ui/MarketingPackages";
 import { canonicalUrl } from "@/lib/metadata";
 
 export const metadata: Metadata = {
@@ -98,6 +99,11 @@ export default function RetreatPlannersPage() {
         <Link href="/find-a-venue" className="text-link">Find a venue</Link>
         <Link href="/find-a-facilitator" className="text-link">Find a facilitator</Link>
         <Link href="/education" className="text-link">Education</Link>
+      </section>
+
+      <section className="mt-16">
+        <h2 className="text-2xl font-semibold text-celestial-navy">Marketing packages</h2>
+        <MarketingPackages />
       </section>
 
       {/* RP-09 Payment management */}
