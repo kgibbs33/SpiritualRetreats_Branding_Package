@@ -75,10 +75,15 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
-      { source: "/for-retreat-owners", destination: "/join-our-community", permanent: true },
-      { source: "/make-your-retreat", destination: "/retreat-intake-form", permanent: true },
-      { source: "/facilitators-portal", destination: "/join-our-community", permanent: true },
-      { source: "/discover", destination: "/retreat-listings", permanent: true },
+      { source: "/find-your-retreat", destination: "/#search", permanent: true },
+      { source: "/for-retreat-owners", destination: "/retreat-planners", permanent: true },
+      { source: "/why-work-with-us", destination: "/retreat-planners", permanent: true },
+      { source: "/facilitators-portal", destination: "/find-a-facilitator", permanent: true },
+      { source: "/make-your-retreat", destination: "/education", permanent: true },
+      { source: "/facilitator-matching-form", destination: "/find-a-facilitator", permanent: true },
+      // DEVIATION: /retreat-listings KEPT as the live search-results page —
+      // the homepage search bar submits to it. Redirecting would lose query
+      // params and break search. Revisit when results render on the homepage.
     ];
   },
 };

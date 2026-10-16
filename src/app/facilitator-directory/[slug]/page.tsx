@@ -114,7 +114,7 @@ export default async function FacilitatorProfilePage({ params }: PageProps) {
               <h1 className="font-[family-name:var(--font-display)] text-3xl font-semibold text-stone-900">
                 {row.display_name}
               </h1>
-              {row.verified && <TrustBadge variant="verified" />}
+              null
             </div>
             {row.headline ? (
               <p className="mt-1 text-stone-600">{row.headline}</p>

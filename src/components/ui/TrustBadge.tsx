@@ -11,10 +11,8 @@ export type TrustVariant = "verified" | "listed";
 export function retreatTrustVariant(
   tier: string | null | undefined
 ): TrustVariant | null {
-  if (!tier) return null;
-  const t = tier.toLowerCase();
-  if (t.includes("verified") || t === "partner") return "verified";
-  if (t === "listed" || t === "emerging") return "listed";
+  // FIX G-15: no "Verified" badge on public cards. The DB column `trust_tier`
+  // is kept for internal/admin use only. Public rendering shows no badge.
   return null;
 }
 

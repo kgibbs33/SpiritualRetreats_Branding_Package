@@ -9,7 +9,7 @@ export default function FacilitatorOnboardingPage() {
         Facilitator onboarding
       </h1>
       <p className="mt-2 text-stone-600">
-        Tell us about your practice so we can connect you with aligned seekers.
+        Tell us about your practice so we can connect you with aligned guests.
       </p>
 
       <div className="mt-10">

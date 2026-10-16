@@ -67,7 +67,7 @@ export function FacilitatorCard({
             <h3 className="truncate font-[family-name:var(--font-display)] text-lg font-semibold text-stone-900">
               {name}
             </h3>
-            {verified && <TrustBadge variant="verified" className="shrink-0" />}
+            {/* FIX G-15: verified badge removed from public cards */ null}
             {openToWork && (
               <span className="shrink-0 rounded-full bg-warm-brown/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-warm-brown">
                 Open

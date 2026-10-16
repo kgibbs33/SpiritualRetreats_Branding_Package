@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { canonicalUrl } from "@/lib/metadata";
+import { MarketingPackages } from "@/components/ui/MarketingPackages";
 
 export const metadata: Metadata = {
   title: "Find a Venue",
