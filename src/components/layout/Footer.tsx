@@ -1,4 +1,6 @@
+"use client";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { BrandLogo } from "@/components/layout/BrandLogo";
 import { NewsletterSignup } from "@/components/ui/NewsletterSignup";
 import { BRAND_NAME } from "@/lib/brand";
@@ -61,11 +63,13 @@ function FooterNavGroup({
 }
 
 export function Footer() {
+  const pathname = usePathname();
   const year = new Date().getFullYear();
 
   return (
     <footer className="mt-auto">
-      {/* Newsletter */}
+      {/* Newsletter — hidden on homepage (already in H-12) */}
+      {pathname !== "/" && (
       <div className="border-t border-sage-mist bg-white">
         <div className="mx-auto max-w-7xl px-5 py-10 sm:px-8 sm:py-12 lg:px-10">
           <section
@@ -91,6 +95,7 @@ export function Footer() {
           </section>
         </div>
       </div>
+      )}
 
       {/* Links */}
       <div className="border-t border-sage-mist bg-warm-cream">
