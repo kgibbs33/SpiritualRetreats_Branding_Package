@@ -1,21 +1,20 @@
 import Link from "next/link";
 import { BrandLogo } from "@/components/layout/BrandLogo";
 import { NewsletterSignup } from "@/components/ui/NewsletterSignup";
-import { BRAND_NAME, CTA } from "@/lib/brand";
+import { BRAND_NAME } from "@/lib/brand";
 import { SITE_CONFIG } from "@/config/site";
 import { CONTACT_EMAIL, LEGAL_PAGES_VISIBLE } from "@/lib/constants";
 
 const exploreLinks = [
-  { href: "/retreat-listings", label: CTA.DISCOVER_RETREATS },
-  { href: "/find-your-retreat", label: CTA.FIND_YOUR_PATH },
-  { href: "/how-it-works", label: "How It Works" },
+  { href: "/#search", label: "Find Your Retreat" },
+  { href: "/find-a-venue", label: "Find a Venue" },
+  { href: "/find-a-facilitator", label: "Find a Facilitator" },
+  { href: "/education", label: "Education" },
 ];
 
-const communityLinks = [
-  { href: "/join-our-community", label: CTA.JOIN_OUR_COMMUNITY },
-  { href: "/venue-application", label: "List Your Venue" },
-  { href: "/retreat-intake-form", label: CTA.LIST_YOUR_RETREAT },
-  { href: "/facilitator-onboarding", label: CTA.CONNECT_AS_FACILITATOR },
+const createLinks = [
+  { href: "/retreat-planners", label: "Retreat Planners" },
+  { href: "/partner-with-us", label: "Partner With Us" },
 ];
 
 const companyLinks = [
@@ -141,7 +140,7 @@ export function Footer() {
             </div>
 
             <FooterNavGroup title="Explore" links={exploreLinks} />
-            <FooterNavGroup title="Community" links={communityLinks} />
+            <FooterNavGroup title="Create" links={createLinks} />
             <FooterNavGroup title="Company" links={companyLinks} />
             <FooterNavGroup title="Legal" links={legalLinks} />
           </div>
