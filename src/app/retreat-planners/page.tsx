@@ -36,7 +36,7 @@ export default function RetreatPlannersPage() {
         <ul className="mt-4 space-y-2 text-stone-700">
           <li>Be found by guests searching for retreats.</li>
           <li>A simple listing page for each retreat.</li>
-          <li>Optional payment management for deposits and instalments.</li>
+          <li>Optional payment management (coming soon).</li>
           <li>Find venues and facilitators for your retreat in the same place.</li>
         </ul>
       </section>
@@ -55,6 +55,12 @@ export default function RetreatPlannersPage() {
       {/* RP-04 Fees */}
       <section className="mt-16 rounded-2xl border border-sage-mist bg-warm-cream p-6">
         <h2 className="text-2xl font-semibold text-celestial-navy">Fees</h2>
+        <p className="mt-3 text-stone-700">
+          Planners set their own deposit, with a minimum of 20%.
+        </p>
+        <p className="mt-3 rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
+          Placeholder pending legal review.
+        </p>
         <p className="mt-3 text-stone-700">
           Free to list for 2027 when you register before the end of 2026. When a
           guest books, Light Path Retreats takes {p.lightpath_fee_pct}% of the
