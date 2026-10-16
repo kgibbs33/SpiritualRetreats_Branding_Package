@@ -49,7 +49,7 @@ export const PILLARS = [
 export const SEEKER_HERO_HEADING = "Find the retreat that fits your path";
 export const SEEKER_HERO_TEXT =
   "Explore trusted spiritual retreats with clearer information, human guidance and support designed around who you are and what you genuinely need.";
-export const SHORT_DESCRIPTION = `${BRAND_NAME} is the global connection hub for spiritual retreats, bringing seekers, retreat leaders, venues and facilitators together through trusted discovery, human matching, professional support and an aligned global community.`;
+export const SHORT_DESCRIPTION = "Find and plan transformational retreats. Light Path Retreats brings together retreat guests, planners, venues and facilitators in one trusted place.";
 export const FOR_RETREAT_LEADERS =
   "Grow a stronger, more visible retreat business through trusted connections, professional support and an aligned global community.";
 export const FOR_VENUES =

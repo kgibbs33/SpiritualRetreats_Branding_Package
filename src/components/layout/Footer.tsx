@@ -109,6 +109,18 @@ export function Footer() {
                 {SITE_CONFIG.tagline}
               </p>
 
+              <p className="mt-3">
+                <a
+                  href={`mailto:${SITE_CONFIG.support_email}`}
+                  className="text-link text-sm font-medium"
+                >
+                  {SITE_CONFIG.support_email}
+                </a>
+              </p>
+              {SITE_CONFIG.contact_number ? (
+                <p className="mt-1 text-sm text-stone-600">{SITE_CONFIG.contact_number}</p>
+              ) : null}
+
               {CONTACT_EMAIL ? (
                 <p className="mt-4">
                   <a

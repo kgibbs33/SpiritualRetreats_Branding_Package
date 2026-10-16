@@ -38,7 +38,8 @@ const isDev = process.env.NODE_ENV === "development";
 
 const cspHeader = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
+  "frame-src 'self' https://api.leadconnectorhq.com https://link.msgsndr.com",
+  `script-src 'self' 'unsafe-inline' https://link.msgsndr.com${isDev ? " 'unsafe-eval'" : ""}`,
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' blob: data:",
   "font-src 'self'",
