@@ -30,12 +30,18 @@ export const SITE_CONFIG = {
 
   /** Pricing — display values (pricing logic is NOT here) */
   pricing: {
-    guest_minimum_deposit_pct: 20, // D1 override: brief said 25%, team decided 20%
+    guest_minimum_deposit_pct: 20,
     lightpath_fee_pct: 15,
     cancellation_window_hours: 72,
     facilitator_monthly_eur: 12.22,
     facilitator_annual_eur: 122,
     payment_management_note: "Payment schedule management: coming soon",
+    examples: {
+      ticket_eur: 2000,
+      deposit_eur: 400,
+      lightpath_fee_eur: 300,
+      planner_from_deposit_eur: 100,
+    },
   },
 
   /** Legal — placeholder state */
