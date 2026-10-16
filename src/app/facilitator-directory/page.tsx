@@ -92,7 +92,6 @@ export default async function FacilitatorDirectoryPage({
                   practiceAreas={row.practice_areas}
                   hasPhoto={Boolean(row.photo_path)}
                   openToWork={row.open_to_work}
-                  verified={row.verified}
                 />
               ))}
             </div>
