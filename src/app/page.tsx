@@ -1,178 +1,181 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { RetreatSearchBar } from "@/components/home/RetreatSearchBar";
-import { RetreatCard } from "@/components/retreat/RetreatCard";
-import { listPublishedRetreats } from "@/lib/retreats/queries";
-import {
-  BRAND_POSITIONING,
-  SEEKER_HERO_HEADING,
-  SEEKER_HERO_TEXT,
-  PILLARS,
-  CTA,
-} from "@/lib/brand";
+import { NewsletterSignup } from "@/components/ui/NewsletterSignup";
+import { canonicalUrl } from "@/lib/metadata";
 
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  alternates: { canonical: "/" },
+  alternates: { canonical: canonicalUrl("/") },
 };
 
-const SPOTLIGHT_COUNT = 3;
+const TYPE_TILES = [
+  { label: "Yoga", href: "/retreat-listings?type=yoga" },
+  { label: "Meditation", href: "/retreat-listings?type=meditation" },
+  { label: "Wellness", href: "/retreat-listings?type=wellness" },
+  { label: "Nature", href: "/retreat-listings?type=nature" },
+];
 
-export default async function Home() {
-  const { cards: publishedCards } = await listPublishedRetreats();
-  const spotlightCards = publishedCards.slice(0, SPOTLIGHT_COUNT);
-
+export default function Home() {
   return (
     <div className="bg-white">
-      {/* ── HERO — warm cream, seeker-first ──────────────────────────────── */}
+      {/* H-01 HERO + H-02 search (id="search") */}
       <section className="relative isolate overflow-hidden bg-warm-cream">
         <div className="mx-auto max-w-7xl px-5 pb-20 pt-16 sm:px-8 sm:pb-28 sm:pt-24 lg:px-10 lg:pb-36 lg:pt-32">
-          <div className="max-w-2xl">
+          <div className="max-w-2xl text-center mx-auto">
             <h1 className="font-[family-name:var(--font-display)] text-[2.5rem] font-semibold leading-[1.08] tracking-tight text-celestial-navy sm:text-5xl lg:text-6xl">
-              {SEEKER_HERO_HEADING}
+              Leave the noise behind.
+              <br />
+              Return to what matters.
             </h1>
-            <p className="mt-5 max-w-xl text-lg leading-relaxed text-stone-600 sm:text-xl">
-              {SEEKER_HERO_TEXT}
+            <p className="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-stone-600 sm:text-xl">
+              Find your retreat, or plan your own, with a trusted home for
+              transformational retreats.
             </p>
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+              <a
+                href="#search"
+                className="inline-flex h-12 items-center rounded-xl bg-sacred-gold px-8 text-sm font-semibold text-celestial-navy"
+              >
+                Find my retreat
+              </a>
+              <Link
+                href="/retreat-planners"
+                className="inline-flex h-12 items-center rounded-xl bg-forest-green px-8 text-sm font-semibold text-white"
+              >
+                Plan a retreat
+              </Link>
+            </div>
           </div>
 
-          <div className="mt-10">
+          <div id="search" className="mt-12 scroll-mt-24">
             <RetreatSearchBar />
           </div>
+          {/* H-02 empty-state copy lives on /retreat-listings; search bar always renders */}
         </div>
-
-        {/* Subtle bottom fade hint */}
         <div
           className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-b from-transparent to-white"
           aria-hidden
         />
       </section>
 
-      {/* ── HOW IT WORKS — concise strip ─────────────────────────────────── */}
+      {/* H-03 — Where do you fit? two tiles for Retreat Planners */}
       <section className="bg-white py-14 sm:py-20">
         <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
           <h2 className="font-[family-name:var(--font-display)] text-2xl font-semibold text-celestial-navy sm:text-3xl">
-            How it works
+            Looking for a venue or facilitator?
           </h2>
-          <div className="mt-10 grid gap-8 sm:grid-cols-3">
-            <div>
-              <div className="flex size-12 items-center justify-center rounded-full bg-sage-mist text-forest-green">
-                <span className="text-xl font-semibold">1</span>
-              </div>
-              <h3 className="mt-4 text-lg font-semibold text-celestial-navy">
-                Search or explore
+          <div className="mt-10 grid gap-6 sm:grid-cols-2">
+            <Link
+              href="/find-a-venue"
+              className="group rounded-2xl border border-sage-mist bg-warm-cream p-8 transition-shadow hover:shadow-md"
+            >
+              <h3 className="text-xl font-semibold text-celestial-navy">
+                I&apos;m looking for a venue
               </h3>
-              <p className="mt-2 text-sm leading-relaxed text-stone-600">
-                Browse retreats by destination, date, type or budget. Free to
-                search, no account needed.
+              <p className="mt-2 text-stone-600">
+                Browse approved venues and find the right space for your retreat.
               </p>
-            </div>
-            <div>
-              <div className="flex size-12 items-center justify-center rounded-full bg-sage-mist text-forest-green">
-                <span className="text-xl font-semibold">2</span>
-              </div>
-              <h3 className="mt-4 text-lg font-semibold text-celestial-navy">
-                Compare and choose
+              <span className="mt-4 inline-block text-link text-sm font-medium">
+                Find a venue →
+              </span>
+            </Link>
+            <Link
+              href="/find-a-facilitator"
+              className="group rounded-2xl border border-sage-mist bg-warm-cream p-8 transition-shadow hover:shadow-md"
+            >
+              <h3 className="text-xl font-semibold text-celestial-navy">
+                I&apos;m looking for a facilitator
               </h3>
-              <p className="mt-2 text-sm leading-relaxed text-stone-600">
-                See what each retreat offers — dates, pricing, photos, and
-                descriptions — side by side.
+              <p className="mt-2 text-stone-600">
+                Connect with facilitators who match your retreat programme.
               </p>
-            </div>
-            <div>
-              <div className="flex size-12 items-center justify-center rounded-full bg-sage-mist text-forest-green">
-                <span className="text-xl font-semibold">3</span>
-              </div>
-              <h3 className="mt-4 text-lg font-semibold text-celestial-navy">
-                Connect directly
-              </h3>
-              <p className="mt-2 text-sm leading-relaxed text-stone-600">
-                Reach out to the retreat organiser through the platform and
-                start your journey.
-              </p>
-            </div>
+              <span className="mt-4 inline-block text-link text-sm font-medium">
+                Find a facilitator →
+              </span>
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* ── FOUR PILLARS ─────────────────────────────────────────────────── */}
+      {/* H-05 — Explore by type */}
       <section className="border-t border-sage-mist bg-warm-cream py-14 sm:py-20">
         <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
           <h2 className="font-[family-name:var(--font-display)] text-2xl font-semibold text-celestial-navy sm:text-3xl">
-            Everything in one place
+            Explore by type
           </h2>
-          <p className="mt-3 max-w-lg text-base text-stone-600">
-            {BRAND_POSITIONING}
-          </p>
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {PILLARS.map((p) => (
-              <div
-                key={p.slug}
-                className="rounded-2xl border border-sage-mist bg-white p-6"
+          <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-4">
+            {TYPE_TILES.map((t) => (
+              <Link
+                key={t.label}
+                href={t.href}
+                className="rounded-2xl border border-sage-mist bg-white p-6 text-center transition-shadow hover:shadow-md"
               >
-                <span
-                  className="inline-block rounded-full bg-sage-mist px-3 py-1 text-xs font-semibold uppercase tracking-wider text-forest-green"
-                >
-                  {p.label}
+                <span className="text-lg font-semibold text-celestial-navy">
+                  {t.label}
                 </span>
-                <h3 className="mt-3 text-lg font-semibold text-celestial-navy">
-                  {p.audience}
-                </h3>
-                <p className="mt-2 text-sm leading-relaxed text-stone-600">
-                  {p.description}
-                </p>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── FEATURED RETREATS — shows nothing when empty ──────────────────── */}
+      {/* H-09 — Want to be found by retreat planners? */}
       <section className="bg-white py-14 sm:py-20">
         <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
-          <div className="mb-8 flex items-end justify-between">
+          <div className="rounded-2xl border border-sage-mist bg-warm-cream/60 p-8 text-center">
             <h2 className="font-[family-name:var(--font-display)] text-2xl font-semibold text-celestial-navy sm:text-3xl">
-              Featured retreats
+              Want to be found by retreat planners?
             </h2>
-            <Link
-              href="/retreat-listings"
-              className="text-link text-sm font-medium"
-            >
-              View all →
-            </Link>
-          </div>
-
-          {spotlightCards.length > 0 ? (
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {spotlightCards.map((r) => (
-                <RetreatCard key={String(r.id)} {...r} />
-              ))}
+            <div className="mt-8 grid gap-6 sm:grid-cols-2">
+              <Link
+                href="/find-a-venue#list"
+                className="rounded-2xl border border-sage-mist bg-white p-6 transition-shadow hover:shadow-md"
+              >
+                <h3 className="text-lg font-semibold text-celestial-navy">Venues</h3>
+                <p className="mt-2 text-sm text-stone-600">
+                  List your space so planners can find it.
+                </p>
+                <span className="mt-3 inline-block text-link text-sm">Learn more →</span>
+              </Link>
+              <Link
+                href="/find-a-facilitator#membership"
+                className="rounded-2xl border border-sage-mist bg-white p-6 transition-shadow hover:shadow-md"
+              >
+                <h3 className="text-lg font-semibold text-celestial-navy">
+                  Facilitators
+                </h3>
+                <p className="mt-2 text-sm text-stone-600">
+                  Create a profile and be found by planners.
+                </p>
+                <span className="mt-3 inline-block text-link text-sm">Learn more →</span>
+              </Link>
             </div>
-          ) : (
-            /* Silently empty — no placeholder, no error, no text */
-            null
-          )}
+          </div>
         </div>
       </section>
 
-      {/* ── JOIN OUR COMMUNITY — quiet band ──────────────────────────────── */}
+      {/* H-11 — Closing CTA */}
       <section className="border-t border-sage-mist bg-forest-green py-16 text-warm-cream sm:py-20">
         <div className="mx-auto max-w-2xl px-5 text-center sm:px-8">
           <h2 className="font-[family-name:var(--font-display)] text-3xl font-semibold sm:text-4xl">
-            Be part of a growing retreat community
+            Ready to begin?
           </h2>
-          <p className="mx-auto mt-4 max-w-md text-base leading-relaxed text-warm-cream/80">
-            Whether you are searching for the right retreat, listing your own,
-            offering a venue or sharing your skills as a facilitator — there is
-            a place for you here.
-          </p>
-          <Link
-            href="/join-our-community"
-            className="mt-8 inline-flex h-12 items-center justify-center rounded-xl bg-sacred-gold px-8 text-base font-semibold text-celestial-navy shadow-sm transition-all hover:bg-sacred-gold/90 hover:scale-[1.02] active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-warm-cream/50 focus-visible:ring-offset-2 focus-visible:ring-offset-forest-green"
+          <p className="mt-4 text-warm-cream/80">Find your retreat.</p>
+          <a
+            href="#search"
+            className="mt-8 inline-flex h-12 items-center justify-center rounded-xl bg-sacred-gold px-8 text-base font-semibold text-celestial-navy"
           >
-            {CTA.JOIN_OUR_COMMUNITY}
-          </Link>
+            Find my retreat
+          </a>
+        </div>
+      </section>
+
+      {/* H-12 — Newsletter */}
+      <section className="bg-white py-14 sm:py-20">
+        <div className="mx-auto max-w-xl px-5 sm:px-8">
+          <NewsletterSignup variant="light" layout="stacked" />
         </div>
       </section>
     </div>
