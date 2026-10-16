@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { SITE_CONFIG } from "@/config/site";
 
 export const PRIVACY_CONTENT: ReactNode = (
   <>
@@ -92,7 +93,7 @@ export const PRIVACY_CONTENT: ReactNode = (
     </ul>
     <p>
       To exercise any of these rights, contact us at{" "}
-      <a href="mailto:contact@lightpathretreats.com">contact@lightpathretreats.com</a>. You also have
+      <a href={`mailto:${SITE_CONFIG.support_email}`}>{SITE_CONFIG.support_email}</a>. You also have
       the right to lodge a complaint with your local data protection
       supervisory authority if you believe your data has been mishandled.
     </p>
@@ -100,7 +101,7 @@ export const PRIVACY_CONTENT: ReactNode = (
     <h2>6. Contact for data questions</h2>
     <p>
       For any questions about how we handle your data, please contact us at{" "}
-      <a href="mailto:contact@lightpathretreats.com">contact@lightpathretreats.com</a>.
+      <a href={`mailto:${SITE_CONFIG.support_email}`}>{SITE_CONFIG.support_email}</a>.
     </p>
   </>
 );

@@ -6,7 +6,7 @@
 
 export const SITE_CONFIG = {
   /** Support email — shown on contact page, error states, legal pages */
-  support_email: "contact@lightpathretreats.com",
+  support_email: "connect@lightpathretreats.com",
 
   /** Phone number — hidden everywhere when empty */
   contact_number: "",
