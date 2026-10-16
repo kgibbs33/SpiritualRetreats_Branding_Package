@@ -90,6 +90,12 @@ export const PRIVACY_CONTENT: ReactNode = (
       <li>Object to processing based on our legitimate interest.</li>
       <li>Withdraw consent at any time (for newsletter/marketing communications), without affecting the lawfulness of processing before withdrawal.</li>
     </ul>
+    <p>
+      To exercise any of these rights, contact us at{" "}
+      <a href="mailto:contact@lightpathretreats.com">contact@lightpathretreats.com</a>. You also have
+      the right to lodge a complaint with your local data protection
+      supervisory authority if you believe your data has been mishandled.
+    </p>
 
     <h2>6. Contact for data questions</h2>
     <p>

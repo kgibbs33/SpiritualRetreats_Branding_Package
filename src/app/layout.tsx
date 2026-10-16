@@ -57,9 +57,7 @@ export const metadata: Metadata = {
     description: SHORT_DESCRIPTION,
     images: [defaultShareImage.url],
   },
-  alternates: {
-    canonical: siteUrl,
-  },
+  // Canonical declared per-page; no layout-level fallback
 };
 
 // ── Root layout ───────────────────────────────────────────────────────────
