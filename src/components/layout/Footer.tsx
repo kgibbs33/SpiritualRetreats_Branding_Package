@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { BrandLogo } from "@/components/layout/BrandLogo";
 import { NewsletterSignup } from "@/components/ui/NewsletterSignup";
-import { BRAND_NAME, BRAND_POSITIONING, CTA } from "@/lib/brand";
+import { BRAND_NAME, CTA } from "@/lib/brand";
+import { SITE_CONFIG } from "@/config/site";
 import { CONTACT_EMAIL, LEGAL_PAGES_VISIBLE } from "@/lib/constants";
 
 const exploreLinks = [
@@ -105,7 +106,7 @@ export function Footer() {
                 <BrandLogo variant="emblem" />
               </Link>
               <p className="mt-4 max-w-[280px] text-sm leading-relaxed text-stone-600">
-                {BRAND_POSITIONING}
+                {SITE_CONFIG.tagline}
               </p>
 
               {CONTACT_EMAIL ? (
@@ -137,20 +138,9 @@ export function Footer() {
 
       {/* Bottom bar */}
       <div className="border-t border-forest-green/20 bg-forest-green text-warm-cream">
-        <div className="mx-auto flex max-w-7xl flex-col gap-3 px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-8 lg:px-10">
+        <div className="mx-auto flex max-w-7xl flex-col gap-2 px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-8 lg:px-10">
           <p className="text-xs text-warm-cream/80">
-            &copy; {year} {BRAND_NAME}
-          </p>
-          <p className="text-xs text-warm-cream/60">
-            Developed by{" "}
-            <a
-              href="https://xforria.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-sm text-warm-cream/90 underline-offset-2 transition-colors hover:text-white hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-warm-cream/50 focus-visible:ring-offset-2 focus-visible:ring-offset-forest-green"
-            >
-              Xforria
-            </a>
+            &copy; {year} {BRAND_NAME}. {SITE_CONFIG.address}
           </p>
         </div>
       </div>
