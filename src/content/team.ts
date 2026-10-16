@@ -15,7 +15,7 @@ export interface TeamMember {
 }
 
 /** Display name for Vanesa Mendoza. Confirm spelling: Vanesa vs Vanessa. */
-const VANESA_NAME = "Vanesa Mendoza";
+const VANESSA_NAME = "Vanessa Mendoza";
 
 export const TEAM: TeamMember[] = [
   {
@@ -24,18 +24,19 @@ export const TEAM: TeamMember[] = [
     bio: "Andrew A. Porteous is a financial educator, personal development coach and architect of The Alchemist Path, with over 20 years of experience in personal and spiritual transformation. His enlightening vision quest in Corumbá, Brazil, in 2015 strengthened his belief that the world needs more spiritual retreats and meaningful human connection beyond our everyday environments. Through Light Path Retreats, Andrew seeks to create transformative experiences that people can bring back into their homes, relationships and workplaces. His vision is to inspire lasting change in thoughts, behaviours, beliefs, values and identity, empowering individuals to align with their higher purpose and their highest possible timeline.",
   },
   {
-    name: VANESA_NAME,
+    name: VANESSA_NAME,
     subheading: "Executive Assistant | Light Path Retreats",
-    bio: `${VANESA_NAME} is the Executive Assistant to Andrew Porteous, supporting the organisation, communication and daily operations of Light Path Retreats. She helps connect people, coordinate activities and ensure that retreat initiatives run smoothly and professionally. ${VANESA_NAME} is committed to supporting meaningful experiences that encourage human connection, personal growth and spiritual transformation.`,
+    bio: `${VANESSA_NAME} is the Executive Assistant to Andrew Porteous, supporting the organisation, communication and daily operations of Light Path Retreats. She helps connect people, coordinate activities and ensure that retreat initiatives run smoothly and professionally. ${VANESSA_NAME} is committed to supporting meaningful experiences that encourage human connection, personal growth and spiritual transformation.`,
   },
+  // Subheading is the live-site title — confirm with team
   {
     name: "Gordana Ross",
     subheading: "Co-Founder & Principal Leader | Light Path Retreats",
-    bio: "KEEP FROM CURRENT /about — DO NOT INVENT. See the text migrated from the existing about page below. Replace this placeholder with the final approved copy.",
+    bio: "Bio to be supplied.",
   },
   {
     name: "Kirtis Gibbs",
-    subheading: "Technical Lead | Light Path Retreats",
+    subheading: "",
     bio: "Bio to be supplied.",
   },
 ];
