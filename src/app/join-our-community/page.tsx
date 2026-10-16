@@ -4,15 +4,15 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Join Our Community",
   description:
-    "Be part of a growing retreat community — as a retreat organiser, a venue, or a facilitator.",
+    "Be part of a growing retreat community — as a Retreat Planner, a venue, or a facilitator.",
   alternates: { canonical: "/join-our-community" },
 };
 
 const pathways = [
   {
-    heading: "Are you a retreat organiser?",
+    heading: "Are you a Retreat Planner?",
     body: "List and promote your retreats, reach potential guests, and discover venues and facilitators.",
-    cta: "Join as a Retreat Organiser",
+    cta: "Join as a Retreat Planner",
     href: "/retreat-intake-form",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="h-7 w-7" aria-hidden="true">
@@ -25,7 +25,7 @@ const pathways = [
   },
   {
     heading: "Do you own or manage a retreat venue?",
-    body: "Showcase your property to retreat organisers looking for the right place to host their experience.",
+    body: "Showcase your property to Retreat Planners looking for the right place to host their experience.",
     cta: "List Your Venue",
     href: "/venue-application",
     icon: (
@@ -39,7 +39,7 @@ const pathways = [
   },
   {
     heading: "Are you a facilitator?",
-    body: "Showcase your skills and expertise to retreat organisers looking for professionals to contribute to their programmes.",
+    body: "Showcase your skills and expertise to Retreat Planners looking for professionals to contribute to their programmes.",
     cta: "Join as a Facilitator",
     href: "/facilitator-onboarding",
     icon: (

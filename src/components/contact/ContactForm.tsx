@@ -125,7 +125,7 @@ export function ContactForm() {
           href="/join-our-community"
           className="font-medium text-river-teal hover:underline"
         >
-          retreat owner or facilitator
+          Retreat Planner or facilitator
         </Link>{" "}
         (or represent a venue), you can go here.
       </p>

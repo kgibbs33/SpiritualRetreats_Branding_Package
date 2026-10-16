@@ -1,7 +1,10 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
 import { notFound } from "next/navigation";
+
+export const metadata: Metadata = { robots: "noindex, nofollow" };
 
 export default function DesignPage() {
   if (process.env.NODE_ENV === "production") notFound();
@@ -39,7 +42,7 @@ export default function DesignPage() {
             <div>
               <p className="text-xs text-stone-500">Body</p>
               <p className="text-stone-600">
-                We connect seekers to transformative retreat experiences. Browse
+                We connect guests to transformative retreat experiences. Browse
                 by intention, match with qualified retreats, and discover your
                 path.
               </p>
@@ -124,7 +127,7 @@ export default function DesignPage() {
                 </h3>
                 <p className="mt-1 text-sm text-stone-500">March 2025</p>
                 <span className="mt-2 inline-block rounded-full bg-stone-100 px-2 py-0.5 text-xs text-stone-600">
-                  Verified
+                  
                 </span>
               </div>
             </div>
@@ -203,7 +206,7 @@ export default function DesignPage() {
           <h2 className="text-xl font-semibold text-stone-800">Badges</h2>
           <div className="mt-6 flex flex-wrap gap-2">
             <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-800">
-              Verified
+              
             </span>
             <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-medium text-amber-800">
               Featured
