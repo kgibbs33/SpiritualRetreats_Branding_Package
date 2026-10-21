@@ -23,10 +23,7 @@ export default function FindAVenuePage() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
       {/* V-01 Hero */}
-      <div className="relative -mx-4 -mt-12 h-48 sm:-mx-6 lg:-mx-8"><BrandImage slot={
-          ...IMAGES.venueHeader,
-          alt: "A retreat venue"
-        } fill /></div>
+      <div className="relative -mx-4 -mt-12 h-48 sm:-mx-6 lg:-mx-8"><BrandImage slot={{ ...IMAGES.venueHeader, alt: "A retreat venue" }} fill /></div>
       <section className="text-center mt-8">
         <h1 className="font-[family-name:var(--font-display)] text-3xl font-semibold text-celestial-navy sm:text-4xl">
           Find the right venue for your retreat.
