@@ -36,8 +36,7 @@ export default function RetreatPlannersPage() {
         <ul className="mt-4 space-y-2 text-stone-700">
           <li>Be found by guests searching for retreats.</li>
           <li>A simple listing page for each retreat.</li>
-          <li>Optional payment management (coming soon).</li>
-          <li>Find venues and facilitators for your retreat in the same place.</li>
+                    <li>Find venues and facilitators for your retreat in the same place.</li>
         </ul>
       </section>
 
@@ -112,16 +111,6 @@ export default function RetreatPlannersPage() {
         <MarketingPackages />
       </section>
 
-      {/* RP-09 Payment management */}
-      <section className="mt-16 rounded-2xl border border-sage-mist bg-white p-6">
-        <h2 className="text-xl font-semibold text-celestial-navy">
-          {p.payment_management_note}
-        </h2>
-        <p className="mt-2 text-sm text-stone-500">
-          We are not taking payments on the site yet. Details will be announced
-          when booking is live.
-        </p>
-      </section>
     </div>
   );
 }
