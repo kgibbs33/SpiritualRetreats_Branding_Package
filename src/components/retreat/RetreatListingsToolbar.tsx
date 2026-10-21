@@ -11,7 +11,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import {
   parseRetreatListParams,
-  RETREAT_INTENT_OPTIONS,
+  RETREAT_TYPE_OPTIONS,
 } from "@/lib/retreats/retreat-filters";
 
 const CHIP_ITEMS: readonly { id: string; label: string }[] = [];
@@ -247,7 +247,7 @@ export function RetreatListingsToolbar() {
             onChange={onSelectChange("intent")}
           >
             <option value="">Need / intent</option>
-            {RETREAT_INTENT_OPTIONS.map(({ value, label }) => (
+            {RETREAT_TYPE_OPTIONS.map(({ value, label }) => (
               <option key={value} value={value}>
                 {label}
               </option>

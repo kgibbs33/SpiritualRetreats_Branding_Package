@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { AdminShell } from "@/components/admin/AdminShell";
+import { RETREAT_TYPES } from "@/lib/retreats/search-options";
 
 export default function NewRetreatPage() {
   const router = useRouter();
@@ -126,13 +127,17 @@ export default function NewRetreatPage() {
 
           <label className="block text-xs font-semibold text-stone-500">
             Type <span className="text-red-400">*</span>
-            <input
+            <select
               value={type}
               onChange={e => setType(e.target.value)}
               required
-              placeholder="yoga, meditation, wellness…"
               className="mt-1 block w-full rounded-lg border border-sage-mist px-3 py-2 text-sm"
-            />
+            >
+              <option value="">Choose a type…</option>
+              {RETREAT_TYPES.map(t => (
+                <option key={t} value={t}>{t.charAt(0).toUpperCase() + t.slice(1)}</option>
+              ))}
+            </select>
           </label>
 
           <label className="block text-xs font-semibold text-stone-500">

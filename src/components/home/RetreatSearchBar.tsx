@@ -3,30 +3,11 @@
 import { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { CTA } from "@/lib/brand";
-
-// ── Retreat categories — mirrors src/lib/retreat-categories.ts ────────────
-const RETREAT_TYPES = [
-  "All types",
-  "Yoga",
-  "Meditation",
-  "Wellness",
-  "Nature",
-  "Silent",
-  "Detox",
-  "Ayahuasca & Plant Medicine",
-  "Personal Development",
-  "Spiritual",
-  "Sound Healing",
-  "Breathwork",
-];
-
-const BUDGETS = [
-  "Any budget",
-  "Under €1,000",
-  "€1,000–2,000",
-  "€2,000–3,500",
-  "€3,500+",
-];
+import {
+  RETREAT_TYPES,
+  RETREAT_INTENTS,
+  BUDGET_BANDS,
+} from "@/lib/retreats/search-options";
 
 const DURATIONS = [
   "Any duration",
@@ -41,6 +22,7 @@ type SearchFormData = {
   destination: string;
   month: string;
   type: string;
+  intent: string;
   budget: string;
   duration: string;
 };
@@ -51,6 +33,7 @@ export function RetreatSearchBar() {
     destination: "",
     month: "",
     type: "All types",
+    intent: "What are you looking for?",
     budget: "Any budget",
     duration: "Any duration",
   });
@@ -60,8 +43,13 @@ export function RetreatSearchBar() {
     const params = new URLSearchParams();
     if (form.destination.trim()) params.set("destination", form.destination.trim());
     if (form.month) params.set("month", form.month);
-    if (form.type !== "All types") params.set("type", form.type);
-    if (form.budget !== "Any budget") params.set("budget", form.budget);
+    if (form.type !== "All types") params.set("type", form.type.toLowerCase());
+    if (form.intent !== "What are you looking for?")
+      params.set("intent", form.intent.toLowerCase());
+    if (form.budget !== "Any budget") {
+      const band = BUDGET_BANDS.find((b) => b.label === form.budget);
+      if (band) params.set("budget", band.slug);
+    }
     if (form.duration !== "Any duration") params.set("duration", form.duration);
     const qs = params.toString();
     router.push(`/retreat-listings${qs ? `?${qs}` : ""}`);
@@ -76,14 +64,12 @@ export function RetreatSearchBar() {
       className="w-full max-w-3xl rounded-2xl bg-white/95 p-4 shadow-lg sm:p-6 backdrop-blur-sm"
       noValidate
     >
-      <fieldset className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+      <fieldset className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         <legend className="sr-only">Search retreats</legend>
 
         {/* Destination */}
         <div>
-          <label htmlFor="search-destination" className="sr-only">
-            Destination
-          </label>
+          <label htmlFor="search-destination" className="sr-only">Destination</label>
           <input
             id="search-destination"
             type="text"
@@ -96,9 +82,7 @@ export function RetreatSearchBar() {
 
         {/* When (month) */}
         <div>
-          <label htmlFor="search-month" className="sr-only">
-            When
-          </label>
+          <label htmlFor="search-month" className="sr-only">When</label>
           <input
             id="search-month"
             type="month"
@@ -110,18 +94,35 @@ export function RetreatSearchBar() {
 
         {/* Retreat type */}
         <div>
-          <label htmlFor="search-type" className="sr-only">
-            Retreat type
-          </label>
+          <label htmlFor="search-type" className="sr-only">Retreat type</label>
           <select
             id="search-type"
             value={form.type}
             onChange={(e) => setForm((f) => ({ ...f, type: e.target.value }))}
             className={fieldClass}
           >
+            <option>All types</option>
             {RETREAT_TYPES.map((t) => (
               <option key={t} value={t}>
-                {t}
+                {t.charAt(0).toUpperCase() + t.slice(1)}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* What are you looking for? (intent) */}
+        <div>
+          <label htmlFor="search-intent" className="sr-only">What are you looking for?</label>
+          <select
+            id="search-intent"
+            value={form.intent}
+            onChange={(e) => setForm((f) => ({ ...f, intent: e.target.value }))}
+            className={fieldClass}
+          >
+            <option>What are you looking for?</option>
+            {RETREAT_INTENTS.map((i) => (
+              <option key={i} value={i}>
+                {i.charAt(0).toUpperCase() + i.slice(1)}
               </option>
             ))}
           </select>
@@ -129,18 +130,17 @@ export function RetreatSearchBar() {
 
         {/* Budget */}
         <div>
-          <label htmlFor="search-budget" className="sr-only">
-            Budget
-          </label>
+          <label htmlFor="search-budget" className="sr-only">Budget</label>
           <select
             id="search-budget"
             value={form.budget}
             onChange={(e) => setForm((f) => ({ ...f, budget: e.target.value }))}
             className={fieldClass}
           >
-            {BUDGETS.map((b) => (
-              <option key={b} value={b}>
-                {b}
+            <option>Any budget</option>
+            {BUDGET_BANDS.map((b) => (
+              <option key={b.slug} value={b.label}>
+                {b.label}
               </option>
             ))}
           </select>
@@ -148,9 +148,7 @@ export function RetreatSearchBar() {
 
         {/* Duration */}
         <div>
-          <label htmlFor="search-duration" className="sr-only">
-            Duration
-          </label>
+          <label htmlFor="search-duration" className="sr-only">Duration</label>
           <select
             id="search-duration"
             value={form.duration}
@@ -158,9 +156,7 @@ export function RetreatSearchBar() {
             className={fieldClass}
           >
             {DURATIONS.map((d) => (
-              <option key={d} value={d}>
-                {d}
-              </option>
+              <option key={d} value={d}>{d}</option>
             ))}
           </select>
         </div>
@@ -175,7 +171,7 @@ export function RetreatSearchBar() {
         </button>
         <p className="text-sm text-stone-500">
           Not sure yet?{" "}
-          <a href="/find-your-retreat" className="text-link font-medium">
+          <a href="/retreat-discovery-form" className="text-link font-medium">
             {CTA.FIND_YOUR_PATH}
           </a>
         </p>

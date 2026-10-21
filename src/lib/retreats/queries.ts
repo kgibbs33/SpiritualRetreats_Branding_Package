@@ -112,6 +112,11 @@ async function searchPublishedRetreats(
     query = query.eq("type", params.type.toLowerCase());
   }
 
+  // Intent ("What are you looking for?") — stored in the categories text[] column
+  if (params.intent) {
+    query = query.contains("categories", [params.intent]);
+  }
+
   const budget = params.budget ? budgetRange(params.budget) : null;
   if (budget) {
     query = query.gte("price_from", budget.min).lt("price_from", budget.max + 1);

@@ -1,7 +1,9 @@
 import { z } from "zod";
 
 /** Budget filter values from URL params. */
-export const BUDGET_SLUGS = ["under_1000", "1000_2000", "2000_3500", "3500_plus"] as const;
+import { BUDGET_BANDS, resolveBudgetSlug, budgetRange as bandRange, RETREAT_INTENTS, RETREAT_TYPES } from "./search-options";
+
+export const BUDGET_SLUGS = BUDGET_BANDS.map((b) => b.slug) as readonly string[];
 
 /** Duration filter values. */
 export const DURATION_SLUGS = ["weekend", "week", "two_weeks", "month", "flexible"] as const;
@@ -20,6 +22,7 @@ export const PER_PAGE = 12;
 /** Zod schema for validated URL searchParams. Invalid values → ignored, not errored. */
 export const retreatListParamsSchema = z.object({
   q: z.string().optional(),
+  intent: z.enum(RETREAT_INTENTS).optional(),
   destination: z.string().optional(),
   month: z.string().regex(/^\d{4}-\d{2}$/, "YYYY-MM").optional(),
   type: z.string().optional(),
@@ -28,7 +31,6 @@ export const retreatListParamsSchema = z.object({
   sort: z.enum(SORT_OPTIONS).optional(),
   page: z.coerce.number().int().positive().max(500).optional(),
   // Backward-compat from old toolbar
-  intent: z.string().optional(),
   region: z.string().optional(),
   from: z.string().optional(),
   chip: z.string().optional(),
@@ -65,19 +67,13 @@ export function durationRange(
 export function budgetRange(
   slug: string
 ): { min: number; max: number } | null {
-  switch (slug) {
-    case "under_1000":  return { min: 0, max: 999 };
-    case "1000_2000":   return { min: 1000, max: 2000 };
-    case "2000_3500":   return { min: 2000, max: 3500 };
-    case "3500_plus":   return { min: 3500, max: 999999 };
-    default:            return null;
-  }
+  const resolved = resolveBudgetSlug(slug);
+  if (!resolved) return null;
+  return bandRange(resolved);
 }
 
-/** Backward-compat for old toolbar — remove when toolbar is rewritten. */
-export const RETREAT_INTENT_OPTIONS = [
-  { value: "yoga", label: "Yoga" },
-  { value: "meditation", label: "Meditation" },
-  { value: "wellness", label: "Wellness" },
-  { value: "nature", label: "Nature" },
-];
+/** Retreat type options from the shared constant. */
+export const RETREAT_TYPE_OPTIONS = RETREAT_TYPES.map((t) => ({
+  value: t,
+  label: t.replace(/\b\w/g, (m) => m.toUpperCase()),
+}));
