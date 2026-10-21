@@ -31,8 +31,14 @@ export const TEAM: TeamMember[] = [
   // Titles pending team sign-off; edit here only.
   {
     name: "Gordana Ross",
-    subheading: "CPO / CMO",
-    bio: "Bio to be supplied.",
+    subheading: "Co-Founder & Head of Experiences & Development",
+    bio: "Creating meaningful experiences that inspire connection, growth and transformation.
+Gordana is a passionate retreat leader, wellbeing coach, mentor and lifelong explorer who believes that some of life's most meaningful changes begin when we step away from everyday life and reconnect with ourselves.
+Having travelled to more than 54 countries, her love for adventure, different cultures and human connection has shaped the way she sees the world. For her, travel is about more than discovering new places. It's about opening our minds, seeing life differently and sometimes rediscovering parts of ourselves we've lost along the way.
+With years of experience in coaching, personal development, and event and project management, Gordana understands that a truly memorable retreat goes far beyond beautiful surroundings. It's about genuine connections, new perspectives and experiences that stay with us long after we return home.
+At Light Path Retreats, she brings her experience, creativity and passion for people to designing meaningful retreat experiences, supporting Retreat Planners and building a community rooted in authenticity and connection.
+A free spirit at heart, Gordana believes life is too precious to be lived on autopilot. She loves inspiring others to embrace who they are, explore new possibilities and find the courage to live life on their own terms.
+Above all, she believes that when we reconnect with ourselves, we don't just change our own lives. We change the way we live, lead, love and contribute to the world.",
   },
   {
     name: "Kirtis Gibbs",

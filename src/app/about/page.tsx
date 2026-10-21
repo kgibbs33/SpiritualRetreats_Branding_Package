@@ -41,9 +41,9 @@ export default function AboutPage() {
         <div className="mt-8 grid gap-8 sm:grid-cols-2">
           {TEAM.map((m: TeamMember) => (
             <div key={m.name} className="rounded-2xl border border-sage-mist bg-white p-5">
-              <div className="mb-3 h-32 w-32 rounded-full bg-sage-mist flex items-center justify-center text-2xl text-stone-300 mx-auto">
+              <div className="mb-3 h-32 w-32 rounded-full bg-sage-mist flex items-center justify-center text-2xl text-stone-300 mx-auto overflow-hidden">
                 {m.imagePath ? (
-                  <Image src={m.imagePath} alt={m.name} width={128} height={128} className="rounded-full object-cover" />
+                  <Image src={m.imagePath} alt={m.name} width={128} height={128} className="rounded-full object-cover object-top" />
                 ) : (
                   <span>{m.name.charAt(0)}</span>
                 )}

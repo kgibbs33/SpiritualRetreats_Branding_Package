@@ -16,3 +16,6 @@ Photos are free to use; attribution appreciated but not required.
 | nature-immersion.jpg | Forest, serene landscape (legacy script download) | [Unsplash](https://unsplash.com/photos/nature-immersion) | Source link unverified – confirm before launch |
 | mindfulness-retreat.jpg | Mindful practice | [Unsplash](https://unsplash.com/photos/mindfulness) | Source link unverified – confirm before launch |
 | sacred-valley.jpg | Sacred Valley, Peru, spiritual | [Unsplash](https://unsplash.com/photos/sacred-valley) | Source link unverified – confirm before launch |
+## Team headshots
+
+Team headshots: supplied by the team members.
