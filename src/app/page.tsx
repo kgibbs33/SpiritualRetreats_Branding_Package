@@ -3,6 +3,8 @@ import Link from "next/link";
 import { RetreatSearchBar } from "@/components/home/RetreatSearchBar";
 import { NewsletterSignup } from "@/components/ui/NewsletterSignup";
 import { canonicalUrl } from "@/lib/metadata";
+import { BrandImage } from "@/components/ui/BrandImage";
+import { IMAGES } from "@/config/images";
 
 export const revalidate = 60;
 
@@ -11,10 +13,11 @@ export const metadata: Metadata = {
 };
 
 const TYPE_TILES = [
-  { label: "Yoga", href: "/retreat-listings?type=yoga" },
-  { label: "Meditation", href: "/retreat-listings?type=meditation" },
-  { label: "Wellness", href: "/retreat-listings?type=wellness" },
-  { label: "Nature", href: "/retreat-listings?type=nature" },
+  { label: "Yoga", href: "/retreat-listings?type=yoga", slot: "typeYoga" as const },
+  { label: "Meditation", href: "/retreat-listings?type=meditation", slot: "typeMeditation" as const },
+  { label: "Wellness", href: "/retreat-listings?type=wellness", slot: "typeWellness" as const },
+  { label: "Nature", href: "/retreat-listings?type=nature", slot: "typeNature" as const },
+  { label: "Breathwork", href: "/retreat-listings?type=breathwork", slot: "typeBreathwork" as const },
 ];
 
 export default function Home() {
@@ -110,9 +113,12 @@ export default function Home() {
               <Link
                 key={t.label}
                 href={t.href}
-                className="rounded-2xl border border-sage-mist bg-white p-6 text-center transition-shadow hover:shadow-md"
+                className="group overflow-hidden rounded-2xl border border-sage-mist bg-white transition-shadow hover:shadow-md"
               >
-                <span className="text-lg font-semibold text-celestial-navy">
+                <div className="relative h-32 w-full">
+                  <BrandImage slot={IMAGES[t.slot]} fill className="group-hover:scale-105 transition-transform duration-300" />
+                </div>
+                <span className="block p-4 text-center text-lg font-semibold text-celestial-navy">
                   {t.label}
                 </span>
               </Link>

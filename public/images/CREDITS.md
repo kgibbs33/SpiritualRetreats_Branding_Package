@@ -19,3 +19,20 @@ Photos are free to use; attribution appreciated but not required.
 ## Team headshots
 
 Team headshots: supplied by the team members.
+
+## Image inventory
+
+| File | Source | Permission/licence | AI-generated |
+|------|--------|--------------------|--------------|
+| yoga-retreat.jpg | Unsplash | Unsplash Licence | No |
+| meditation-retreat-type.png | Unsplash | Unsplash Licence | No |
+| spa-wellness.jpg | Unsplash | Unsplash Licence | No |
+| nature-immersion.jpg | Unsplash | Unsplash Licence | No |
+| mindfulness-retreat.jpg | Unsplash | Unsplash Licence | No |
+| hero-nature.jpg | Unsplash | Unsplash Licence | No |
+| hero-meditation.jpg | Unsplash | Unsplash Licence | No |
+| meditation-nature.jpg | Unsplash | Unsplash Licence | No |
+| nature-retreat-type.png | Unsplash | Unsplash Licence | No |
+| sacred-valley.jpg | Unsplash | Unsplash Licence | No |
+| beach-wellness.jpg | Unsplash | Unsplash Licence | No |
+| team/ (headshots) | Team members | Supplied by team members | No |

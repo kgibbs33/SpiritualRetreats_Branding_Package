@@ -3,6 +3,8 @@ import Link from "next/link";
 import { SITE_CONFIG } from "@/config/site";
 import { MarketingPackages } from "@/components/ui/MarketingPackages";
 import { canonicalUrl } from "@/lib/metadata";
+import { BrandImage } from "@/components/ui/BrandImage";
+import { IMAGES } from "@/config/images";
 
 export const metadata: Metadata = {
   title: "Find a Facilitator",
@@ -15,7 +17,11 @@ export default function FindAFacilitatorPage() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
       {/* FA-01 Hero */}
-      <section className="text-center">
+      <div className="relative -mx-4 -mt-12 h-48 sm:-mx-6 lg:-mx-8"><BrandImage slot={
+          ...IMAGES.facilitatorHeader,
+          alt: "A facilitator leading a session"
+        } fill /></div>
+      <section className="text-center mt-8">
         <h1 className="font-[family-name:var(--font-display)] text-3xl font-semibold text-celestial-navy sm:text-4xl">
           Find the right facilitator for your retreat.
         </h1>
