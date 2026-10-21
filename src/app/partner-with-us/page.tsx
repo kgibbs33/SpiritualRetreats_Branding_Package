@@ -22,7 +22,7 @@ export default function PartnerWithUsPage() {
       </section>
 
       {/* PW-02 50/50 partnership */}
-      <section className="mt-12 rounded-2xl border border-sage-mist bg-white p-6">
+      <section className="mt-12 rounded-2xl border border-sage-mist bg-warm-cream/60 p-8 shadow-sm">
         <h2 className="text-2xl font-semibold text-celestial-navy">
           A 50/50 profit-split partnership
         </h2>

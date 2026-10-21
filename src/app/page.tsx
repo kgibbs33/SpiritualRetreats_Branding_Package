@@ -24,14 +24,15 @@ export default function Home() {
   return (
     <div className="bg-white">
       {/* H-01 HERO + H-02 search (id="search") */}
-      <section className="relative isolate overflow-hidden bg-warm-cream">
-        <div className="mx-auto max-w-7xl px-5 pb-20 pt-16 sm:px-8 sm:pb-28 sm:pt-24 lg:px-10 lg:pb-36 lg:pt-32">
+      <section className="relative isolate overflow-hidden bg-gradient-to-b from-warm-cream via-warm-cream/70 to-white">
+        <div className="mx-auto max-w-7xl px-5 pb-24 pt-20 sm:px-8 sm:pb-32 sm:pt-28 lg:px-10 lg:pb-40 lg:pt-36">
           <div className="max-w-2xl text-center mx-auto">
             <h1 className="font-[family-name:var(--font-display)] text-[2.5rem] font-semibold leading-[1.08] tracking-tight text-celestial-navy sm:text-5xl lg:text-6xl">
               Leave the noise behind.
               <br />
               Return to what matters.
             </h1>
+            <div className="mx-auto mt-6 h-1 w-16 rounded-full bg-sacred-gold" aria-hidden />
             <p className="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-stone-600 sm:text-xl">
               Find your retreat, or plan your own, with a trusted home for
               transformational retreats.
@@ -64,7 +65,7 @@ export default function Home() {
       </section>
 
       {/* H-03 — Where do you fit? two tiles for Retreat Planners */}
-      <section className="bg-white py-14 sm:py-20">
+      <section className="bg-warm-cream/40 py-16 sm:py-24">
         <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
           <h2 className="font-[family-name:var(--font-display)] text-2xl font-semibold text-celestial-navy sm:text-3xl">
             Looking for a venue or facilitator?
@@ -72,7 +73,7 @@ export default function Home() {
           <div className="mt-10 grid gap-6 sm:grid-cols-2">
             <Link
               href="/find-a-venue"
-              className="group rounded-2xl border border-sage-mist bg-warm-cream p-8 transition-shadow hover:shadow-md"
+              className="group rounded-2xl border border-sage-mist bg-sage-mist/30 p-8 transition-all hover:border-river-teal/50 hover:shadow-md"
             >
               <h3 className="text-xl font-semibold text-celestial-navy">
                 I&apos;m looking for a venue
@@ -86,7 +87,7 @@ export default function Home() {
             </Link>
             <Link
               href="/find-a-facilitator"
-              className="group rounded-2xl border border-sage-mist bg-warm-cream p-8 transition-shadow hover:shadow-md"
+              className="group rounded-2xl border border-sage-mist bg-sage-mist/30 p-8 transition-all hover:border-river-teal/50 hover:shadow-md"
             >
               <h3 className="text-xl font-semibold text-celestial-navy">
                 I&apos;m looking for a facilitator
@@ -103,7 +104,7 @@ export default function Home() {
       </section>
 
       {/* H-05 — Explore by type */}
-      <section className="border-t border-sage-mist bg-warm-cream py-14 sm:py-20">
+      <section className="border-t border-sage-mist bg-white py-16 sm:py-24">
         <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
           <h2 className="font-[family-name:var(--font-display)] text-2xl font-semibold text-celestial-navy sm:text-3xl">
             Explore by type
@@ -130,7 +131,7 @@ export default function Home() {
       {/* H-09 — Want to be found by retreat planners? */}
       <section className="bg-white py-14 sm:py-20">
         <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
-          <div className="rounded-2xl border border-sage-mist bg-warm-cream/60 p-8 text-center">
+          <div className="rounded-2xl border border-sage-mist bg-sage-mist/40 px-6 py-10 text-center sm:px-10">
             <h2 className="font-[family-name:var(--font-display)] text-2xl font-semibold text-celestial-navy sm:text-3xl">
               Want to be found by retreat planners?
             </h2>
@@ -171,7 +172,7 @@ export default function Home() {
           <p className="mt-4 text-warm-cream/80">Find your retreat.</p>
           <a
             href="#search"
-            className="mt-8 inline-flex h-12 items-center justify-center rounded-xl bg-sacred-gold px-8 text-base font-semibold text-celestial-navy"
+            className="mt-8 inline-flex h-14 items-center justify-center rounded-xl bg-sacred-gold px-10 text-base font-semibold text-celestial-navy shadow-md transition-all hover:bg-sacred-gold/90 hover:scale-[1.02]"
           >
             Find my retreat
           </a>
@@ -179,7 +180,7 @@ export default function Home() {
       </section>
 
       {/* H-12 — Newsletter */}
-      <section className="bg-white py-14 sm:py-20">
+      <section className="border-t border-sage-mist bg-white py-16 sm:py-24">
         <div className="mx-auto max-w-xl px-5 sm:px-8">
           <NewsletterSignup variant="light" layout="stacked" />
         </div>

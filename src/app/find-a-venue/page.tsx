@@ -53,7 +53,7 @@ export default function FindAVenuePage() {
       </section>
 
       {/* V-03 List your venue */}
-      <section id="list" className="mt-16 rounded-2xl border border-sage-mist bg-white p-6">
+      <section id="list" className="mt-16 rounded-2xl border border-sage-mist bg-white p-6 shadow-sm">
         <h2 className="text-2xl font-semibold text-celestial-navy">
           List your venue
         </h2>

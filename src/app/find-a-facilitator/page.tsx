@@ -40,7 +40,7 @@ export default function FindAFacilitatorPage() {
       </section>
 
       {/* FA-03 Membership */}
-      <section id="membership" className="mt-16 rounded-2xl border border-sage-mist bg-white p-6">
+      <section id="membership" className="mt-16 rounded-2xl border border-sage-mist bg-white p-6 shadow-sm">
         <h2 className="text-2xl font-semibold text-celestial-navy">
           Join Light Path Retreats and be found by retreat planners
         </h2>

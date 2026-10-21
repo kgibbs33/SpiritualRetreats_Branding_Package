@@ -14,7 +14,7 @@ export default function RetreatPlannersPage() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
       {/* RP-01 Hero */}
-      <section className="text-center">
+      <section className="text-center pt-10 pb-6">
         <h1 className="font-[family-name:var(--font-display)] text-3xl font-semibold text-celestial-navy sm:text-4xl">
           List your retreat with Light Path Retreats.
         </h1>
@@ -24,14 +24,14 @@ export default function RetreatPlannersPage() {
         </p>
         <Link
           href="/retreat-intake-form"
-          className="mt-8 inline-flex h-12 items-center rounded-xl bg-sacred-gold px-8 text-sm font-semibold text-celestial-navy"
+          className="mt-8 inline-flex h-12 items-center rounded-xl bg-sacred-gold px-8 text-sm font-semibold text-celestial-navy shadow-md transition-all hover:bg-sacred-gold/90 hover:scale-[1.02]"
         >
           Register your retreat
         </Link>
       </section>
 
       {/* RP-02 Why list */}
-      <section className="mt-16">
+      <section className="mt-16 rounded-2xl border border-sage-mist bg-warm-cream/50 p-6 sm:p-8">
         <h2 className="text-2xl font-semibold text-celestial-navy">Why list</h2>
         <ul className="mt-4 space-y-2 text-stone-700">
           <li>Be found by guests searching for retreats.</li>
