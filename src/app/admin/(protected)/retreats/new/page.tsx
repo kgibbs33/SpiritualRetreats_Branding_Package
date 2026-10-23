@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { AdminShell } from "@/components/admin/AdminShell";
-import { RETREAT_TYPES } from "@/lib/retreats/search-options";
+import { RETREAT_TYPES, RETREAT_INTENTS } from "@/lib/retreats/search-options";
 
 export default function NewRetreatPage() {
   const router = useRouter();
@@ -15,7 +15,16 @@ export default function NewRetreatPage() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [slugOk, setSlugOk] = useState<boolean | null>(null);
+  const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
+  const [selectedIntents, setSelectedIntents] = useState<string[]>([]);
   const [slugChecking, setSlugChecking] = useState(false);
+
+  function toggleSelected(v: string) {
+    setSelectedTypes(prev => prev.includes(v) ? prev.filter(x => x !== v) : [...prev, v]);
+  }
+  function toggleIntent(v: string) {
+    setSelectedIntents(prev => prev.includes(v) ? prev.filter(x => x !== v) : [...prev, v]);
+  }
 
   function autoSlug(t: string) {
     return t
@@ -66,7 +75,7 @@ export default function NewRetreatPage() {
         slug: slug.trim().toLowerCase(),
         title: title.trim(),
         type: type.trim().toLowerCase(),
-        categories: [type.trim().toLowerCase()],
+        categories: [...new Set([type.trim().toLowerCase(), ...selectedTypes, ...selectedIntents])],
         country: country.trim() || null,
         location: location.trim() || null,
       }),
@@ -126,7 +135,7 @@ export default function NewRetreatPage() {
           </label>
 
           <label className="block text-xs font-semibold text-stone-500">
-            Type <span className="text-red-400">*</span>
+            Primary type <span className="text-red-400">*</span>
             <select
               value={type}
               onChange={e => setType(e.target.value)}
@@ -139,6 +148,44 @@ export default function NewRetreatPage() {
               ))}
             </select>
           </label>
+
+          <fieldset className="rounded-lg border border-sage-mist p-3">
+            <legend className="text-xs font-semibold text-stone-500">
+              Retreat types (search tags)
+            </legend>
+            <div className="mt-2 grid grid-cols-2 gap-x-3 gap-y-1.5">
+              {RETREAT_TYPES.map(t => (
+                <label key={t} className="flex items-center gap-2 text-sm text-stone-700">
+                  <input
+                    type="checkbox"
+                    checked={selectedTypes.includes(t)}
+                    onChange={() => toggleSelected(t)}
+                    className="h-4 w-4 rounded border-sage-mist"
+                  />
+                  {t.charAt(0).toUpperCase() + t.slice(1)}
+                </label>
+              ))}
+            </div>
+          </fieldset>
+
+          <fieldset className="rounded-lg border border-sage-mist p-3">
+            <legend className="text-xs font-semibold text-stone-500">
+              What are you looking for? (search tags)
+            </legend>
+            <div className="mt-2 grid grid-cols-2 gap-x-3 gap-y-1.5">
+              {RETREAT_INTENTS.map(t => (
+                <label key={t} className="flex items-center gap-2 text-sm text-stone-700">
+                  <input
+                    type="checkbox"
+                    checked={selectedIntents.includes(t)}
+                    onChange={() => toggleIntent(t)}
+                    className="h-4 w-4 rounded border-sage-mist"
+                  />
+                  {t.charAt(0).toUpperCase() + t.slice(1)}
+                </label>
+              ))}
+            </div>
+          </fieldset>
 
           <label className="block text-xs font-semibold text-stone-500">
             Country

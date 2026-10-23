@@ -1,11 +1,16 @@
 import { z } from "zod";
+import { RETREAT_TYPES, RETREAT_INTENTS } from "@/lib/retreats/search-options";
 
 /** Admin create-draft validation. Always forced to draft/submitted server-side. */
 export const adminRetreatCreateSchema = z.object({
   slug: z.string().min(1).max(200),
   title: z.string().min(1).max(200),
   type: z.string().min(1).max(50),
-  categories: z.array(z.string()).optional().default([]),
+  categories: z.array(
+    z.string().refine((v) => RETREAT_TYPES.includes(v as (typeof RETREAT_TYPES)[number]) || RETREAT_INTENTS.includes(v as (typeof RETREAT_INTENTS)[number]), {
+      message: "Each category must be a known retreat type or intent",
+    })
+  ).optional().default([]),
   location: z.string().max(500).optional().nullable(),
   country: z.string().max(120).optional().nullable(),
   region: z.enum(["europe","latin_america","asia","africa","north_america","oceania","middle_east"]).optional().nullable(),

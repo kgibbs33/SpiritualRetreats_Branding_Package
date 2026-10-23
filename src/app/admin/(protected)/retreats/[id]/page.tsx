@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { AdminShell } from "@/components/admin/AdminShell";
+import { RETREAT_TYPES, RETREAT_INTENTS } from "@/lib/retreats/search-options";
 
 const REGIONS = ["","europe","latin_america","asia","africa","north_america","oceania","middle_east"];
 const COMMERCIAL = ["","free_listing","promotion","commission","partnership","other"];
@@ -44,6 +45,7 @@ export default function RetreatEditPage() {
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState<{ kind: "ok" | "err"; text: string } | null>(null);
   const [checks, setChecks] = useState<Record<string, boolean>>({});
+  const [cats, setCats] = useState<string[]>([]);
   const [depStart, setDepStart] = useState("");
   const [delId, setDelId] = useState<string | null>(null);
   const [deleteConfirm, setDeleteConfirm] = useState("");
@@ -65,6 +67,7 @@ export default function RetreatEditPage() {
         if (j.data) {
           setRetreatId(j.data.id as string);
           setForm(j.data);
+    setCats(Array.isArray(form.categories) ? (form.categories as string[]) : []);
 
           // Bug 1 defensive parse: qualification_checks may arrive stringified
           let qc = j.data.qualification_checks;
@@ -184,6 +187,7 @@ export default function RetreatEditPage() {
       body[k] = Array.isArray(v) && v.length ? v : (v ?? null);
     }
     body.qualification_checks = checks;
+    body.categories = cats;
 
     setSaving(true);
     setMsg(null);
@@ -306,7 +310,43 @@ export default function RetreatEditPage() {
           </div>
         )}
 
-        {/* Departures */}
+              {/* Search tags — types & intents (categories) */}
+      <section className="mt-10 rounded-2xl border border-sage-mist bg-white p-5">
+        <h2 className="text-lg font-semibold text-celestial-navy">Search tags</h2>
+        <p className="mt-1 text-xs text-stone-500">Types and intents stored in the categories column.</p>
+        <fieldset className="mt-3">
+          <legend className="text-xs font-semibold text-stone-500">Retreat types</legend>
+          <div className="mt-2 grid grid-cols-2 gap-x-3 gap-y-1.5 sm:grid-cols-4">
+            {RETREAT_TYPES.map(t => {
+              const on = cats.includes(t);
+              return (
+                <label key={t} className="flex items-center gap-2 text-sm text-stone-700">
+                  <input type="checkbox" checked={on} className="h-4 w-4"
+                    onChange={() => setCats(prev => on ? prev.filter(x => x !== t) : [...prev, t])} />
+                  {t.charAt(0).toUpperCase() + t.slice(1)}
+                </label>
+              );
+            })}
+          </div>
+        </fieldset>
+        <fieldset className="mt-4">
+          <legend className="text-xs font-semibold text-stone-500">What are you looking for?</legend>
+          <div className="mt-2 grid grid-cols-2 gap-x-3 gap-y-1.5 sm:grid-cols-3">
+            {RETREAT_INTENTS.map(t => {
+              const on = cats.includes(t);
+              return (
+                <label key={t} className="flex items-center gap-2 text-sm text-stone-700">
+                  <input type="checkbox" checked={on} className="h-4 w-4"
+                    onChange={() => setCats(prev => on ? prev.filter(x => x !== t) : [...prev, t])} />
+                  {t.charAt(0).toUpperCase() + t.slice(1)}
+                </label>
+              );
+            })}
+          </div>
+        </fieldset>
+      </section>
+
+{/* Departures */}
         <section className="mt-6">
           <h2 className="text-lg font-semibold">Departures</h2>
           {depts.length === 0 && <p className="text-sm text-stone-400">No departures yet.</p>}

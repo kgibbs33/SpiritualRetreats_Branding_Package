@@ -15,6 +15,7 @@ type Retreat = {
   sort_order: number; trust_tier: string | null;
   rating: number | null; review_count: number | null;
   gallery_paths: string[] | null; image_path: string | null;
+  categories: string[] | null;
   operator_name: string | null;
   created_at: string; updated_at: string;
 };
@@ -108,6 +109,7 @@ export default function RetreatsPage() {
                   <th className="py-2 px-2">Price</th>
                   <th className="py-2 px-2">Status</th>
                   <th className="py-2 px-2">Qualification</th>
+                  <th className="py-2 px-2">Tags</th>
                   <th className="py-2 px-2">Operator</th>
                   <th className="py-2 pl-2">Action</th>
                 </tr>
@@ -132,6 +134,17 @@ export default function RetreatsPage() {
                         <option value="inactive">Inactive</option>
                         <option value="archived">Archived</option>
                       </select>
+                    </td>
+                    <td className="py-2 px-2">
+                      <div className="flex max-w-[180px] flex-wrap gap-1">
+                        {(Array.isArray(r.categories) ? r.categories : []).slice(0, 4).map((t: string) => (
+                          <span key={t} className="rounded-full bg-sage-mist px-2 py-0.5 text-[10px] text-forest-green">{t}</span>
+                        ))}
+                        {Array.isArray(r.categories) && r.categories.length > 4 && (
+                          <span className="text-[10px] text-stone-400">+{r.categories.length - 4}</span>
+                        )}
+                        {!Array.isArray(r.categories) || r.categories.length === 0 ? "—" : null}
+                      </div>
                     </td>
                     <td className="py-2 px-2 text-xs">{r.operator_name || "—"}</td>
                     <td className="py-2 pl-2">
