@@ -27,7 +27,7 @@ export default function Home() {
       <section className="relative isolate overflow-hidden bg-gradient-to-b from-warm-cream via-warm-cream/70 to-white">
         <div className="mx-auto max-w-7xl px-5 pb-24 pt-20 sm:px-8 sm:pb-32 sm:pt-28 lg:px-10 lg:pb-40 lg:pt-36">
           <div className="max-w-2xl text-center mx-auto">
-            <h1 className="font-[family-name:var(--font-display)] text-[2.5rem] font-semibold leading-[1.08] tracking-tight text-celestial-navy sm:text-5xl lg:text-6xl">
+            <h1 className="font-[family-name:var(--font-display)] text-[2.75rem] font-bold leading-[1.06] tracking-tight text-celestial-navy sm:text-5xl lg:text-7xl">
               Leave the noise behind.
               <br />
               Return to what matters.
@@ -40,13 +40,13 @@ export default function Home() {
             <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
               <a
                 href="#search"
-                className="inline-flex h-12 items-center rounded-xl bg-sacred-gold px-8 text-sm font-semibold text-celestial-navy"
+                className="inline-flex h-12 items-center rounded-full bg-sacred-gold px-8 text-sm font-semibold text-celestial-navy"
               >
                 Find my retreat
               </a>
               <Link
                 href="/retreat-planners"
-                className="inline-flex h-12 items-center rounded-xl bg-forest-green px-8 text-sm font-semibold text-white"
+                className="inline-flex h-12 items-center rounded-full bg-forest-green px-8 text-sm font-semibold text-white"
               >
                 Plan a retreat
               </Link>
@@ -114,9 +114,9 @@ export default function Home() {
               <Link
                 key={t.label}
                 href={t.href}
-                className="group overflow-hidden rounded-2xl border border-sage-mist bg-white transition-shadow hover:shadow-md"
+                className="group overflow-hidden rounded-3xl border border-sage-mist bg-white transition-all hover:-translate-y-0.5 hover:shadow-lg"
               >
-                <div className="relative h-32 w-full">
+                <div className="relative h-36 w-full">
                   <BrandImage slot={IMAGES[t.slot]} fill className="group-hover:scale-105 transition-transform duration-300" />
                 </div>
                 <span className="block p-4 text-center text-lg font-semibold text-celestial-navy">
@@ -172,7 +172,7 @@ export default function Home() {
           <p className="mt-4 text-warm-cream/80">Find your retreat.</p>
           <a
             href="#search"
-            className="mt-8 inline-flex h-14 items-center justify-center rounded-xl bg-sacred-gold px-10 text-base font-semibold text-celestial-navy shadow-md transition-all hover:bg-sacred-gold/90 hover:scale-[1.02]"
+            className="mt-8 inline-flex h-14 items-center justify-center rounded-full bg-sacred-gold px-10 text-base font-semibold text-celestial-navy shadow-md transition-all hover:bg-sacred-gold/90 hover:scale-[1.02]"
           >
             Find my retreat
           </a>

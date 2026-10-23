@@ -45,3 +45,18 @@ Team headshots: supplied by the team members.
 | team/gordana-ross.jpg | supplied by the team member | supplied by the team member | unconfirmed |
 | team/vanessa-mendoza.jpg | supplied by the team member | supplied by the team member | unconfirmed |
 | team/kirtis-gibbs.jpg | supplied by the team member | supplied by the team member | unconfirmed; Kirtis's photo is interim and will be replaced |
+
+## Source verification status
+
+The following original `public/images/` photos are marked **source unverified** (no documented source/permission on file):
+- yoga-retreat.jpg
+- meditation-retreat-type.png
+- spa-wellness.jpg
+- nature-immersion.jpg
+- mindfulness-retreat.jpg
+- hero-nature.jpg
+- hero-meditation.jpg
+- meditation-nature.jpg
+- nature-retreat-type.png
+- sacred-valley.jpg
+- beach-wellness.jpg
