@@ -1,6 +1,11 @@
 import { LegalLayout } from "@/components/layout/LegalLayout";
-import { PRIVACY_CONTENT } from "@/content/legal/privacy";
+import { LegalMarkdown } from "@/components/legal/LegalMarkdown";
+import { PRIVACY_MARKDOWN } from "@/content/legal/privacy-content";
 
 export default function PrivacyPage() {
-  return <LegalLayout title="Privacy Policy">{PRIVACY_CONTENT}</LegalLayout>;
+  return (
+    <LegalLayout title="Privacy Policy">
+      <LegalMarkdown source={PRIVACY_MARKDOWN} />
+    </LegalLayout>
+  );
 }
