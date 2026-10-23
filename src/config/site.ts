@@ -8,8 +8,8 @@ export const SITE_CONFIG = {
   /** Support email — shown on contact page, error states, legal pages */
   support_email: "connect@lightpathretreats.com",
 
-  /** Phone number — hidden everywhere when empty */
-  contact_number: "",
+  /** Phone number (Andrew's, confirmed 23 Oct) — hidden everywhere when empty */
+  contact_number: "+49 162 9363732",
 
   /** Physical address — shown in footer */
   address: "1954 Airport Road, Suite 1338, Atlanta, GA 30341, USA",
