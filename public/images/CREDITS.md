@@ -36,3 +36,12 @@ Team headshots: supplied by the team members.
 | sacred-valley.jpg | Unsplash | Unsplash Licence | No |
 | beach-wellness.jpg | Unsplash | Unsplash Licence | No |
 | team/ (headshots) | Team members | Supplied by team members | No |
+
+## Team headshots
+
+| File | Source | Permission/licence | AI-generated |
+|------|--------|--------------------|--------------|
+| team/andrew-porteous.jpg | supplied by the team member | supplied by the team member | unconfirmed |
+| team/gordana-ross.jpg | supplied by the team member | supplied by the team member | unconfirmed |
+| team/vanessa-mendoza.jpg | supplied by the team member | supplied by the team member | unconfirmed |
+| team/kirtis-gibbs.jpg | supplied by the team member | supplied by the team member | unconfirmed; Kirtis's photo is interim and will be replaced |

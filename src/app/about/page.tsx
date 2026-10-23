@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { TeamHeadshot } from "@/components/team/TeamHeadshot";
 import { TEAM, type TeamMember } from "@/content/team";
 import { SITE_CONFIG } from "@/config/site";
 
@@ -41,12 +41,8 @@ export default function AboutPage() {
         <div className="mt-8 grid gap-8 sm:grid-cols-2">
           {TEAM.map((m: TeamMember) => (
             <div key={m.name} className="rounded-2xl border border-sage-mist bg-white p-5">
-              <div className="mb-3 h-32 w-32 rounded-full bg-sage-mist flex items-center justify-center text-2xl text-stone-300 mx-auto overflow-hidden">
-                {m.imagePath ? (
-                  <Image src={m.imagePath} alt={m.name} width={128} height={128} className="rounded-full object-cover object-top" />
-                ) : (
-                  <span>{m.name.charAt(0)}</span>
-                )}
+              <div className="mb-3 mx-auto flex h-32 w-32 items-center justify-center">
+                <TeamHeadshot name={m.name} imagePath={m.imagePath} />
               </div>
               <h3 className="mt-3 text-center font-semibold text-celestial-navy">{m.name}</h3>
               <p className="text-center text-xs font-medium text-forest-green">{m.subheading}</p>
