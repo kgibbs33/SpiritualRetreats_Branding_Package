@@ -67,7 +67,7 @@ export default function RetreatEditPage() {
         if (j.data) {
           setRetreatId(j.data.id as string);
           setForm(j.data);
-    setCats(Array.isArray(form.categories) ? (form.categories as string[]) : []);
+          setCats(Array.isArray((j.data as Record<string, unknown>).categories) ? ((j.data as Record<string, unknown>).categories as string[]) : []);
 
           // Bug 1 defensive parse: qualification_checks may arrive stringified
           let qc = j.data.qualification_checks;

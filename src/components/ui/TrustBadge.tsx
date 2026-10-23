@@ -8,9 +8,7 @@
 export type TrustVariant = "verified" | "listed";
 
 /** Map a retreat `trust_tier` value to a badge variant (or null = no badge). */
-export function retreatTrustVariant(
-  _tier: string | null | undefined
-): TrustVariant | null {
+export function retreatTrustVariant(): TrustVariant | null {
   // FIX G-15: no "Verified" badge on public cards. The DB column `trust_tier`
   // is kept for internal/admin use only. Public rendering shows no badge.
   return null;

@@ -57,7 +57,7 @@ function mapRowToCardProps(row: RetreatRow): RetreatCardProps {
     rating: row.rating ?? undefined,
     reviewCount: row.review_count ?? undefined,
     badge: row.badge ?? undefined,
-    trustVariant: retreatTrustVariant(row.trust_tier),
+    trustVariant: retreatTrustVariant(),
     href: `/retreat/${row.slug}`,
   };
 }
