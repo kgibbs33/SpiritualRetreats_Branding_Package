@@ -89,7 +89,7 @@ export function Header() {
                 <button
                   ref={toggleRef}
                   type="button"
-                  onClick={() => setDropdownOpen((o) => !o)}
+                  onClick={() => setDropdownOpen(true)}
                   onKeyDown={(e) => { if (e.key === "ArrowDown" || e.key === "Enter" || e.key === " ") { e.preventDefault(); setDropdownOpen(true); } }}
                   aria-expanded={dropdownOpen}
                   aria-haspopup="true"
