@@ -13,7 +13,7 @@ export interface ImageSlot {
 }
 
 export const IMAGES = {
-  homeHero: { src: "", alt: "A calm natural scene" },
+  homeHero: { src: "/images/hero-home.jpg", alt: "" },
   typeYoga: { src: "/images/yoga-retreat.jpg", alt: "Yoga retreat" },
   typeMeditation: { src: "/images/meditation-retreat-type.png", alt: "Meditation retreat" },
   typeWellness: { src: "/images/spa-wellness.jpg", alt: "Wellness retreat" },

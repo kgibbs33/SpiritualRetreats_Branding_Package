@@ -10,11 +10,14 @@ export function BrandImage({
   className = "",
   fill = false,
   priority = false,
+  sizes,
 }: {
   slot: ImageSlot;
   className?: string;
   fill?: boolean;
   priority?: boolean;
+  /** next/image sizes attribute (fill mode) */
+  sizes?: string;
 }) {
   if (!slot.src) {
     // Gradient fallback: sage mist → warm cream (light, on-brand)
@@ -34,8 +37,9 @@ export function BrandImage({
         alt={slot.alt}
         fill
         priority={priority}
-        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+        sizes={sizes ?? "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"}
         className={`object-cover ${className}`}
+        {...(slot.alt === "" ? { "aria-hidden": true } : {})}
       />
     );
   }

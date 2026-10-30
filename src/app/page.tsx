@@ -23,41 +23,80 @@ const TYPE_TILES = [
 export default function Home() {
   return (
     <div className="bg-white">
-      {/* H-01 HERO + H-02 search (id="search") */}
-      <section className="relative isolate overflow-hidden bg-gradient-to-b from-warm-cream via-warm-cream/70 to-white">
-        <div className="mx-auto max-w-7xl px-5 pb-24 pt-20 sm:px-8 sm:pb-32 sm:pt-28 lg:px-10 lg:pb-40 lg:pt-36">
-          <div className="max-w-2xl text-center mx-auto">
-            <h1 className="font-[family-name:var(--font-display)] text-[2.75rem] font-bold leading-[1.06] tracking-tight text-celestial-navy sm:text-5xl lg:text-7xl">
+      {/* H-01 HERO — full-bleed photo header in the lightpathcollective.com look */}
+      <section className="relative isolate overflow-hidden min-h-[34rem] lg:min-h-[80vh]">
+        {/* Background photo — decorative; woman kept visible via object-position */}
+        <BrandImage
+          slot={IMAGES.homeHero}
+          fill
+          priority
+          sizes="100vw"
+          className="object-[70%_center] md:object-right"
+        />
+
+        {/* Readability overlays */}
+        <div aria-hidden className="absolute inset-0 bg-warm-cream/80 sm:hidden" />
+        <div aria-hidden className="hidden sm:block absolute inset-0 bg-[linear-gradient(90deg,#F8F2E7_0%,rgba(248,242,231,0.96)_38%,rgba(248,242,231,0)_60%)]" />
+        <div aria-hidden className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-white to-transparent sm:hidden" />
+
+        {/* Content */}
+        <div className="relative mx-auto flex min-h-[34rem] max-w-7xl items-center px-5 py-16 sm:px-8 lg:min-h-[80vh] lg:px-10">
+          <div className="max-w-[36rem] text-left">
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#8B5E1A]">
+              Transformational retreats worldwide
+            </p>
+
+            <h1 className="mt-4 font-[family-name:var(--font-display)] text-4xl font-bold leading-[1.05] tracking-tight text-forest-green sm:text-5xl lg:text-7xl">
               Leave the noise behind.
               <br />
-              Return to what matters.
+              <span className="italic text-[#8B5E1A]">Return to what matters.</span>
             </h1>
-            <div className="mx-auto mt-6 h-1 w-16 rounded-full bg-sacred-gold" aria-hidden />
-            <p className="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-stone-600 sm:text-xl">
-              Find your retreat, or plan your own, with a trusted home for
-              transformational retreats.
+
+            {/* Thin gold divider with sun mark */}
+            <div className="mt-6 flex items-center gap-3" aria-hidden>
+              <span className="h-px w-16 bg-[#8B5E1A]/70" />
+              <svg className="h-4 w-4 text-[#8B5E1A]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+                <circle cx="12" cy="12" r="4" fill="currentColor" stroke="none" />
+                <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1" strokeLinecap="round" />
+              </svg>
+              <span className="h-px w-44 bg-[#8B5E1A]/70" />
+            </div>
+
+            <p className="mt-6 max-w-xl text-lg leading-relaxed text-stone-700 sm:text-xl">
+              Retreats designed to help you reconnect, restore and rediscover
+              yourself — from sacred landscapes to soul-led experiences around
+              the world.
             </p>
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+
+            <div className="mt-8 flex flex-wrap items-center gap-4">
               <a
                 href="#search"
-                className="inline-flex h-12 items-center rounded-full bg-sacred-gold px-8 text-sm font-semibold text-celestial-navy"
+                className="inline-flex h-12 items-center gap-2 rounded-full bg-forest-green px-8 text-sm font-semibold text-white shadow-md transition-all hover:bg-forest-green/90 hover:scale-[1.02]"
               >
                 Find my retreat
+                <svg className="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+                  <path d="M4 10h12m0 0l-4-4m4 4l-4 4" />
+                </svg>
               </a>
               <Link
                 href="/retreat-planners"
-                className="inline-flex h-12 items-center rounded-full bg-forest-green px-8 text-sm font-semibold text-white"
+                className="inline-flex h-12 items-center rounded-full border-2 border-forest-green px-8 text-sm font-semibold text-forest-green transition-colors hover:bg-forest-green hover:text-white"
               >
                 Plan a retreat
               </Link>
             </div>
           </div>
+        </div>
+      </section>
 
-          <div id="search" className="mt-12 scroll-mt-24">
+      {/* H-02 search (id="search") — unchanged, right below the header */}
+      <section className="bg-white">
+        <div className="mx-auto max-w-7xl px-5 pt-10 pb-6 sm:px-8 lg:px-10">
+          <div id="search" className="scroll-mt-24">
             <RetreatSearchBar />
           </div>
-          {/* H-02 empty-state copy lives on /retreat-listings; search bar always renders */}
         </div>
+      </section>
         <div
           className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-b from-transparent to-white"
           aria-hidden
