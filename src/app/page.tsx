@@ -97,11 +97,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-        <div
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-b from-transparent to-white"
-          aria-hidden
-        />
-      </section>
 
       {/* H-03 — Where do you fit? two tiles for Retreat Planners */}
       <section className="bg-warm-cream/40 py-16 sm:py-24">
