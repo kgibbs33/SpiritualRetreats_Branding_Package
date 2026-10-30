@@ -48,7 +48,7 @@ export const SITE_CONFIG = {
   legal: {
     /** True when legal text has been reviewed and approved */
     text_approved: false,
-    label_draft: "Draft: pending legal review",
+    label_draft: "Draft: pending team approval",
     last_updated: "2026-10-13",
   },
 } as const;
