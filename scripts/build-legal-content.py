@@ -19,5 +19,10 @@ for name, part in [("privacy", part_a), ("cookies", part_b)]:
     d = os.path.join(repo, "src", "content", "legal")
     os.makedirs(d, exist_ok=True)
     with open(os.path.join(d, f"{name}-content.ts"), "w", encoding="utf-8") as f:
-        f.write("// GENERATED from docs/legal — do not edit by hand.\n" + out)
+        f.write(
+            "/**\n"
+            " * GENERATED from docs/legal/privacy-cookie-policies-draft3.md — do not edit by hand.\n"
+            " * Re-run scripts/build-legal-content.py when the source markdown changes.\n"
+            " */\n" + out
+        )
     print("wrote", name)
