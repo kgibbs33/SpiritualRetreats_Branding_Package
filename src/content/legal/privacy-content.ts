@@ -11,7 +11,7 @@ We collect only what we need to match you with the right retreat, and we never s
 
 ## 1. Who we are
 
-The websites lightpathcollective.com and lightpathretreats.com (together, the "Site") are operated by Light Path Retreats LLC, 1954 Airport Road, Suite 1338, Atlanta, GA 30341, USA ("Light Path", "we", "us", "our"). We are the data controller for the personal data described here.
+The websites lightpathcollective.com and lightpathretreats.com (together, the "Site") are operated by Light Path Retreats LLC, a New Mexico limited liability company, at 1209 Mountain Road PL NE, Suite R, Albuquerque, NM 87110, USA ("Light Path", "we", "us", "our"). We are the data controller for the personal data described here.
 
 Contact for anything about your data: connect@lightpathretreats.com.
 
@@ -148,7 +148,7 @@ The Site is for adults. We do not knowingly collect data from anyone under 18, i
 
 ## 12. Contacts and complaints
 
-- **Controller:** Light Path Retreats LLC, 1954 Airport Road, Suite 1338, Atlanta, GA 30341, USA, connect@lightpathretreats.com
+- **Controller:** Light Path Retreats LLC, 1209 Mountain Road PL NE, Suite R, Albuquerque, NM 87110, USA, connect@lightpathretreats.com
 
 - **EU representative (Art. 27 GDPR):** \\[NAME, ADDRESS, EMAIL\\]
 

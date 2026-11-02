@@ -12,7 +12,10 @@ export const SITE_CONFIG = {
   contact_number: "+49 162 9363732",
 
   /** Physical address — shown in footer */
-  address: "1954 Airport Road, Suite 1338, Atlanta, GA 30341, USA",
+  address: "1209 Mountain Road PL NE, Suite R, Albuquerque, NM 87110, USA",
+
+  /** Registered legal entity — used in footer and legal text */
+  legal_name: "Light Path Retreats LLC",
 
   /** Tagline — used under logo in footer and in site metadata */
   tagline: "Lighting the way to spiritual retreats worldwide.",

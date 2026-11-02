@@ -3,7 +3,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { BrandLogo } from "@/components/layout/BrandLogo";
 import { NewsletterSignup } from "@/components/ui/NewsletterSignup";
-import { BRAND_NAME } from "@/lib/brand";
 import { SITE_CONFIG } from "@/config/site";
 import { LEGAL_PAGES_VISIBLE } from "@/lib/constants";
 
@@ -145,7 +144,7 @@ export function Footer() {
       <div className="border-t border-forest-green/20 bg-forest-green text-warm-cream">
         <div className="mx-auto flex max-w-7xl flex-col gap-2 px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-8 lg:px-10">
           <p className="text-xs text-warm-cream/80">
-            &copy; {year} {BRAND_NAME}. {SITE_CONFIG.address}
+            &copy; {year} {SITE_CONFIG.legal_name}. {SITE_CONFIG.address}
           </p>
         </div>
       </div>
