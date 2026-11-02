@@ -10,8 +10,8 @@ export const metadata: Metadata = {
 
 export default function HowItWorksPage() {
   const w = SITE_CONFIG.pricing.cancellation_window_hours;
-  const fee = SITE_CONFIG.pricing.lightpath_fee_pct;
-  const dep = SITE_CONFIG.pricing.guest_minimum_deposit_pct;
+    const dep = SITE_CONFIG.pricing.guest_minimum_deposit_pct;
+  const adminFee = SITE_CONFIG.pricing.guest_cancellation_admin_fee_eur;
   return (
     <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
       <h1 className="font-[family-name:var(--font-display)] text-3xl font-semibold text-celestial-navy sm:text-4xl">
@@ -41,11 +41,12 @@ export default function HowItWorksPage() {
         </div>
 
         <div>
-          <h2 className="text-xl font-semibold text-celestial-navy">3. Pay your deposit</h2>
+          <h2 className="text-xl font-semibold text-celestial-navy">3. Booking and payment</h2>
           <p className="mt-2 leading-relaxed text-stone-700">
-            A deposit of {dep}% secures your place. Card payments are not live
-            on the site yet — we will tell you exactly how to pay when booking
-            opens.
+            Your first payment ({dep}% of the retreat price) is taken when you
+            book. After the {w}-hour window, your booking details go to the
+            Retreat Planner, who contacts you to arrange the remaining balance
+            directly.
           </p>
         </div>
 
@@ -54,21 +55,18 @@ export default function HowItWorksPage() {
             4. {w}-hour cancellation window
           </h2>
           <p className="mt-2 leading-relaxed text-stone-700">
-            You can cancel free of charge within {w} hours of booking. After
-            that, the planner&apos;s own cancellation policy applies — shown
-            clearly on each retreat page.
-          </p>
-          <p className="mt-2 rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
-            Placeholder pending legal review: the {fee}% Light Path fee becomes
-            non-refundable after the {w}-hour window.
+            You can cancel within {w} hours of booking for a refund of your
+            payment, less a &euro;{adminFee} administration fee. After that,
+            the Retreat Planner&apos;s own cancellation policy applies, shown
+            on each retreat page.
           </p>
         </div>
 
         <div>
-          <h2 className="text-xl font-semibold text-celestial-navy">5. The planner is paid</h2>
+          <h2 className="text-xl font-semibold text-celestial-navy">5. What happens next</h2>
           <p className="mt-2 leading-relaxed text-stone-700">
-            Your payments go to the retreat planner after the {w}-hour
-            cancellation window has passed.
+            After the {w}-hour window, the Retreat Planner confirms your place
+            and the retreat&apos;s own policies apply from that point.
           </p>
         </div>
       </section>

@@ -19,7 +19,7 @@ export default function RetreatPlannersPage() {
           List your retreat with Light Path Retreats.
         </h1>
         <p className="mx-auto mt-4 max-w-xl text-stone-600">
-          List, promote and fill your retreats, and find venues and facilitators.. Free to list for 2027 when you register before the end of
+          List, promote and fill your retreats, and find venues and facilitators. Free to list for 2027 when you register before the end of
           2026.
         </p>
         <Link
@@ -58,7 +58,16 @@ export default function RetreatPlannersPage() {
           Planners set their own deposit, with a minimum of 20%.
         </p>
         <p className="mt-3 rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
-          Placeholder pending legal review.
+          The 15% fee is non-refundable once the 72-hour window has passed,
+          including if you later cancel the retreat. We expect Retreat Planners
+          to hold suitable insurance for cancellations and related losses.
+        </p>
+        <p className="mt-2 text-xs text-stone-500">
+          Draft wording. The full terms are in the{" "}
+          <Link href="/terms" className="text-link underline">
+            Partner Terms
+          </Link>
+          .
         </p>
         <p className="mt-3 text-stone-700">
           Free to list for 2027 when you register before the end of 2026. When a
@@ -67,19 +76,18 @@ export default function RetreatPlannersPage() {
           fees, once the {p.cancellation_window_hours}-hour cancellation window
           has passed.
         </p>
-        <p className="mt-3 rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
-          Placeholder pending legal review: the {p.lightpath_fee_pct}% fee is
-          non-refundable after the {p.cancellation_window_hours}-hour window.
-          Planners handle guest refunds from their remaining balance under
-          their own policy.
+
+        <p className="mt-4 text-sm font-semibold text-celestial-navy">
+          Illustrative example, final figures confirmed in the Partner Terms:
         </p>
-        <p className="mt-3 text-stone-700">
-          Example: on a EUR {p.examples.ticket_eur.toLocaleString()} ticket, the
-          guest pays a EUR {p.examples.deposit_eur.toLocaleString()} deposit
-          ({p.guest_minimum_deposit_pct}%). EUR {p.examples.lightpath_fee_eur.toLocaleString()} is our
-          fee and EUR {p.examples.planner_from_deposit_eur.toLocaleString()} goes to you. The remaining
-          payments go to you.
-        </p>
+        <ul className="mt-2 list-disc space-y-1 pl-5 text-stone-700">
+          <li>Retreat seat: &euro;{p.examples.seat_eur.toLocaleString()}.</li>
+          <li>Guest pays the first payment: {p.guest_minimum_deposit_pct}% = &euro;{p.examples.first_payment_eur.toLocaleString()} (through Light Path Retreats).</li>
+          <li>Light Path Retreats fee: {p.lightpath_fee_pct}% of the seat price = &euro;{p.examples.lightpath_fee_eur.toLocaleString()}, taken from that first payment.</li>
+          <li>Remaining &euro;{p.examples.first_payment_remainder_eur.toLocaleString()} in the first payment: card and currency-conversion costs are deducted from this; you receive what is left.</li>
+          <li>You collect the remaining balance, &euro;{p.examples.remaining_balance_eur.toLocaleString()}, directly from the guest.</li>
+        </ul>
+        <p className="mt-2 text-sm text-stone-500">Card and currency costs vary.</p>
       </section>
 
       {/* RP-06 Who it's for */}
