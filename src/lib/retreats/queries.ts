@@ -123,6 +123,7 @@ async function searchPublishedRetreats(
   }
 
   switch (params.sort ?? "soonest") {
+    case "newest":      query = query.order("created_at", { ascending: false }); break;
     case "price_asc":  query = query.order("price_from", { ascending: true, nullsFirst: false }); break;
     case "price_desc": query = query.order("price_from", { ascending: false, nullsFirst: true }); break;
     default:           query = query.order("sort_order", { ascending: true });

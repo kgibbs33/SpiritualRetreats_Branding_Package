@@ -15,7 +15,7 @@ export const REGION_SLUGS = [
 ] as const;
 
 /** Sort options. */
-export const SORT_OPTIONS = ["soonest", "price_asc", "price_desc"] as const;
+export const SORT_OPTIONS = ["soonest", "price_asc", "price_desc", "newest"] as const;
 
 export const PER_PAGE = 12;
 
