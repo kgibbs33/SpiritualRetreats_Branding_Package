@@ -19,8 +19,8 @@ export default function RetreatPlannersPage() {
           List your retreat with Light Path Retreats.
         </h1>
         <p className="mx-auto mt-4 max-w-xl text-stone-600">
-          Reach guests looking for transformational retreats. Free to list for
-          2027 when you register before the end of 2026.
+          List, promote and fill your retreats, and find venues and facilitators.. Free to list for 2027 when you register before the end of
+          2026.
         </p>
         <Link
           href="/retreat-intake-form"

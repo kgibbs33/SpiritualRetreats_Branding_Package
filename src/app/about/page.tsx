@@ -64,7 +64,7 @@ export default function AboutPage() {
           <h2 className="text-xl font-semibold text-stone-900">What we do</h2>
           <ul className="list-disc space-y-2 pl-5 leading-relaxed">
             <li><strong className="text-stone-800">For guests:</strong> find retreats that fit your goals, budget, and journey.</li>
-            <li><strong className="text-stone-800">For Retreat Planners:</strong> list your retreats, reach guests, and find venues and facilitators.</li>
+            <li><strong className="text-stone-800">For Retreat Planners:</strong> List, promote and fill your retreats, and find venues and facilitators.</li>
             <li><strong className="text-stone-800">For venues and facilitators:</strong> be discovered by Retreat Planners looking for the right space or professional.</li>
           </ul>
         </section>

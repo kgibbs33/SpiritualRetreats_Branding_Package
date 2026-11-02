@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 const pathways = [
   {
     heading: "Are you a Retreat Planner?",
-    body: "List and promote your retreats, reach potential guests, and discover venues and facilitators.",
+    body: "List, promote and fill your retreats, and find venues and facilitators.",
     cta: "Join as a Retreat Planner",
     href: "/retreat-intake-form",
     icon: (
