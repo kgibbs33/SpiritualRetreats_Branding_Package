@@ -5,12 +5,12 @@
  */
 
 export interface TeamMember {
-  /** Display name (used in heading + subheading references) */
+  /** Display name */
   name: string;
-  /** Role / subheading line */
-  subheading: string;
-  /** Bio text — supports `{name}` interpolation */
-  bio: string;
+  /** Role / subheading line — optional (hidden when absent) */
+  subheading?: string;
+  /** Bio text — optional; supports `{name}` interpolation */
+  bio?: string;
   /** Optional headshot path under /public */
   imagePath?: string;
 }
@@ -19,18 +19,6 @@ export interface TeamMember {
 const VANESSA_NAME = "Vanessa Mendoza";
 
 export const TEAM: TeamMember[] = [
-  {
-    name: "Andrew A. Porteous",
-    subheading: "Co-Founder · Learning Officer & Chief Alchemist (LOCA)",
-    bio: "Andrew A. Porteous is a financial educator, personal development coach and architect of The Alchemist Path, with over 20 years of experience in personal and spiritual transformation. His enlightening vision quest in Corumbá, Brazil, in 2015 strengthened his belief that the world needs more spiritual retreats and meaningful human connection beyond our everyday environments. Through Light Path Retreats, Andrew seeks to create transformative experiences that people can bring back into their homes, relationships and workplaces. His vision is to inspire lasting change in thoughts, behaviours, beliefs, values and identity, empowering individuals to align with their higher purpose and their highest possible timeline.",
-    imagePath: "/images/team/andrew-porteous.jpg",
-  },
-  {
-    name: VANESSA_NAME,
-    subheading: "Executive Assistant | Light Path Retreats",
-    bio: `${VANESSA_NAME} is the Executive Assistant to Andrew Porteous, supporting the organisation, communication and daily operations of Light Path Retreats. She helps connect people, coordinate activities and ensure that retreat initiatives run smoothly and professionally. ${VANESSA_NAME} is committed to supporting meaningful experiences that encourage human connection, personal growth and spiritual transformation.`,
-    imagePath: "/images/team/vanessa-mendoza.jpg",
-  },
   {
     name: "Gordana Ross",
     subheading: "Co-Founder & Head of Experiences & Development",
@@ -42,6 +30,22 @@ At Light Path Retreats, she brings her experience, creativity and passion for pe
 A free spirit at heart, Gordana believes life is too precious to be lived on autopilot. She loves inspiring others to embrace who they are, explore new possibilities and find the courage to live life on their own terms.
 Above all, she believes that when we reconnect with ourselves, we don't just change our own lives. We change the way we live, lead, love and contribute to the world.`,
     imagePath: "/images/team/gordana-ross.jpg",
+  },
+  {
+    name: "Adriana Domingues",
+    bio: "Profile coming soon.",
+  },
+  {
+    name: "Andrew A. Porteous",
+    subheading: "Co-Founder · Learning Officer & Chief Alchemist (LOCA)",
+    bio: "Andrew A. Porteous is a financial educator, personal development coach and architect of The Alchemist Path, with over 20 years of experience in personal and spiritual transformation. His enlightening vision quest in Corumbá, Brazil, in 2015 strengthened his belief that the world needs more spiritual retreats and meaningful human connection beyond our everyday environments. Through Light Path Retreats, Andrew seeks to create transformative experiences that people can bring back into their homes, relationships and workplaces. His vision is to inspire lasting change in thoughts, behaviours, beliefs, values and identity, empowering individuals to align with their higher purpose and their highest possible timeline.",
+    imagePath: "/images/team/andrew-porteous.jpg",
+  },
+  {
+    name: VANESSA_NAME,
+    subheading: "Executive Assistant | Light Path Retreats",
+    bio: `${VANESSA_NAME} is the Executive Assistant to Andrew Porteous, supporting the organisation, communication and daily operations of Light Path Retreats. She helps connect people, coordinate activities and ensure that retreat initiatives run smoothly and professionally. ${VANESSA_NAME} is committed to supporting meaningful experiences that encourage human connection, personal growth and spiritual transformation.`,
+    imagePath: "/images/team/vanessa-mendoza.jpg",
   },
   {
     name: "Kirtis Gibbs",
