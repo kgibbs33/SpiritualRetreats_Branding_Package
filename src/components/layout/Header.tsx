@@ -74,8 +74,8 @@ export function Header() {
             href="/"
             className="group relative col-start-2 flex shrink-0 items-center justify-self-center rounded-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-stone-400 focus-visible:ring-offset-2 xl:col-auto xl:justify-self-auto"
           >
-            <span className="xl:hidden"><BrandLogo variant="emblem" /></span>
-            <span className="hidden xl:inline-flex"><BrandLogo variant="horizontal" /></span>
+            <span className="lg:hidden"><BrandLogo variant="emblem" /></span>
+            <span className="hidden lg:inline-flex"><BrandLogo variant="horizontal" /></span>
           </Link>
 
           <nav className="hidden min-w-0 xl:flex xl:flex-1 xl:items-center xl:justify-center" aria-label="Main">

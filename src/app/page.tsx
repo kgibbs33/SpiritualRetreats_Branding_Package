@@ -42,15 +42,13 @@ export default function Home() {
         {/* Content */}
         <div className="relative mx-auto flex min-h-[34rem] max-w-7xl items-center px-5 py-16 sm:px-8 lg:min-h-[80vh] lg:px-10">
           <div className="max-w-[36rem] text-left">
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#8B5E1A]">
+            <h1 className="font-[family-name:var(--font-display)] text-4xl font-bold leading-[1.05] tracking-tight text-forest-green sm:text-5xl lg:text-6xl">
               Transformational retreats worldwide
-            </p>
-
-            <h1 className="mt-4 font-[family-name:var(--font-display)] text-4xl font-bold leading-[1.05] tracking-tight text-forest-green sm:text-5xl lg:text-7xl">
-              Leave the noise behind.
-              <br />
-              <span className="italic text-[#8B5E1A]">Return to what matters.</span>
             </h1>
+
+            <p className="mt-3 font-[family-name:var(--font-display)] text-2xl italic leading-snug text-[#8B5E1A] lg:text-3xl">
+              Leave the noise behind. Return to what matters.
+            </p>
 
             {/* Thin gold divider with sun mark */}
             <div className="mt-6 flex items-center gap-3" aria-hidden>
@@ -62,7 +60,7 @@ export default function Home() {
               <span className="h-px w-44 bg-[#8B5E1A]/70" />
             </div>
 
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-stone-700 sm:text-xl">
+            <p className="mt-6 max-w-xl text-xl leading-relaxed text-stone-700 lg:text-2xl">
               Retreats designed to help you reconnect, restore and rediscover
               yourself — from sacred landscapes to soul-led experiences around
               the world.

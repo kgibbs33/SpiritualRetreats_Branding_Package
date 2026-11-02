@@ -18,7 +18,7 @@ import { EMBLEM_PATH, BRAND_NAME } from "@/lib/brand";
  */
 
 const EMBLEM_SIZE = 64;
-const HORIZONTAL_WIDTH = 280; // 280 × (571/1563) ≈ 102px tall
+const HORIZONTAL_WIDTH = 360; // 360 × (571/1563) ≈ 132px tall — keeps the tagline legible (cap height ≥8px at 1280px viewport)
 
 const HORIZONTAL_PATH = "/brand/lpr-logo-horizontal.png";
 
