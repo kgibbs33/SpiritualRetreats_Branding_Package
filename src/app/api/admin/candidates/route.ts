@@ -54,13 +54,14 @@ export async function GET(request: Request) {
   }
 
   // Distinct filter values (simple per-request cache)
-  const [{ data: countries }, { data: cats }, { data: verifs }, { data: statz }] =
-    await Promise.all([
-      admin.from("lc_candidates").select("country").neq("country", null).order("country"),
-      admin.from("lc_candidates").select("primary_category").neq("primary_category", null).order("primary_category"),
-      admin.from("lc_candidates").select("verification_level").neq("verification_level", null).order("verification_level"),
-      admin.from("lc_candidates").select("record_status").neq("record_status", null).order("record_status"),
-    ].map(p => p.then(r => r).catch(() => ({ data: [], error: null }))));
+  const opts = [
+    admin.from("lc_candidates").select("country").neq("country", null).order("country"),
+    admin.from("lc_candidates").select("primary_category").neq("primary_category", null).order("primary_category"),
+    admin.from("lc_candidates").select("verification_level").neq("verification_level", null).order("verification_level"),
+    admin.from("lc_candidates").select("record_status").neq("record_status", null).order("record_status"),
+  ];
+  const settled = await Promise.all(opts);
+  const [{ data: countries }, { data: cats }, { data: verifs }, { data: statz }] = settled;
 
   const unique = (rows: Record<string, unknown>[] | null, col: string) =>
     [...new Set((rows ?? []).map((r) => r[col] as string).filter(Boolean))];
