@@ -4,8 +4,17 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { AdminShell } from "@/components/admin/AdminShell";
 import { checkListingText } from "@/lib/listing-text-rules";
-import { useState as useState2 } from "react";
 import { RETREAT_TYPES, RETREAT_INTENTS } from "@/lib/retreats/search-options";
+
+function ListingTextWarning({ value }: { value: string }) {
+  const hit = value ? checkListingText(value) : null;
+  if (!hit) return null;
+  return (
+    <p className="mt-1 rounded-md border border-amber-300 bg-amber-50 px-2 py-1 text-xs font-normal text-amber-900">
+      Heads up: this looks like a link or contact detail ({hit.excerpt}). Listings should not include websites, emails, phone numbers or social links. You can still save.
+    </p>
+  );
+}
 
 export default function NewRetreatPage() {
   const router = useRouter();
@@ -118,6 +127,7 @@ export default function NewRetreatPage() {
               placeholder="e.g. Mountain Yoga Retreat"
               className="mt-1 block w-full rounded-lg border border-sage-mist px-3 py-2 text-sm"
             />
+            <ListingTextWarning value={title} />
           </label>
 
           <label className="block text-xs font-semibold text-stone-500">
@@ -207,6 +217,7 @@ export default function NewRetreatPage() {
               placeholder="Andalusia"
               className="mt-1 block w-full rounded-lg border border-sage-mist px-3 py-2 text-sm"
             />
+            <ListingTextWarning value={location} />
           </label>
 
           <button

@@ -6,16 +6,6 @@
  * ranges (3–5 days), ordinary full stops.
  */
 
-const DOMAIN_ENDINGS = [
-  ".com", ".net", ".org", ".co", ".io", ".info", ".travel",
-  ".retreat", ".life", ".app",
-  ".de", ".fr", ".es", ".it", ".pt", ".nl", ".be", ".at", ".ch",
-  ".uk", ".au", ".nz", ".ca", ".in", ".br", ".mx", ".za", ".jp",
-  ".cn", ".se", ".no", ".dk", ".fi", ".pl", ".gr", ".tr", ".ru",
-  ".me", ".xyz", ".site", ".online", ".shop", ".store", ".club", ".studio",
-  ".yoga", ".world", ".earth",
-];
-
 const SOCIAL_DOMAINS = [
   "instagram.com", "facebook.com", "fb.com", "x.com", "twitter.com",
   "linkedin.com", "wa.me", "t.me", "linktr.ee", "youtube.com",
@@ -32,11 +22,6 @@ const EMAIL = /\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\b/g;
 const PHONE = /(?:(?:\+|00)\d{1,3}[-\s.]?)?(?:\(?\d{2,4}\)?[-\s.]?){2,}\d{3,}/g;
 
 const SOCIAL_HANDLE = /@[a-zA-Z0-9_.]{2,30}/g;
-
-const SOCIAL_LINKS = new RegExp(
-  SOCIAL_DOMAINS.map((d) => d.replace(/\./g, "\\.")).join("|"),
-  "i"
-);
 
 // ── false‑positive safeguards ─────────────────────────────────────────────
 

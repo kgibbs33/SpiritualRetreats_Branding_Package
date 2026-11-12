@@ -64,7 +64,6 @@ t("number only", "Capacity: 1200 people", null);
 t("door number", "House number 123, main road", null);
 t("normal sentence", "We offer yoga, meditation and wellness retreats in a beautiful mountain setting.", null);
 
-console.log(`${passed} passed, ${failed} failed, ${passed + failed} total`);
 // ── new TLDs ──────────────────────────────────────────────────────────────
 
 t("TLD .me", "Check reset.me for info", { type: "link" });
@@ -82,3 +81,6 @@ t("TLD .earth", "Go to healing.earth", { type: "link" });
 t("reset.me flagged as link", "The button to reset.me is green", { type: "link" });
 t("t.me not on boundary", "We help people set met.legend markers", null);
 t("t.me word boundary", "The item.meta field contains t.me", { type: "social" }); // word boundary before t.me → social check catches it
+
+console.log(`${passed} passed, ${failed} failed, ${passed + failed} total`);
+if (failed > 0) process.exit(1);
