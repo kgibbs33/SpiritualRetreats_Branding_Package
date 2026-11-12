@@ -40,6 +40,8 @@ export default function CandidatesPage() {
   const [category, setCategory] = useState("");
   const [verification, setVerification] = useState("");
   const [status, setStatus] = useState("");
+  const [hideEnhanced, setHideEnhanced] = useState(true);
+  const [hiddenCount, setHiddenCount] = useState(0);
 
   const [filters, setFilters] = useState<{
     country: string[];
@@ -57,6 +59,7 @@ export default function CandidatesPage() {
       if (category) params.set("category", category);
       if (verification) params.set("verification", verification);
       if (status) params.set("status", status);
+      params.set("hideEnhanced", String(hideEnhanced));
 
       fetch(`/api/admin/candidates?${params}`)
         .then((r) => r.json())
@@ -65,6 +68,7 @@ export default function CandidatesPage() {
           setTotal(json.total ?? 0);
           setTableMissing(json.tableMissing ?? false);
           if (json.filters) setFilters(json.filters);
+          setHiddenCount(json.hiddenCount ?? 0);
           setLoading(false);
         })
         .catch(() => setLoading(false));
@@ -76,7 +80,7 @@ export default function CandidatesPage() {
     setPage(1);
     fetchData(1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [q, country, category, verification, status]);
+  }, [q, country, category, verification, status, hideEnhanced]);
 
   useEffect(() => {
     fetchData(page);
@@ -111,8 +115,10 @@ export default function CandidatesPage() {
     >
       {/* Banner */}
       <div className="mb-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
-        Internal research data. Nothing here is on the public site. No outreach
-        until the team agrees the outreach policy.
+        <p>Internal research data. Nothing here is on the public site. No outreach
+        until the team agrees the outreach policy.</p>
+        <p className="mt-1">Compiled by AI from public web sources. Not independently
+        verified. Contacts must be rechecked before any use.</p>
       </div>
 
       {tableMissing ? (
@@ -154,6 +160,11 @@ export default function CandidatesPage() {
                 <option key={c} value={c}>{c}</option>
               ))}
             </select>
+            <label className="flex items-center gap-1.5 text-sm text-stone-600 cursor-pointer select-none">
+              <input type="checkbox" checked={hideEnhanced} onChange={(e) => setHideEnhanced(e.target.checked)} className="accent-forest-green" />
+              Hide enhanced-review categories
+              {hiddenCount > 0 && <span className="text-amber-700 font-medium">({hiddenCount} hidden)</span>}
+            </label>
             {hasFilters && (
               <button onClick={clearFilters} className="rounded-lg border border-sage-mist px-3 py-2 text-sm text-stone-500 hover:bg-sage-mist/20">
                 Clear
