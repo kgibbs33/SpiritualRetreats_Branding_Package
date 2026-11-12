@@ -65,3 +65,20 @@ t("door number", "House number 123, main road", null);
 t("normal sentence", "We offer yoga, meditation and wellness retreats in a beautiful mountain setting.", null);
 
 console.log(`${passed} passed, ${failed} failed, ${passed + failed} total`);
+// ── new TLDs ──────────────────────────────────────────────────────────────
+
+t("TLD .me", "Check reset.me for info", { type: "link" });
+t("TLD .xyz", "See our.xyz", { type: "link" });
+t("TLD .yoga", "Find retreathub.yoga", { type: "link" });
+t("TLD .studio", "at sacredstudio.studio", { type: "link" });
+t("TLD .online", "My site is calm.online", { type: "link" });
+t("TLD .world", "Visit oneworld.world", { type: "link" });
+t("TLD .earth", "Go to healing.earth", { type: "link" });
+
+// ── false-positive guard: t.me inside a word ──────────────────────────────
+// "The button to reset.me is green" → reset.me IS a valid bare domain (.me TLD) → FLAGGED as link
+// Word like "t.media" where t.me is not on a word boundary should NOT be flagged
+
+t("reset.me flagged as link", "The button to reset.me is green", { type: "link" });
+t("t.me not on boundary", "We help people set met.legend markers", null);
+t("t.me word boundary", "The item.meta field contains t.me", { type: "social" }); // word boundary before t.me → social check catches it

@@ -12,6 +12,8 @@ const DOMAIN_ENDINGS = [
   ".de", ".fr", ".es", ".it", ".pt", ".nl", ".be", ".at", ".ch",
   ".uk", ".au", ".nz", ".ca", ".in", ".br", ".mx", ".za", ".jp",
   ".cn", ".se", ".no", ".dk", ".fi", ".pl", ".gr", ".tr", ".ru",
+  ".me", ".xyz", ".site", ".online", ".shop", ".store", ".club", ".studio",
+  ".yoga", ".world", ".earth",
 ];
 
 const SOCIAL_DOMAINS = [
@@ -23,7 +25,7 @@ const SOCIAL_DOMAINS = [
 // ── patterns ──────────────────────────────────────────────────────────────
 
 const URL_LIKE: RegExp =
-  /\bhttps?:\/\/[^\s]{3,}|\bwww\.\S{3,}|(?:^|\s|\.)(?:https?:\/\/)?(?:www\.)?[a-z0-9][a-z0-9-]*[a-z0-9]\.(?:com|net|org|co|io|info|travel|retreat|life|app|de|fr|es|it|pt|nl|be|at|ch|uk|au|nz|ca|in|br|mx|za|jp|cn|se|no|dk|fi|pl|gr|tr|ru)(?:\/|\s|$)/i;
+  /\bhttps?:\/\/[^\s]{3,}|\bwww\.\S{3,}|(?:^|\s|\.)(?:https?:\/\/)?(?:www\.)?[a-z0-9][a-z0-9-]*[a-z0-9]\.(?:com|net|org|co|io|info|travel|retreat|life|app|de|fr|es|it|pt|nl|be|at|ch|uk|au|nz|ca|in|br|mx|za|jp|cn|se|no|dk|fi|pl|gr|tr|ru|me|xyz|site|online|shop|store|club|studio|yoga|world|earth)(?:\/|\s|$)/i;
 
 const EMAIL = /\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\b/g;
 
@@ -63,8 +65,10 @@ export function checkListingText(text: string): {
 
   // Check URL-like patterns — but exclude emails already handled
   // Social platforms first (before generic URL matching)
-  if (SOCIAL_LINKS.test(sanitised))
-    return { type: "social", excerpt: sanitised.match(SOCIAL_LINKS)![0] };
+    // Must be at a word boundary to avoid "reset.me" matching "t.me"
+  const sos = new RegExp(`\\b(?:${SOCIAL_DOMAINS.join("|").replace(/\./g, "\\.")})\\b`, "i");
+  if (sos.test(sanitised))
+    return { type: "social", excerpt: sanitised.match(sos)![0] };
 
   const emailMatch = sanitised.match(EMAIL);
   if (emailMatch) return { type: "email", excerpt: emailMatch[0] };
