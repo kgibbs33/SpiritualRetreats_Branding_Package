@@ -1,15 +1,10 @@
 import { z } from "zod";
 import { checkListingText } from "@/lib/listing-text-rules";
 
-/**
- * Venue application intake — mirrors the retreat submission pattern
- * (zod → API route with guards + honeypot → Supabase insert → team mail →
- * optional n8n webhook).
- */
-
 const RELATIONSHIP_TYPES = ["owner", "manager", "other"] as const;
 
-export const venueSubmissionSchema = z.object({
+/** Base schema — no refinement (Zod 4 forbids .omit() on refined schemas). */
+const venueSubmissionBase = z.object({
   contactName: z.string().min(1, "Name is required").max(120),
   email: z.string().email("Invalid email address"),
   phone: z.string().max(40).optional().nullable(),
@@ -38,7 +33,9 @@ export const venueSubmissionSchema = z.object({
 
   // Honeypot — bots fill this; humans never see it.
   company: z.string().max(0).optional(),
-}).superRefine((val, ctx) => {
+});
+
+export const venueSubmissionSchema = venueSubmissionBase.superRefine((val, ctx) => {
     const publicFields = [
       { key: "venueName", label: "Venue Name" },
       { key: "location", label: "Location" },
@@ -63,11 +60,10 @@ export const venueSubmissionSchema = z.object({
     }
   });
 
-export const venueSubmissionInsertSchema = venueSubmissionSchema.omit({
+// Omit from UNREFINED base — Zod 4 forbids .omit() on schemas with refinements.
+export const venueSubmissionInsertSchema = venueSubmissionBase.omit({
   company: true,
 });
 
 export type VenueSubmissionPayload = z.infer<typeof venueSubmissionSchema>;
-export type VenueSubmissionInsertPayload = z.infer<
-  typeof venueSubmissionInsertSchema
->;
+export type VenueSubmissionInsertPayload = z.infer<typeof venueSubmissionInsertSchema>;

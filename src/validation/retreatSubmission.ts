@@ -18,7 +18,8 @@ const RETREAT_DURATIONS = [
 
 const OWNER_TYPES = ["venue_only", "program_operator"] as const;
 
-export const retreatSubmissionSchema = z.object({
+/** Base schema — no refinement (Zod 4 forbids .omit() on refined schemas). */
+const retreatSubmissionBase = z.object({
   contactName:      z.string().min(1, "Name is required").max(120),
   email:            z.string().email("Invalid email address"),
   retreatTitle:     z.string().min(1, "Retreat title is required").max(200),
@@ -37,7 +38,9 @@ export const retreatSubmissionSchema = z.object({
   duration:         z.enum(RETREAT_DURATIONS).optional().nullable(),
 
   company:          z.string().max(0).optional(),
-}).superRefine((val, ctx) => {
+});
+
+export const retreatSubmissionSchema = retreatSubmissionBase.superRefine((val, ctx) => {
     const publicFields = [
       { key: "retreatTitle", label: "Retreat Title" },
       { key: "location", label: "Location" },
@@ -60,7 +63,9 @@ export const retreatSubmissionSchema = z.object({
     }
   });
 
-export const retreatSubmissionInsertSchema = retreatSubmissionSchema.omit({
+// Omit from UNREFINED base — Zod 4 forbids .omit() on schemas with refinements.
+// The refine is still enforced because retreatSubmissionSchema runs first.
+export const retreatSubmissionInsertSchema = retreatSubmissionBase.omit({
   company: true,
 });
 
