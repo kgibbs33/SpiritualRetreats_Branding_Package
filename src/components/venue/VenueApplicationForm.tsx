@@ -198,13 +198,13 @@ export function VenueApplicationForm() {
               id="va-venueName"
               type="text"
               value={form.venueName}
-              onChange={(e) => 
-            <p className="mt-1 text-xs text-stone-400">No websites, emails, phone numbers or social links. You can name the venue and town in plain text.</p>set("venueName", e.target.value)}
+              onChange={(e) => set("venueName", e.target.value)}
               placeholder="Name of your venue"
               required
               className={fieldClass}
             />
-          </Field>
+          
+            <p className="mt-1 text-xs text-stone-400">No websites, emails, phone numbers or social links. You can name the venue and town in plain text.</p></Field>
           <Field id="va-relationship" label="Your relationship to the property">
             <select
               id="va-relationship"
@@ -244,12 +244,12 @@ export function VenueApplicationForm() {
                 id="va-location"
                 type="text"
                 value={form.location}
-                onChange={(e) => 
-            <p className="mt-1 text-xs text-stone-400">No websites, emails, phone numbers or social links. You can name the venue and town in plain text.</p>set("location", e.target.value)}
+                onChange={(e) => set("location", e.target.value)}
                 placeholder="Region / town"
                 className={fieldClass}
               />
-            </Field>
+            
+            <p className="mt-1 text-xs text-stone-400">No websites, emails, phone numbers or social links. You can name the venue and town in plain text.</p></Field>
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
             <Field id="va-capacity" label="Guest capacity">
@@ -301,23 +301,23 @@ export function VenueApplicationForm() {
               id="va-practiceSpaceDetails"
               rows={3}
               value={form.practiceSpaceDetails}
-              onChange={(e) => 
-            <p className="mt-1 text-xs text-stone-400">No websites, emails, phone numbers or social links. You can name the venue and town in plain text.</p>set("practiceSpaceDetails", e.target.value)}
+              onChange={(e) => set("practiceSpaceDetails", e.target.value)}
               placeholder="Yoga shala, meditation hall, workshop room…"
               className={fieldClass}
             />
-          </Field>
+          
+            <p className="mt-1 text-xs text-stone-400">No websites, emails, phone numbers or social links. You can name the venue and town in plain text.</p></Field>
           <Field id="va-catering" label="Catering">
             <input
               id="va-catering"
               type="text"
               value={form.catering}
-              onChange={(e) => 
-            <p className="mt-1 text-xs text-stone-400">No websites, emails, phone numbers or social links. You can name the venue and town in plain text.</p>set("catering", e.target.value)}
+              onChange={(e) => set("catering", e.target.value)}
               placeholder="In-house chef, full board, self-catering…"
               className={fieldClass}
             />
-          </Field>
+          
+            <p className="mt-1 text-xs text-stone-400">No websites, emails, phone numbers or social links. You can name the venue and town in plain text.</p></Field>
           <Field id="va-exclusiveUse" label="Exclusive use available">
             <select
               id="va-exclusiveUse"
@@ -335,34 +335,34 @@ export function VenueApplicationForm() {
               id="va-facilities"
               rows={3}
               value={form.facilities}
-              onChange={(e) => 
-            <p className="mt-1 text-xs text-stone-400">No websites, emails, phone numbers or social links. You can name the venue and town in plain text.</p>set("facilities", e.target.value)}
+              onChange={(e) => set("facilities", e.target.value)}
               placeholder="Pool, sauna, gardens, treatment rooms…"
               className={fieldClass}
             />
-          </Field>
+          
+            <p className="mt-1 text-xs text-stone-400">No websites, emails, phone numbers or social links. You can name the venue and town in plain text.</p></Field>
           <Field id="va-suitableRetreatTypes" label="Suitable retreat types">
             <input
               id="va-suitableRetreatTypes"
               type="text"
               value={form.suitableRetreatTypes}
-              onChange={(e) => 
-            <p className="mt-1 text-xs text-stone-400">No websites, emails, phone numbers or social links. You can name the venue and town in plain text.</p>set("suitableRetreatTypes", e.target.value)}
+              onChange={(e) => set("suitableRetreatTypes", e.target.value)}
               placeholder="Yoga, meditation, wellness…"
               className={fieldClass}
             />
-          </Field>
+          
+            <p className="mt-1 text-xs text-stone-400">No websites, emails, phone numbers or social links. You can name the venue and town in plain text.</p></Field>
           <Field id="va-accessNotes" label="Airport / access notes">
             <input
               id="va-accessNotes"
               type="text"
               value={form.accessNotes}
-              onChange={(e) => 
-            <p className="mt-1 text-xs text-stone-400">No websites, emails, phone numbers or social links. You can name the venue and town in plain text.</p>set("accessNotes", e.target.value)}
+              onChange={(e) => set("accessNotes", e.target.value)}
               placeholder="Nearest airport, transfers…"
               className={fieldClass}
             />
-          </Field>
+          
+            <p className="mt-1 text-xs text-stone-400">No websites, emails, phone numbers or social links. You can name the venue and town in plain text.</p></Field>
           <div className="grid gap-4 sm:grid-cols-2">
             <Field id="va-priceRange" label="Price range">
               <input
@@ -390,12 +390,12 @@ export function VenueApplicationForm() {
               id="va-description"
               rows={5}
               value={form.description}
-              onChange={(e) => 
-            <p className="mt-1 text-xs text-stone-400">No websites, emails, phone numbers or social links. You can name the venue and town in plain text.</p>set("description", e.target.value)}
+              onChange={(e) => set("description", e.target.value)}
               placeholder="Tell us about your venue and what makes it special…"
               className={fieldClass}
             />
-          </Field>
+          
+            <p className="mt-1 text-xs text-stone-400">No websites, emails, phone numbers or social links. You can name the venue and town in plain text.</p></Field>
         </div>
       </fieldset>
 
