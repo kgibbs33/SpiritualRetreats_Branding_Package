@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { RETREAT_CATEGORY_SLUGS } from "@/lib/retreat-categories";
+import { checkListingText } from "@/lib/listing-text-rules";
 
 const categorySlugTuple = RETREAT_CATEGORY_SLUGS as unknown as [
   string,
@@ -36,7 +37,28 @@ export const retreatSubmissionSchema = z.object({
   duration:         z.enum(RETREAT_DURATIONS).optional().nullable(),
 
   company:          z.string().max(0).optional(),
-});
+}).superRefine((val, ctx) => {
+    const publicFields = [
+      { key: "retreatTitle", label: "Retreat Title" },
+      { key: "location", label: "Location" },
+      { key: "description", label: "Description" },
+      { key: "priceRange", label: "Price Range" },
+      { key: "facilitatorNotes", label: "Facilitator Notes" },
+      { key: "categoryOther", label: "Category Other" },
+    ] as const;
+    for (const f of publicFields) {
+      const v = (val as Record<string, unknown>)[f.key] as string | null | undefined;
+      if (!v) continue;
+      const hit = checkListingText(v);
+      if (hit) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: [f.key],
+          message: `Please remove websites, email addresses, phone numbers or social links from this field. Add photos and describe the venue in words instead. (Found: ${hit.excerpt})`,
+        });
+      }
+    }
+  });
 
 export const retreatSubmissionInsertSchema = retreatSubmissionSchema.omit({
   company: true,

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { checkListingText } from "@/lib/listing-text-rules";
 
 /**
  * Venue application intake — mirrors the retreat submission pattern
@@ -37,7 +38,30 @@ export const venueSubmissionSchema = z.object({
 
   // Honeypot — bots fill this; humans never see it.
   company: z.string().max(0).optional(),
-});
+}).superRefine((val, ctx) => {
+    const publicFields = [
+      { key: "venueName", label: "Venue Name" },
+      { key: "location", label: "Location" },
+      { key: "description", label: "Description" },
+      { key: "practiceSpaceDetails", label: "Practice Space Details" },
+      { key: "facilities", label: "Facilities" },
+      { key: "suitableRetreatTypes", label: "Suitable Retreat Types" },
+      { key: "accessNotes", label: "Access Notes" },
+      { key: "catering", label: "Catering" },
+    ] as const;
+    for (const f of publicFields) {
+      const v = (val as Record<string, unknown>)[f.key] as string | null | undefined;
+      if (!v) continue;
+      const hit = checkListingText(v);
+      if (hit) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: [f.key],
+          message: `Please remove websites, email addresses, phone numbers or social links from this field. Add photos and describe the venue in words instead. (Found: ${hit.excerpt})`,
+        });
+      }
+    }
+  });
 
 export const venueSubmissionInsertSchema = venueSubmissionSchema.omit({
   company: true,

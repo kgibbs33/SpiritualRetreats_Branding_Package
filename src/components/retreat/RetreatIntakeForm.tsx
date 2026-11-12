@@ -530,6 +530,7 @@ export function RetreatIntakeForm() {
                   (optional — you can refine it later)
                 </span>
               </label>
+                <p className="mt-1 text-xs text-stone-400">No websites, emails, phone numbers or social links. You can name the venue and town in plain text.</p>
               <textarea
                 id="ri-description"
                 name="description"
@@ -666,6 +667,7 @@ export function RetreatIntakeForm() {
                     >
                       Retreat title *
                     </label>
+                <p className="mt-1 text-xs text-stone-400">No websites, emails, phone numbers or social links. You can name the venue and town in plain text.</p>
                     <input
                       id="ri-retreatTitle"
                       name="retreatTitle"
@@ -695,6 +697,7 @@ export function RetreatIntakeForm() {
                         (optional)
                       </span>
                     </label>
+                <p className="mt-1 text-xs text-stone-400">No websites, emails, phone numbers or social links. You can name the venue and town in plain text.</p>
                     <input
                       id="ri-location"
                       name="location"
@@ -764,6 +767,7 @@ export function RetreatIntakeForm() {
                         (optional)
                       </span>
                     </label>
+                <p className="mt-1 text-xs text-stone-400">No websites, emails, phone numbers or social links. You can name the venue and town in plain text.</p>
                     <textarea
                       id="ri-facilitatorNotes"
                       name="facilitatorNotes"
