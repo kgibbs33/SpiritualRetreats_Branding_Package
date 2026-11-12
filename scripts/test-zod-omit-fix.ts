@@ -12,10 +12,10 @@ function ok(label: string, cond: boolean) {
 }
 
 // a) All four schemas imported without throwing
-console.log("retreatSubmissionSchema kind:", retreatSubmissionSchema._def.typeName);
-console.log("retreatInsert kind:", retreatSubmissionInsertSchema._def.typeName);
-console.log("venueSubmissionSchema kind:", venueSubmissionSchema._def.typeName);
-console.log("venueInsert kind:", venueSubmissionInsertSchema._def.typeName);
+console.log("retreatSubmissionSchema is ZodObject:", typeof retreatSubmissionSchema.parse === "function");
+console.log("retreatInsert is ZodObject:", typeof retreatSubmissionInsertSchema.parse === "function");
+console.log("venueSubmissionSchema is ZodObject:", typeof venueSubmissionSchema.parse === "function");
+console.log("venueInsert is ZodObject:", typeof venueSubmissionInsertSchema.parse === "function");
 p += 4;
 
 // b) Accept a normal submission
