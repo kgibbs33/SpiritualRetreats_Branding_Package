@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 
 const NAV = [
+  { label: "Retreat photo slots", href: "/admin/retreat-media" },
   {
     label: "Dashboard",
     href: "/admin/dashboard",

@@ -36,7 +36,7 @@ export function RetreatDetailContent({
       <div className="lp-container lp-detail">
         {(hasAdmin || previewOnly) && (
           <div className="lp-admin-notice">
-            {previewOnly ? "Milestone preview only · Photos, details and operator checks pending · Not bookable" : "Admin preview · Not a public booking page"}
+            {previewOnly ? "Milestone preview only · Illustrative stock photos · Details and operator checks pending · Not bookable" : "Admin preview · Not a public booking page"}
           </div>
         )}
         <nav className="lp-breadcrumb" aria-label="Breadcrumb">
@@ -51,8 +51,8 @@ export function RetreatDetailContent({
             .filter(Boolean)
             .join(" · ")}
         </p>
-        {previewOnly && <div className="lp-pending-photo"><span>PHOTOS PENDING</span><p>No verified retreat photographs have been added to this preview.</p></div>}
-        <RetreatGallery paths={photos} title={row.title} />
+        <RetreatGallery paths={photos} title={row.title} illustrative={Boolean(row.stockPhoto)} />
+        {row.stockPhoto && <p className="lp-photo-credit"><strong>Illustrative destination stock photo, not the retreat venue.</strong> Actual venue photos pending. Photo by <a href={row.stockPhoto.source} target="_blank" rel="noreferrer">{row.stockPhoto.photographer} / Unsplash</a>. <a href="https://unsplash.com/license" target="_blank" rel="noreferrer">Unsplash License</a>.</p>}
         <div className="lp-detail-columns">
           <div>
             <nav className="lp-sections" aria-label="Retreat sections">

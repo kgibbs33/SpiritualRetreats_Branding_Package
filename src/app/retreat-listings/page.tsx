@@ -40,7 +40,7 @@ export default async function RetreatListingsPage({ searchParams }: PageProps) {
   );
   return (
     <div className="lp">
-      {milestonePreviewEnabled() && <div className="lp-preview-notice"><strong>Milestone preview only.</strong> Four submitted retreat concepts, not approved listings. Photos, details and operator checks are pending. Booking and enquiries are disabled.</div>}
+      {milestonePreviewEnabled() && <div className="lp-preview-notice"><strong>Milestone preview only.</strong> Four submitted retreat concepts, not approved listings. Stock photos illustrate destinations, not the retreat venues. Actual photos, details and operator checks are pending. Booking and enquiries are disabled. <Link href="/media-workflow-preview">Try the photo-slot workflow →</Link></div>}
       <section className="lp-hero">
         <div className="lp-container lp-hero-inner">
           <div>

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import { RetreatPhotoSlots } from "@/components/admin/RetreatPhotoSlots";
 import { AdminShell } from "@/components/admin/AdminShell";
 import { RETREAT_TYPES, RETREAT_INTENTS } from "@/lib/retreats/search-options";
 
@@ -283,6 +284,8 @@ export default function RetreatEditPage() {
           <textarea rows={3} value={(form.internal_notes as string) ?? ""} onChange={e => set("internal_notes", e.target.value)}
             className="mt-1 w-full rounded-lg border border-sage-mist px-3 py-2 text-sm text-stone-400 italic" />
         </label>
+
+        <details className="mt-8 rounded-xl border border-sage-mist p-4"><summary className="cursor-pointer text-sm font-semibold">Photo slots, interface preview</summary><RetreatPhotoSlots listings={[{id:retreatId,title:String(form.title || "Retreat"),image:String(form.image_path || "")}]}/></details>
 
         {/* Qualification checks */}
         <fieldset className="mt-6 rounded-2xl border border-sage-mist bg-white p-4">

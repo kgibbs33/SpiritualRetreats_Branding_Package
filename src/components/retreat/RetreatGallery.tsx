@@ -3,9 +3,11 @@ import { useRef, useState } from "react";
 export function RetreatGallery({
   paths,
   title,
+  illustrative = false,
 }: {
   paths: string[];
   title: string;
+  illustrative?: boolean;
 }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const [index, setIndex] = useState(0);
@@ -23,15 +25,16 @@ export function RetreatGallery({
               setIndex(i);
               dialog.current?.showModal();
             }}
-            aria-label={`Open retreat photo ${i + 1}`}
+            aria-label={`Open ${illustrative ? "illustrative stock" : "retreat"} photo ${i + 1}`}
           >
             <img
               src={src}
-              alt={`${title}, photo ${i + 1}`}
+              alt={illustrative ? `Illustrative destination stock photo, not the venue: ${title}` : `${title}, photo ${i + 1}`}
               loading={i === 0 ? "eager" : "lazy"}
             />
           </button>
         ))}
+        {illustrative && <span className="lp-stock-label">Illustrative stock · not the retreat venue</span>}
         {paths.length > 1 && (
           <button
             className="lp-gallery-open"
@@ -53,7 +56,8 @@ export function RetreatGallery({
         >
           ×
         </button>
-        <img src={paths[index]} alt={`${title}, photo ${index + 1}`} />
+        <img src={paths[index]} alt={illustrative ? `Illustrative destination stock, not the venue: ${title}` : `${title}, photo ${index + 1}`} />
+        {illustrative && <p className="lp-stock-dialog-note">Illustrative stock photo. Does not show the retreat venue.</p>}
         <div className="lp-gallery-controls">
           <button
             disabled={paths.length === 1}

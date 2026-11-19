@@ -1,6 +1,7 @@
 /** Row shape for public.retreats (with Migration A columns — all nullable until applied). */
 export type RetreatRow = {
   previewOnly?: boolean;
+  stockPhoto?: {path:string;alt:string;photographer:string;source:string};
   id: string;
   slug: string;
   title: string;

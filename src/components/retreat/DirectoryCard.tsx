@@ -17,7 +17,7 @@ export function DirectoryCard({
         {image ? (
           <Image
             src={image}
-            alt={title}
+            alt={badge === "Milestone preview" ? `Illustrative destination stock photo, not the venue for ${title}` : title}
             fill
             sizes="(max-width: 600px) 100vw, 280px"
             className="object-cover"
@@ -25,7 +25,7 @@ export function DirectoryCard({
         ) : (
           <div className="lp-no-image">Photos pending</div>
         )}
-        <span>{badge === "Milestone preview" ? "Preview · checks pending" : type}</span>
+        <span>{badge === "Milestone preview" ? "Illustrative stock · not the venue" : type}</span>
       </Link>
       <div className="lp-card-body">
         <p className="lp-eyebrow">{location}</p>
