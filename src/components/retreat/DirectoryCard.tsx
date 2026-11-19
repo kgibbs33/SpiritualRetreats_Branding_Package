@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { RetreatCardProps } from "@/components/retreat/RetreatCard";
 export function DirectoryCard({
+  badge,
   title,
   type,
   location,
@@ -22,9 +23,9 @@ export function DirectoryCard({
             className="object-cover"
           />
         ) : (
-          <div className="lp-no-image">Image not available</div>
+          <div className="lp-no-image">Photos pending</div>
         )}
-        <span>{type}</span>
+        <span>{badge === "Milestone preview" ? "Preview · checks pending" : type}</span>
       </Link>
       <div className="lp-card-body">
         <p className="lp-eyebrow">{location}</p>

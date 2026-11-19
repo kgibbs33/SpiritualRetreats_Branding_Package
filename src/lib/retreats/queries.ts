@@ -1,4 +1,5 @@
 import "server-only";
+import { milestonePreviewEnabled, milestonePreviewRows } from "./milestone-preview";
 import { DEMO_RETREAT_SLUGS } from "./demo-records";
 
 import { unstable_cache } from "next/cache";
@@ -247,6 +248,19 @@ export async function listPublishedRetreats(
   const params = parseRetreatListParams(searchParams ?? {});
   const page = Math.max(1, params.page ?? 1);
 
+  if (milestonePreviewEnabled()) {
+    let rows = milestonePreviewRows.filter(row =>
+      (!params.q || `${row.title} ${row.description} ${row.location}`.toLowerCase().includes(params.q.toLowerCase())) &&
+      (!params.destination || `${row.country} ${row.location}`.toLowerCase().includes(params.destination.toLowerCase())) &&
+      (!params.type || params.type === "All types" || row.type === params.type.toLowerCase()) &&
+      (!params.intent || row.categories.includes(params.intent))
+    );
+    const budget = params.budget ? budgetRange(params.budget) : null;
+    if (budget) rows = rows.filter(row => row.price_from != null && row.price_from >= budget.min && row.price_from <= budget.max);
+    if (params.sort === "price_asc") rows = [...rows].sort((a,b) => (a.price_from ?? 0) - (b.price_from ?? 0));
+    if (params.sort === "price_desc") rows = [...rows].sort((a,b) => (b.price_from ?? 0) - (a.price_from ?? 0));
+    return { cards: rows.slice((page-1)*PER_PAGE,page*PER_PAGE).map(mapRowToCardProps), total: rows.length, page, error: null };
+  }
   let useNew = false;
   try {
     useNew = await isMigrationAApplied();
@@ -328,6 +342,9 @@ export async function getRetreatBySlug(
   departures: DepartureRow[];
   error: string | null;
 }> {
+  if (milestonePreviewEnabled()) {
+    return {row: milestonePreviewRows.find(r => r.slug === slug.trim()) ?? null, departures: [], error: null};
+  }
   const trimmed = slug.trim();
   if (!trimmed) return { row: null, departures: [], error: null };
 

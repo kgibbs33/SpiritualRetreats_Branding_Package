@@ -1,3 +1,4 @@
+import { milestonePreviewEnabled } from "@/lib/retreats/milestone-preview";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { DirectoryCard } from "@/components/retreat/DirectoryCard";
@@ -14,6 +15,7 @@ import {
 export const revalidate = 60;
 export const metadata: Metadata = {
   title: "Discover retreats",
+  ...(milestonePreviewEnabled() ? { robots: "noindex, nofollow" } : {}),
   description:
     "Find space to pause. Explore retreats by destination, style and budget.",
   alternates: { canonical: "/retreat-listings" },
@@ -38,6 +40,7 @@ export default async function RetreatListingsPage({ searchParams }: PageProps) {
   );
   return (
     <div className="lp">
+      {milestonePreviewEnabled() && <div className="lp-preview-notice"><strong>Milestone preview only.</strong> Four submitted retreat concepts, not approved listings. Photos, details and operator checks are pending. Booking and enquiries are disabled.</div>}
       <section className="lp-hero">
         <div className="lp-container lp-hero-inner">
           <div>

@@ -45,7 +45,7 @@ export async function generateMetadata({
       description: row.description?.slice(0, 200) || "",
       images: [{ url: ogImage, alt: row.title }],
     },
-    ...(isPreview ? { robots: "noindex, nofollow" } : {}),
+    ...((isPreview || row.previewOnly) ? { robots: "noindex, nofollow" } : {}),
   };
 }
 

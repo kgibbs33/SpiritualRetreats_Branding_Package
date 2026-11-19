@@ -11,6 +11,7 @@ export function RetreatDetailContent({
   departures: DepartureRow[];
   hasAdmin?: boolean;
 }) {
+  const previewOnly = Boolean(row.previewOnly);
   const photos = [
     ...new Set([...(row.gallery_paths ?? []), row.image_path].filter(Boolean)),
   ];
@@ -33,9 +34,9 @@ export function RetreatDetailContent({
   return (
     <div className="lp">
       <div className="lp-container lp-detail">
-        {hasAdmin && (
+        {(hasAdmin || previewOnly) && (
           <div className="lp-admin-notice">
-            Admin preview · Not a public booking page
+            {previewOnly ? "Milestone preview only · Photos, details and operator checks pending · Not bookable" : "Admin preview · Not a public booking page"}
           </div>
         )}
         <nav className="lp-breadcrumb" aria-label="Breadcrumb">
@@ -50,6 +51,7 @@ export function RetreatDetailContent({
             .filter(Boolean)
             .join(" · ")}
         </p>
+        {previewOnly && <div className="lp-pending-photo"><span>PHOTOS PENDING</span><p>No verified retreat photographs have been added to this preview.</p></div>}
         <RetreatGallery paths={photos} title={row.title} />
         <div className="lp-detail-columns">
           <div>
@@ -176,7 +178,7 @@ export function RetreatDetailContent({
                             </p>
                           )}
                         </div>
-                        {!hasAdmin && (
+                        {!hasAdmin && !previewOnly && (
                           <RequestPlaceForm
                             retreatId={row.id}
                             departureId={d.id}
@@ -203,8 +205,7 @@ export function RetreatDetailContent({
               <details>
                 <summary>How do I ask about this retreat?</summary>
                 <p>
-                  Use the enquiry button to ask about dates, rooms, access needs
-                  or the programme. The team will confirm the details with you.
+                  {previewOnly ? "This is a review-only listing. Photos, programme details and operator checks must be completed before enquiries or bookings open." : "Use the enquiry button to ask about dates, rooms, access needs or the programme. The team will confirm the details with you."}
                 </p>
               </details>
               <details>
@@ -230,8 +231,8 @@ export function RetreatDetailContent({
             {row.price_notes && <p>{row.price_notes}</p>}
             {row.dates_display && <p>{row.dates_display}</p>}
             <div className="lp-enquiry-rule" />
-            <p>Have a question about dates, accommodation or the programme?</p>
-            {!hasAdmin && (
+            <p>{previewOnly ? "Review only. No booking or enquiry can be submitted from this preview." : "Have a question about dates, accommodation or the programme?"}</p>
+            {!hasAdmin && !previewOnly && (
               <div className="lp-enquiry-action">
                 <RequestPlaceForm
                   retreatId={row.id}

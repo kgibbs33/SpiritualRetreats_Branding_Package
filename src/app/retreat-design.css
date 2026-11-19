@@ -1123,3 +1123,5 @@
     grid-row: 2/3;
   }
 }
+
+.lp-preview-notice{background:#fff4d8;color:#51401f;padding:18px max(24px,calc((100vw - 1200px)/2));font-size:14px;line-height:1.6;border-bottom:1px solid #e4c987}.lp-pending-photo{background:linear-gradient(135deg,#eef0e4,#e4e9df);min-height:260px;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:22px;text-align:center;padding:28px;margin:28px 0;color:#456350}.lp-pending-photo span{font-size:13px;letter-spacing:.18em;font-weight:700}.lp-pending-photo p{max-width:420px;margin-top:14px}.lp-no-image{background:linear-gradient(145deg,#edf0e5,#dce5d7);color:#456350;display:flex;align-items:center;justify-content:center;height:100%;min-height:200px;font-family:Georgia,serif;font-size:23px}

@@ -1,0 +1,12 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "schedules": {
+    "supabase-daily-read": {
+      "schedule": "17 9 * * *",
+      "timezone": "UTC",
+      "jitter": 15,
+      "path": "/api/supabase-keepalive",
+      "requestMethod": "GET"
+    }
+  }
+}

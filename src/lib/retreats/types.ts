@@ -1,5 +1,6 @@
 /** Row shape for public.retreats (with Migration A columns — all nullable until applied). */
 export type RetreatRow = {
+  previewOnly?: boolean;
   id: string;
   slug: string;
   title: string;
