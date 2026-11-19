@@ -1,6 +1,7 @@
 import {NextResponse} from 'next/server';
 import {getAdminSession} from '@/lib/admin/auth';
 import {createAdminClient} from '@/lib/supabase/admin';
+import {DEMO_RETREAT_SLUGS} from '@/lib/retreats/demo-records';
 import {mediaEnabled,MEDIA_BUCKET,type MediaSlot} from '@/lib/retreats/media';
 export const dynamic='force-dynamic';
 export async function GET(_req:Request,{params}:{params:Promise<{id:string}>}){
@@ -12,7 +13,7 @@ export async function GET(_req:Request,{params}:{params:Promise<{id:string}>}){
  const admin=await getAdminSession();
  if(!admin){
   if(row.review_state!=='approved')return missing();
-  if(!row.preview_key){const {data:retreat}=await s.from('retreats').select('status,qualification_status').eq('id',row.retreat_id).maybeSingle();if(retreat?.status!=='published'||retreat?.qualification_status!=='live')return missing();}
+  if(!row.preview_key){const {data:retreat}=await s.from('retreats').select('status,qualification_status,slug').eq('id',row.retreat_id).maybeSingle();if(DEMO_RETREAT_SLUGS.has(retreat?.slug)||retreat?.status!=='published'||retreat?.qualification_status!=='live')return missing();}
  }
  const {data:blob,error:downloadError}=await s.storage.from(MEDIA_BUCKET).download(row.storage_path);
  if(downloadError||!blob)return missing();
