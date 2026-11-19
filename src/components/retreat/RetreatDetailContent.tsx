@@ -13,7 +13,7 @@ export function RetreatDetailContent({
 }) {
   const previewOnly = Boolean(row.previewOnly);
   const photos = [
-    ...new Set([...(row.gallery_paths ?? []), row.image_path].filter(Boolean)),
+    ...new Set([row.image_path, ...(row.gallery_paths ?? [])].filter(Boolean)),
   ];
   const itinerary = (row.itinerary ?? []).map((item, i) => ({
     title: String(item.title ?? item.day ?? `Day ${i + 1}`),
@@ -36,7 +36,7 @@ export function RetreatDetailContent({
       <div className="lp-container lp-detail">
         {(hasAdmin || previewOnly) && (
           <div className="lp-admin-notice">
-            {previewOnly ? "Milestone preview only · Illustrative stock photos · Details and operator checks pending · Not bookable" : "Admin preview · Not a public booking page"}
+            {previewOnly ? "Milestone preview only · Illustrative photos labelled · Details and operator checks pending · Not bookable" : "Admin preview · Not a public booking page"}
           </div>
         )}
         <nav className="lp-breadcrumb" aria-label="Breadcrumb">
@@ -51,8 +51,8 @@ export function RetreatDetailContent({
             .filter(Boolean)
             .join(" · ")}
         </p>
-        <RetreatGallery paths={photos} title={row.title} illustrative={Boolean(row.stockPhoto)} />
-        {row.stockPhoto && <p className="lp-photo-credit"><strong>Illustrative destination stock photo, not the retreat venue.</strong> Actual venue photos pending. Photo by <a href={row.stockPhoto.source} target="_blank" rel="noreferrer">{row.stockPhoto.photographer} / Unsplash</a>. <a href="https://unsplash.com/license" target="_blank" rel="noreferrer">Unsplash License</a>.</p>}
+        <RetreatGallery paths={photos} title={row.title} illustrative={Boolean(row.stockPhoto)} photos={row.mediaPhotos} />
+        {!row.mediaPhotos&&row.stockPhoto && <p className="lp-photo-credit"><strong>Illustrative destination stock photo, not the retreat venue.</strong> Actual venue photos pending. Photo by <a href={row.stockPhoto.source} target="_blank" rel="noreferrer">{row.stockPhoto.photographer} / Unsplash</a>. <a href="https://unsplash.com/license" target="_blank" rel="noreferrer">Unsplash License</a>.</p>}
         <div className="lp-detail-columns">
           <div>
             <nav className="lp-sections" aria-label="Retreat sections">

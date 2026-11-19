@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { RetreatCardProps } from "@/components/retreat/RetreatCard";
 export function DirectoryCard({
-  badge,
+  imageIllustrative, imageAlt,
   title,
   type,
   location,
@@ -17,7 +17,8 @@ export function DirectoryCard({
         {image ? (
           <Image
             src={image}
-            alt={badge === "Milestone preview" ? `Illustrative destination stock photo, not the venue for ${title}` : title}
+            alt={imageAlt || (imageIllustrative ? `Illustrative destination stock photo, not the venue for ${title}` : title)}
+            unoptimized={image.startsWith("/api/retreat-media/")}
             fill
             sizes="(max-width: 600px) 100vw, 280px"
             className="object-cover"
@@ -25,7 +26,7 @@ export function DirectoryCard({
         ) : (
           <div className="lp-no-image">Photos pending</div>
         )}
-        <span>{badge === "Milestone preview" ? "Illustrative stock · not the venue" : type}</span>
+        <span>{imageIllustrative ? "Illustrative stock · not the venue" : type}</span>
       </Link>
       <div className="lp-card-body">
         <p className="lp-eyebrow">{location}</p>

@@ -285,7 +285,7 @@ export default function RetreatEditPage() {
             className="mt-1 w-full rounded-lg border border-sage-mist px-3 py-2 text-sm text-stone-400 italic" />
         </label>
 
-        <details className="mt-8 rounded-xl border border-sage-mist p-4"><summary className="cursor-pointer text-sm font-semibold">Photo slots, interface preview</summary><RetreatPhotoSlots listings={[{id:retreatId,title:String(form.title || "Retreat"),image:String(form.image_path || "")}]}/></details>
+        <details className="mt-8 rounded-xl border border-sage-mist p-4"><summary className="cursor-pointer text-sm font-semibold">Photo slots, upload and review</summary><RetreatPhotoSlots persistent listings={[{id:retreatId,title:String(form.title || "Retreat"),image:String(form.image_path || "")}]}/></details>
 
         {/* Qualification checks */}
         <fieldset className="mt-6 rounded-2xl border border-sage-mist bg-white p-4">

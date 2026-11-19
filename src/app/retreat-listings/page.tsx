@@ -1,4 +1,6 @@
-import { milestonePreviewEnabled } from "@/lib/retreats/milestone-preview";
+import {PreviewFilters} from "@/components/retreat/PreviewFilters";
+import {previewFacets} from "@/lib/retreats/preview-filters";
+import { milestonePreviewEnabled,milestonePreviewRows } from "@/lib/retreats/milestone-preview";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { DirectoryCard } from "@/components/retreat/DirectoryCard";
@@ -36,7 +38,7 @@ export default async function RetreatListingsPage({ searchParams }: PageProps) {
   const eligible = databaseCards.filter((r) => !isDemoRetreatHref(r.href));
   const cards = eligible;
   const filtered = Boolean(
-    text || q.type || q.intent || q.budget || q.destination,
+    text || q.type || q.intent || q.budget || q.destination || q.currency || q.lengths?.length || q.categories?.length || q.features?.length,
   );
   return (
     <div className="lp">
@@ -125,7 +127,7 @@ export default async function RetreatListingsPage({ searchParams }: PageProps) {
                 ))}
               </select>
             </label>
-            <label>
+            {!milestonePreviewEnabled()&&<label>
               Budget
               <select name="budget" defaultValue={q.budget ?? ""}>
                 <option value="">Any budget</option>
@@ -135,19 +137,17 @@ export default async function RetreatListingsPage({ searchParams }: PageProps) {
                   </option>
                 ))}
               </select>
-            </label>
-            <p className="lp-fine">
-              Prices and currencies are shown on each listing.
-            </p>
-            <label>
+            </label>}
+            {milestonePreviewEnabled()&&<PreviewFilters value={q} counts={previewFacets(milestonePreviewRows)}/>}
+            {!milestonePreviewEnabled()&&<label>
               Sort by
               <select name="sort" defaultValue={q.sort ?? "soonest"}>
                 <option value="soonest">Recommended</option>
-                <option value="price_asc">Price: low to high</option>
-                <option value="price_desc">Price: high to low</option>
+                <option value="price_asc" disabled={milestonePreviewEnabled()&&!q.currency}>Price: low to high</option>
+                <option value="price_desc" disabled={milestonePreviewEnabled()&&!q.currency}>Price: high to low</option>
                 <option value="newest">Recently added</option>
               </select>
-            </label>
+            </label>}
             <button className="lp-button lp-outline" type="submit">
               Apply filters →
             </button>

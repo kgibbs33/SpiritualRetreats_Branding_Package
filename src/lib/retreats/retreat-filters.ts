@@ -22,6 +22,12 @@ export const PER_PAGE = 12;
 /** Zod schema for validated URL searchParams. Invalid values → ignored, not errored. */
 export const retreatListParamsSchema = z.object({
   q: z.string().optional(),
+  currency:z.enum(["EUR","USD"]).optional(),
+  min_price:z.coerce.number().min(0).max(1000000).optional(),
+  max_price:z.coerce.number().min(0).max(1000000).optional(),
+  lengths:z.array(z.enum(["2-3","4-5","6-7","8-14","15+"])).optional(),
+  categories:z.array(z.enum(["wellness","spiritual","nature","yoga"])).optional(),
+  features:z.array(z.enum(["featured","solo","meals","beach","women","private","couples","vegetarian","spanish","transfers"])).optional(),
   intent: z.enum(RETREAT_INTENTS).optional(),
   destination: z.string().optional(),
   month: z.string().regex(/^\d{4}-\d{2}$/, "YYYY-MM").optional(),
@@ -42,12 +48,14 @@ export type RetreatListParams = z.infer<typeof retreatListParamsSchema>;
 export function parseRetreatListParams(
   raw: Record<string, string | string[] | undefined>
 ): RetreatListParams {
-  const flat: Record<string, string | undefined> = {};
+  const flat: Record<string, unknown> = {};
   for (const [k, v] of Object.entries(raw)) {
-    flat[k] = Array.isArray(v) ? v[0] : v ?? undefined;
+    if(v===undefined||v==='')continue;
+    flat[k] = ["lengths","categories","features"].includes(k)?(Array.isArray(v)?v:[v]).flatMap(x=>x.split(",")):(Array.isArray(v)?v[0]:v);
   }
-  const parsed = retreatListParamsSchema.safeParse(flat);
-  return parsed.success ? parsed.data : {};
+  const valid:Record<string,unknown>={};
+  for(const [key,field] of Object.entries(retreatListParamsSchema.shape)){const parsed=field.safeParse(flat[key]);if(parsed.success&&parsed.data!==undefined)valid[key]=parsed.data;}
+  return valid as RetreatListParams;
 }
 
 /** Duration slug → min/max nights. */

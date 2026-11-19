@@ -4,6 +4,8 @@ import Link from "next/link";
 import { TrustBadge, type TrustVariant } from "@/components/ui/TrustBadge";
 
 export type RetreatCardProps = {
+  imageIllustrative?:boolean;
+  imageAlt?:string;
   id: string | number;
   title: string;
   type: string;
