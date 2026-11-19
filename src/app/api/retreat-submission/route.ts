@@ -1,3 +1,4 @@
+import { listingConsentSchema, recordListingConsent } from "@/lib/listing-consent";
 import { NextResponse, after } from "next/server";
 
 import { sendRetreatSubmissionUserConfirmation } from "@/lib/mail/transactional-confirmations";
@@ -27,6 +28,8 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
+    const consentCheck = listingConsentSchema.safeParse(body);
+    if (!consentCheck.success) return NextResponse.json({error: "Please agree to the terms and read the Privacy Policy."}, {status:400});
     const parsed = retreatSubmissionSchema.safeParse(body);
     if (!parsed.success) {
       const first = parsed.error.flatten().fieldErrors;
@@ -36,10 +39,12 @@ export async function POST(request: Request) {
 
     const d = retreatSubmissionInsertSchema.parse(parsed.data);
     const supabase = createAdminClient();
+    const submissionId = await recordListingConsent(supabase, "planner", body);
 
     const { data: row, error: insertError } = await supabase
       .from("retreat_submissions")
       .insert({
+        id: submissionId,
         contact_name:      d.contactName,
         email:             d.email,
         retreat_title:     d.retreatTitle,
@@ -105,7 +110,7 @@ export async function POST(request: Request) {
         submitted_at: new Date().toISOString(),
         source_url: "",
         contact: { name: d.contactName, email: d.email },
-        data: { retreatTitle: d.retreatTitle, location: d.location },
+        data: { terms_accepted: true, marketing_opt_in: consentCheck.data.marketingOptIn, retreatTitle: d.retreatTitle, location: d.location },
         record_id: String(row.id),
       });
     });

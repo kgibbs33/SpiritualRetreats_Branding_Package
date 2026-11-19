@@ -1,3 +1,4 @@
+import { listingConsentSchema, recordListingConsent } from "@/lib/listing-consent";
 import { NextResponse, after } from "next/server";
 
 import { sendTeamSubmissionNotification } from "@/lib/mail/team-notification";
@@ -26,6 +27,8 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
+    const consentCheck = listingConsentSchema.safeParse(body);
+    if (!consentCheck.success) return NextResponse.json({error: "Please agree to the terms and read the Privacy Policy."}, {status:400});
     const parsed = venueSubmissionSchema.safeParse(body);
     if (!parsed.success) {
       const first = parsed.error.flatten().fieldErrors;
@@ -35,10 +38,12 @@ export async function POST(request: Request) {
 
     const d = venueSubmissionInsertSchema.parse(parsed.data);
     const supabase = createAdminClient();
+    const submissionId = await recordListingConsent(supabase, "venue", body);
 
     const { data: row, error: insertError } = await supabase
       .from("venue_submissions")
       .insert({
+        id: submissionId,
         contact_name: d.contactName,
         email: d.email,
         phone: d.phone ?? null,
@@ -102,7 +107,7 @@ export async function POST(request: Request) {
         submitted_at: new Date().toISOString(),
         source_url: "",
         contact: { name: d.contactName, email: d.email, phone: d.phone ?? null },
-        data: { venueName: d.venueName, location: d.location },
+        data: { terms_accepted: true, marketing_opt_in: consentCheck.data.marketingOptIn, venueName: d.venueName, location: d.location },
         record_id: String(row.id),
       });
     });

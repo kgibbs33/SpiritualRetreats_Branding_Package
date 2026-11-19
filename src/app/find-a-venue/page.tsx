@@ -3,7 +3,7 @@ import Link from "next/link";
 import { canonicalUrl } from "@/lib/metadata";
 import { BrandImage } from "@/components/ui/BrandImage";
 import { IMAGES } from "@/config/images";
-import { MarketingPackages } from "@/components/ui/MarketingPackages";
+import { VenueFees } from "@/components/ui/RoleFees";
 
 export const metadata: Metadata = {
   title: "Find a Venue",
@@ -16,7 +16,7 @@ const GUIDELINES = [
   "A usable kitchen or catering (hotels welcome)",
   "Willingness to host group retreats",
   "A website, photos and accurate details",
-  "Any permits and insurance needed",
+  "All required permits; public liability insurance is strongly recommended",
 ];
 
 export default function FindAVenuePage() {
@@ -58,10 +58,7 @@ export default function FindAVenuePage() {
           List your venue
         </h2>
         <p className="mt-3 text-stone-700">
-          List your venue and be found by retreat planners. The first 100
-          approved venues registering before the end of 2026 list free
-          throughout 2027. When a retreat is booked from an inquiry on this
-          site, Light Path Retreats takes a 15% commission.
+          List your venue and be found by retreat planners. No commission or booking fee is charged on venue bookings. Bronze, Silver and Gold memberships are yearly only; see the fees below.
         </p>
         <Link
           href="/venue-application"
@@ -74,7 +71,7 @@ export default function FindAVenuePage() {
       {/* V-04 Approval criteria */}
       <section className="mt-16">
         <h2 className="text-2xl font-semibold text-celestial-navy">Our listing guidelines</h2>
-        <p className="mt-3 text-sm text-stone-500 italic">Draft — criteria to be finalised by the team.</p>
+
         <ul className="mt-4 list-disc space-y-2 pl-5 text-stone-700">
           {GUIDELINES.map((g) => (
             <li key={g}>{g}</li>
@@ -93,10 +90,7 @@ export default function FindAVenuePage() {
         provided by the venue owner.
       </section>
 
-      <section className="mt-16">
-        <h2 className="text-2xl font-semibold text-celestial-navy">Marketing packages</h2>
-        <MarketingPackages />
-      </section>
+      <VenueFees />
 
       {/* V-07 Reviews — hidden Stage 2 */}
       <p className="mt-8 text-xs text-stone-400">

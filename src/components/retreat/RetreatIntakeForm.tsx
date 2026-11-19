@@ -1,4 +1,5 @@
 "use client";
+import { ListingConsents } from "@/components/ui/ListingConsents";
 
 import { useRef, useState, useEffect, useCallback } from "react";
 import Link from "next/link";
@@ -279,6 +280,8 @@ export function RetreatIntakeForm() {
   const [step, setStep] = useState(0);
   const [direction, setDirection] = useState<"forward" | "back">("forward");
   const [submitting, setSubmitting] = useState(false);
+  const [termsAccepted,setTermsAccepted]=useState(false);
+  const [marketingOptIn,setMarketingOptIn]=useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   // Step 0 — contact
@@ -378,6 +381,7 @@ export function RetreatIntakeForm() {
 
   async function submit() {
     if (!currentQuestion || currentQuestion.kind !== "details") return;
+    if (!termsAccepted) { setErrors({form:"Please agree to the Retreat Planner Terms and read the Privacy Policy."}); return; }
     const e = validateQuestion(currentQuestion);
     if (Object.keys(e).length) {
       setErrors(e);
@@ -388,6 +392,7 @@ export function RetreatIntakeForm() {
     setErrors({});
 
     const payload = {
+      termsAccepted, marketingOptIn,
       contactName: contactName.trim(),
       email: email.trim(),
       company: (honeypotRef.current?.value || "").trim(),
@@ -781,6 +786,8 @@ export function RetreatIntakeForm() {
                   </div>
                 </div>
 
+                <ListingConsents role="planner" accepted={termsAccepted} onAccepted={setTermsAccepted} marketing={marketingOptIn} onMarketing={setMarketingOptIn} />
+
                 <button
                   type="button"
                   disabled={submitting}
@@ -791,11 +798,7 @@ export function RetreatIntakeForm() {
                 </button>
 
                 <p className="text-center text-xs text-stone-400">
-                  We&apos;ll review your submission and follow up by email. By submitting you agree to our{" "}
-                  <a href="/privacy" className="underline hover:text-stone-600">
-                    privacy policy
-                  </a>
-                  .
+                  We&apos;ll review your submission and follow up by email.
                 </p>
               </div>
             )}

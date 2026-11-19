@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 
-export function SiteChrome({ children }: { children: React.ReactNode }) {
+export function SiteChrome({ children, showLegal }: { children: React.ReactNode; showLegal?:boolean }) {
   const pathname = usePathname() ?? "";
   const isAdmin = pathname === "/admin" || pathname.startsWith("/admin/");
 
@@ -20,7 +20,7 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
     <>
       <Header />
       <main className="min-w-0 w-full flex-1">{children}</main>
-      <Footer />
+      <Footer showLegal={showLegal} />
     </>
   );
 }

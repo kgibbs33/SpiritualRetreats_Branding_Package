@@ -1,4 +1,5 @@
 "use client";
+import { ListingConsents } from "@/components/ui/ListingConsents";
 
 import { useState } from "react";
 
@@ -140,7 +141,10 @@ export function FacilitatorOnboardingForm() {
       }))
       .filter((r) => r.name || r.email);
 
+    if (fd.get("termsAccepted") !== "on") { setErrors({form:"Please agree to the Facilitator Terms and read the Privacy Policy."}); return; }
     const payload = {
+      termsAccepted: true,
+      marketingOptIn: fd.get("marketingOptIn") === "on",
       fullName: (fd.get("fullName") as string)?.trim() ?? "",
       email: (fd.get("email") as string)?.trim() ?? "",
       company: ((fd.get("company") as string) || "").trim(),
@@ -576,6 +580,8 @@ export function FacilitatorOnboardingForm() {
         </p>
       </div>
 
+      <ListingConsents role="facilitator" />
+
       <button
         type="submit"
         disabled={status === "submitting"}
@@ -583,13 +589,7 @@ export function FacilitatorOnboardingForm() {
       >
         {status === "submitting" ? "Sending…" : "Submit profile"}
       </button>
-      <p className="text-center text-xs text-stone-400">
-        By submitting you agree to our{" "}
-        <a href="/privacy" className="underline hover:text-stone-600">
-          privacy policy
-        </a>
-        .
-      </p>
+
     </form>
   );
 }

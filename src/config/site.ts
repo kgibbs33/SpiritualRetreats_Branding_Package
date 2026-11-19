@@ -33,19 +33,19 @@ export const SITE_CONFIG = {
 
   /** Pricing — display values (pricing logic is NOT here) */
   pricing: {
-    guest_minimum_deposit_pct: 20,
+    guest_minimum_deposit_pct: 40,
     lightpath_fee_pct: 15,
     cancellation_window_hours: 72,
     guest_cancellation_admin_fee_eur: 30,
-    facilitator_monthly_eur: 12.22,
-    facilitator_annual_eur: 122,
+    facilitator_monthly_eur: 12.99,
+    facilitator_annual_eur: 129.90,
     payment_management_note: "Payment schedule management: coming soon",
     examples: {
       seat_eur: 1000,
-      first_payment_eur: 200, // 20% of seat price, taken at booking
+      first_payment_eur: 400, // 40% of seat price, taken at booking
       lightpath_fee_eur: 150, // 15% of seat price, from the first payment
-      first_payment_remainder_eur: 50, // after card/currency costs are deducted
-      remaining_balance_eur: 800, // collected directly by the planner
+      first_payment_remainder_eur: 250, // after card/currency costs are deducted
+      remaining_balance_eur: 600, // collected directly by the planner
     },
   },
 

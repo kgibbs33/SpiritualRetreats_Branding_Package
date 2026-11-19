@@ -1,4 +1,5 @@
 "use client";
+import { ListingConsents } from "@/components/ui/ListingConsents";
 
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -63,6 +64,7 @@ export function VenueApplicationForm() {
     minimumStay: "",
     description: "",
     consent: false,
+    marketingOptIn: false,
   });
 
   const set = (key: string, value: string | boolean) =>
@@ -73,7 +75,7 @@ export function VenueApplicationForm() {
     setErrors({});
 
     if (!form.consent) {
-      setErrors({ form: "Please confirm you agree to be contacted." });
+      setErrors({ form: "Please agree to the Venue Terms and read the Privacy Policy." });
       return;
     }
 
@@ -101,6 +103,8 @@ export function VenueApplicationForm() {
       minimumStay: form.minimumStay.trim() || null,
       description: form.description.trim() || null,
       consent: true,
+      termsAccepted: form.consent,
+      marketingOptIn: form.marketingOptIn,
       company: (honeypotRef.current?.value || "").trim(),
     };
 
@@ -399,28 +403,12 @@ export function VenueApplicationForm() {
         </div>
       </fieldset>
 
-      {/* Consent */}
-      <div className="rounded-2xl bg-sage-mist/60 p-5 sm:p-6">
-        <label htmlFor="va-consent" className="flex items-start gap-3 text-sm text-stone-700">
-          <input
-            id="va-consent"
-            type="checkbox"
-            checked={form.consent}
-            onChange={(e) => set("consent", e.target.checked)}
-            className="mt-0.5 size-4 shrink-0 accent-river-teal"
-            required
-          />
-          <span>
-            I confirm I am authorised to submit this venue and agree to be
-            contacted about my application. <span className="text-red-500">*</span>
-          </span>
-        </label>
-      </div>
+      <ListingConsents role="venue" accepted={form.consent} onAccepted={v=>set("consent",v)} marketing={form.marketingOptIn} onMarketing={v=>set("marketingOptIn",v)} />
 
       <button
         type="submit"
         disabled={submitting}
-        className="inline-flex h-14 w-full items-center justify-center rounded-xl bg-sacred-gold px-10 text-base font-semibold text-celestial-navy shadow-sm transition-all hover:bg-sacred-gold/90 hover:scale-[1.02] active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-river-teal focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+        className="inline-flex h-14 w-full items-center justify-center rounded-xl bg-sacred-gold px-10 text-base font-semibold text-celestial-navy shadow-sm transition-all hover:bg-sacred-gold/90 sm:hover:scale-[1.02] active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-river-teal focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
       >
         {submitting ? "Submitting…" : "Submit venue application"}
       </button>

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { SITE_CONFIG } from "@/config/site";
-import { MarketingPackages } from "@/components/ui/MarketingPackages";
+import { PlannerFees } from "@/components/ui/RoleFees";
 import { canonicalUrl } from "@/lib/metadata";
 
 export const metadata: Metadata = {
@@ -10,7 +9,6 @@ export const metadata: Metadata = {
 };
 
 export default function RetreatPlannersPage() {
-  const p = SITE_CONFIG.pricing;
   return (
     <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
       {/* RP-01 Hero */}
@@ -19,8 +17,7 @@ export default function RetreatPlannersPage() {
           List your retreat with Light Path Retreats.
         </h1>
         <p className="mx-auto mt-4 max-w-xl text-stone-600">
-          List, promote and fill your retreats, and find venues and facilitators. Free to list for 2027 when you register before the end of
-          2026.
+          List and promote your retreats, and find venues and facilitators. The first 500 listings registered before 31 December 2026 receive Bronze free throughout 2027. Booking commission still applies.
         </p>
         <Link
           href="/retreat-intake-form"
@@ -46,49 +43,12 @@ export default function RetreatPlannersPage() {
         <ol className="mt-4 list-decimal space-y-2 pl-5 text-stone-700">
           <li>Register your retreat.</li>
           <li>We review your listing against our guidelines.</li>
-          <li>Your retreat goes live and guests can book.</li>
-          <li>You are paid after the {p.cancellation_window_hours}-hour cancellation window.</li>
+          <li>Your retreat can go live after approval, required insurance checks and Stripe connection. Booking is not enabled on this preview.</li>
+          <li>When checkout launches, guest payments go to your own Stripe account on Stripe's payout schedule, less commission and card fees.</li>
         </ol>
       </section>
 
-      {/* RP-04 Fees */}
-      <section className="mt-16 rounded-2xl border border-sage-mist bg-warm-cream p-6">
-        <h2 className="text-2xl font-semibold text-celestial-navy">Fees</h2>
-        <p className="mt-3 text-stone-700">
-          Planners set their own deposit, with a minimum of 20%.
-        </p>
-        <p className="mt-3 rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
-          The 15% fee is non-refundable once the 72-hour window has passed,
-          including if you later cancel the retreat. We expect Retreat Planners
-          to hold suitable insurance for cancellations and related losses.
-        </p>
-        <p className="mt-2 text-xs text-stone-500">
-          Draft wording. The full terms are in the{" "}
-          <Link href="/terms" className="text-link underline">
-            Partner Terms
-          </Link>
-          .
-        </p>
-        <p className="mt-3 text-stone-700">
-          Free to list for 2027 when you register before the end of 2026. When a
-          guest books, Light Path Retreats takes {p.lightpath_fee_pct}% of the
-          ticket price from the first payment. You receive the rest, less card
-          fees, once the {p.cancellation_window_hours}-hour cancellation window
-          has passed.
-        </p>
-
-        <p className="mt-4 text-sm font-semibold text-celestial-navy">
-          Illustrative example, final figures confirmed in the Partner Terms:
-        </p>
-        <ul className="mt-2 list-disc space-y-1 pl-5 text-stone-700">
-          <li>Retreat seat: &euro;{p.examples.seat_eur.toLocaleString()}.</li>
-          <li>Guest pays the first payment: {p.guest_minimum_deposit_pct}% = &euro;{p.examples.first_payment_eur.toLocaleString()} (through Light Path Retreats).</li>
-          <li>Light Path Retreats fee: {p.lightpath_fee_pct}% of the seat price = &euro;{p.examples.lightpath_fee_eur.toLocaleString()}, taken from that first payment.</li>
-          <li>Remaining &euro;{p.examples.first_payment_remainder_eur.toLocaleString()} in the first payment: card and currency-conversion costs are deducted from this; you receive what is left.</li>
-          <li>You collect the remaining balance, &euro;{p.examples.remaining_balance_eur.toLocaleString()}, directly from the guest.</li>
-        </ul>
-        <p className="mt-2 text-sm text-stone-500">Card and currency costs vary.</p>
-      </section>
+      <PlannerFees />
 
       {/* RP-06 Who it's for */}
       <section className="mt-16">
@@ -114,10 +74,7 @@ export default function RetreatPlannersPage() {
         <Link href="/education" className="text-link">Education</Link>
       </section>
 
-      <section className="mt-16">
-        <h2 className="text-2xl font-semibold text-celestial-navy">Marketing packages</h2>
-        <MarketingPackages />
-      </section>
+
 
     </div>
   );

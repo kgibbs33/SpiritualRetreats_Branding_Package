@@ -1,3 +1,5 @@
+import { milestonePreviewEnabled } from "@/lib/retreats/milestone-preview";
+import { LEGAL_PAGES_VISIBLE } from "@/lib/constants";
 import type { Metadata } from "next";
 import { EB_Garamond, Lato } from "next/font/google";
 import "./globals.css";
@@ -77,7 +79,7 @@ export default function RootLayout({
         className="flex min-h-[100dvh] flex-col antialiased"
         suppressHydrationWarning
       >
-        <SiteChrome>{children}</SiteChrome>
+        <SiteChrome showLegal={LEGAL_PAGES_VISIBLE || milestonePreviewEnabled()}>{children}</SiteChrome>
       </body>
     </html>
   );

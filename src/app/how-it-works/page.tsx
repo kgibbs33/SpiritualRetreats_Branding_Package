@@ -18,8 +18,7 @@ export default function HowItWorksPage() {
         How it works
       </h1>
       <p className="mt-4 text-lg text-stone-600">
-        Find a retreat, book your place, and pay a deposit. The rest is handled
-        safely.
+        Explore submitted retreats and learn how booking is planned to work. Checkout and payments are not live on this preview.
       </p>
 
       <section className="mt-12 space-y-8">
@@ -43,10 +42,7 @@ export default function HowItWorksPage() {
         <div>
           <h2 className="text-xl font-semibold text-celestial-navy">3. Booking and payment</h2>
           <p className="mt-2 leading-relaxed text-stone-700">
-            Your first payment ({dep}% of the retreat price) is taken when you
-            book. After the {w}-hour window, your booking details go to the
-            Retreat Planner, who contacts you to arrange the remaining balance
-            directly.
+            The planned payment rule is a {dep}% retainer for bookings more than 6 weeks ahead with a ticket of EUR 300 or more, unless the planner chooses full payment. Within 6 weeks, below EUR 300, or where the planner chooses it, the full ticket price is due. Guest payments go to the planner’s own Stripe account; any remaining balance is collected directly by the planner.
           </p>
         </div>
 
@@ -55,18 +51,14 @@ export default function HowItWorksPage() {
             4. {w}-hour cancellation window
           </h2>
           <p className="mt-2 leading-relaxed text-stone-700">
-            You can cancel within {w} hours of booking for a refund of your
-            payment, less a &euro;{adminFee} administration fee. After that,
-            the Retreat Planner&apos;s own cancellation policy applies, shown
-            on each retreat page.
+            For bookings made more than 6 weeks ahead, the planned {w}-hour cancellation window gives a refund less EUR {adminFee} and the actual card processing costs. After the window the booking payment is non-refundable under the standard policy. Bookings within 6 weeks are non-refundable from booking. A planner may offer a more generous policy at their own cost.
           </p>
         </div>
 
         <div>
           <h2 className="text-xl font-semibold text-celestial-navy">5. What happens next</h2>
           <p className="mt-2 leading-relaxed text-stone-700">
-            After the {w}-hour window, the Retreat Planner confirms your place
-            and the retreat&apos;s own policies apply from that point.
+            The planner is responsible for delivering the retreat, confirming practical details and collecting any balance. A planner cancellation requires a full guest refund within 14 days under the Retreat Planner Terms.
           </p>
         </div>
       </section>

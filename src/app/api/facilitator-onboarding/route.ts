@@ -1,3 +1,4 @@
+import { listingConsentSchema, recordListingConsent } from "@/lib/listing-consent";
 import { NextResponse, after } from "next/server";
 
 import {
@@ -25,6 +26,8 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
+    const consentCheck = listingConsentSchema.safeParse(body);
+    if (!consentCheck.success) return NextResponse.json({error: "Please agree to the terms and read the Privacy Policy."}, {status:400});
     const parsed = facilitatorOnboardingSchema.safeParse(body);
     if (!parsed.success) {
       const first = parsed.error.flatten().fieldErrors;
@@ -34,10 +37,12 @@ export async function POST(request: Request) {
 
     const d = parsed.data;
     const supabase = createAdminClient();
+    const submissionId = await recordListingConsent(supabase, "facilitator", body);
 
     const { data: row, error: insertError } = await supabase
       .from("facilitator_onboarding_responses")
       .insert({
+        id: submissionId,
         full_name: d.fullName.trim(),
         email: d.email.trim().toLowerCase(),
         phone: d.phone?.trim() || null,
@@ -98,7 +103,7 @@ export async function POST(request: Request) {
           submitted_at: new Date().toISOString(),
           source_url: "",
           contact: { name: d.fullName.trim(), email: d.email.trim() },
-          data: { practiceAreas: d.practiceAreas, city: d.city },
+          data: { terms_accepted: true, marketing_opt_in: consentCheck.data.marketingOptIn, practiceAreas: d.practiceAreas, city: d.city },
           record_id: String(row.id),
         });
     });

@@ -23,13 +23,11 @@ const companyLinks = [
   { href: "/contact", label: "Contact" },
 ];
 
-const legalLinks = LEGAL_PAGES_VISIBLE
-  ? [
+const legalLinks = [
       { href: "/privacy", label: "Privacy Policy" },
       { href: "/terms", label: "Terms & Conditions" },
       { href: "/cookies", label: "Cookie Policy" },
-    ]
-  : [];
+    ];
 
 const headingClass =
   "text-[11px] font-semibold uppercase tracking-[0.16em] text-forest-green/70";
@@ -61,7 +59,7 @@ function FooterNavGroup({
   );
 }
 
-export function Footer() {
+export function Footer({showLegal = LEGAL_PAGES_VISIBLE}: {showLegal?: boolean}) {
   const pathname = usePathname();
   const year = new Date().getFullYear();
 
@@ -135,7 +133,7 @@ export function Footer() {
             <FooterNavGroup title="Explore" links={exploreLinks} />
             <FooterNavGroup title="Create" links={createLinks} />
             <FooterNavGroup title="Company" links={companyLinks} />
-            <FooterNavGroup title="Legal" links={legalLinks} />
+            <FooterNavGroup title="Legal" links={showLegal ? legalLinks : []} />
           </div>
         </div>
       </div>

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE_CONFIG } from "@/config/site";
-import { MarketingPackages } from "@/components/ui/MarketingPackages";
+
 import { canonicalUrl } from "@/lib/metadata";
 import { BrandImage } from "@/components/ui/BrandImage";
 import { IMAGES } from "@/config/images";
@@ -45,9 +45,8 @@ export default function FindAFacilitatorPage() {
           Join Light Path Retreats and be found by retreat planners
         </h2>
         <p className="mt-3 text-stone-700">
-          EUR {m.toFixed(2)} per month, or EUR {a.toFixed(0)} per year (two
-          months free). No commission on your bookings. Membership starts from
-          day one.
+          EUR {m.toFixed(2)} per month, or EUR {a.toFixed(2)} per year (two
+          months free). No commission on your bookings. Prices are before any applicable tax. Billing starts after approval, when you pay; your profile goes live once payment is received.
         </p>
         <p className="mt-2 rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-800">
           Membership payment is not live yet. Sign-up uses our onboarding form.
@@ -60,15 +59,16 @@ export default function FindAFacilitatorPage() {
         </Link>
       </section>
 
-      <section className="mt-16">
-        <h2 className="text-2xl font-semibold text-celestial-navy">Marketing packages</h2>
-        <MarketingPackages />
+      <section className="mt-8 space-y-4 rounded-xl bg-[#f6f5ee] p-6 text-sm leading-6">
+        <h2 className="text-xl text-[#104c3b]">Membership details</h2>
+        <p>One membership per person. Monthly and yearly plans renew automatically. Give at least 30 full days' notice before either renewal date. Yearly renewals have a reminder at least 45 days before. Membership fees are non-refundable.</p>
+        <p>If a payment fails, there are 3 days to pay. Promotion is paused during that period, then the profile is hidden until payment is made. Changes to membership prices require at least 45 days' notice.</p>
+        <Link href="/terms/facilitators" className="text-[#104c3b] underline">Read the full Facilitator Terms</Link>
       </section>
 
       {/* FA-04 Credentials — Stage 2 note */}
       <p className="mt-8 text-xs text-stone-400">
-        Qualifications are provided by the facilitator, not verified by us.
-        Document upload is coming soon.
+        Facilitator applications are reviewed individually. Checkable experience and an online professional presence are required; qualifications and insurance are required where the role calls for them. Approval is not a guarantee of skill or safety.
       </p>
     </div>
   );
