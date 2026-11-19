@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { RetreatCardProps } from "@/components/retreat/RetreatCard";
 export function DirectoryCard({
-  imageIllustrative, imageAlt,
+  imageIllustrative, imageAlt, previewSummary,
   title,
   type,
   location,
@@ -34,6 +34,7 @@ export function DirectoryCard({
           <Link href={href}>{title}</Link>
         </h3>
         {dates && <p className="lp-card-dates">◷ {dates}</p>}
+        {previewSummary&&<><p className="lp-card-snippet">{previewSummary.split('. ')[0]}.</p><details className="lp-card-more"><summary>Submitted details</summary><p>{previewSummary}</p><p>Submitted concept only. Details and operator checks pending. Not bookable.</p></details></>}
         <div className="lp-card-bottom">
           <div>
             <span className="lp-fine">Listed price</span>

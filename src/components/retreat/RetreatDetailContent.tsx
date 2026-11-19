@@ -4,10 +4,12 @@ import { RetreatGallery } from "@/components/retreat/RetreatGallery";
 import type { RetreatRow, DepartureRow } from "@/lib/retreats/types";
 export function RetreatDetailContent({
   row,
+  returnSearch,
   departures,
   hasAdmin = false,
 }: {
   row: RetreatRow;
+  returnSearch?:string;
   departures: DepartureRow[];
   hasAdmin?: boolean;
 }) {
@@ -40,7 +42,7 @@ export function RetreatDetailContent({
           </div>
         )}
         <nav className="lp-breadcrumb" aria-label="Breadcrumb">
-          <Link href="/retreat-listings">Discover retreats</Link>
+          <Link href={returnSearch?`/retreat-listings?${returnSearch}`:"/retreat-listings"}>{returnSearch?"Back to your results":"Discover retreats"}</Link>
           <span aria-hidden>›</span>
           <span>{row.type}</span>
         </nav>

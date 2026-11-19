@@ -1,4 +1,5 @@
 import "server-only";
+import {matchesPreviewDates} from "./preview-dates";
 import {matchesPreviewFilters} from "./preview-filters";
 import {applyApprovedMedia} from "./media";
 import { milestonePreviewEnabled, milestonePreviewRows } from "./milestone-preview";
@@ -108,7 +109,8 @@ function mapRowToCardProps(row: RetreatRow): RetreatCardProps {
     id: row.id,
     title: row.title,
     type: row.type,
-    location: row.country ?? row.location ?? "",
+    location: row.previewOnly ? [row.location,row.country].filter(Boolean).join(", ") : row.country ?? row.location ?? "",
+    previewSummary: row.previewOnly ? row.description?.split("\n\n")[0] : undefined,
     dates: row.dates_display,
     price: row.price_display,
     image: row.image_path,
@@ -253,7 +255,7 @@ export async function listPublishedRetreats(
 
   if (milestonePreviewEnabled()) {
     let rows = milestonePreviewRows.filter(row =>
-      matchesPreviewFilters(row,params)&&
+      matchesPreviewFilters(row,params)&&matchesPreviewDates(row.slug,params)&&
       (!params.q || `${row.title} ${row.description} ${row.location}`.toLowerCase().includes(params.q.toLowerCase())) &&
       (!params.destination || `${row.country} ${row.location}`.toLowerCase().includes(params.destination.toLowerCase())) &&
       (!params.type || params.type === "All types" || row.type === params.type.toLowerCase()) &&

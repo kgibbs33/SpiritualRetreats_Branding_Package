@@ -1,3 +1,6 @@
+import {DateSearch} from "@/components/retreat/DateSearch";
+import {ActiveFilters} from "@/components/retreat/ActiveFilters";
+import {searchParamsFor} from "@/lib/retreats/preview-dates";
 import {PreviewFilters} from "@/components/retreat/PreviewFilters";
 import {previewFacets} from "@/lib/retreats/preview-filters";
 import { milestonePreviewEnabled,milestonePreviewRows } from "@/lib/retreats/milestone-preview";
@@ -28,6 +31,8 @@ type PageProps = {
 export default async function RetreatListingsPage({ searchParams }: PageProps) {
   const raw = await searchParams;
   const q = parseRetreatListParams(raw);
+  const preview=milestonePreviewEnabled();
+  const returnSearch=searchParamsFor(q).toString();
   const text = (Array.isArray(raw.q) ? raw.q[0] : (raw.q ?? "")).trim();
   const {
     cards: databaseCards,
@@ -38,10 +43,10 @@ export default async function RetreatListingsPage({ searchParams }: PageProps) {
   const eligible = databaseCards.filter((r) => !isDemoRetreatHref(r.href));
   const cards = eligible;
   const filtered = Boolean(
-    text || q.type || q.intent || q.budget || q.destination || q.currency || q.lengths?.length || q.categories?.length || q.features?.length || q.atmosphere?.length || q.level?.length || q.setting?.length || q.food?.length || q.included?.length || q.ages?.length || q.rooms?.length || q.language?.length,
+    q.date_start || q.date_end || q.months?.length || text || q.type || q.intent || q.budget || q.destination || q.currency || q.lengths?.length || q.categories?.length || q.features?.length || q.atmosphere?.length || q.level?.length || q.setting?.length || q.food?.length || q.included?.length || q.ages?.length || q.rooms?.length || q.language?.length,
   );
   return (
-    <div className="lp">
+    <div className={preview?`lp lp-browse ${filtered?"lp-is-filtered":""}`:"lp"}>
       {milestonePreviewEnabled() && <div className="lp-preview-notice"><strong>Milestone preview only.</strong> Four submitted retreat concepts, not approved listings. Stock photos illustrate destinations, not the retreat venues. Actual photos, details and operator checks are pending. Booking and enquiries are disabled. <Link href="/media-workflow-preview">Try the photo-slot workflow →</Link></div>}
       <section className="lp-hero">
         <div className="lp-container lp-hero-inner">
@@ -107,6 +112,7 @@ export default async function RetreatListingsPage({ searchParams }: PageProps) {
               placeholder="Country or region"
             />
           </label>
+          {preview&&<DateSearch value={q}/>}
           <button className="lp-button" type="submit">
             Find my retreat <span aria-hidden>→</span>
           </button>
@@ -172,6 +178,7 @@ export default async function RetreatListingsPage({ searchParams }: PageProps) {
                 </p>
               </div>
             </div>
+            {preview&&<ActiveFilters value={q}/>}
             {error ? (
               <div className="lp-empty" role="alert">
                 <span className="lp-eyebrow">A brief pause</span>
@@ -187,7 +194,7 @@ export default async function RetreatListingsPage({ searchParams }: PageProps) {
             ) : cards.length ? (
               <div className="lp-cards">
                 {cards.map((r) => (
-                  <DirectoryCard key={String(r.id)} {...r} />
+                  <DirectoryCard key={String(r.id)} {...r} href={preview&&returnSearch?`${r.href}?search=${encodeURIComponent(returnSearch)}`:r.href} />
                 ))}
               </div>
             ) : (

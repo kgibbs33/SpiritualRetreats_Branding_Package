@@ -1,3 +1,6 @@
+import {milestonePreviewEnabled} from "@/lib/retreats/milestone-preview";
+import {parseRetreatListParams} from "@/lib/retreats/retreat-filters";
+import {searchParamsFor} from "@/lib/retreats/preview-dates";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import {
@@ -78,6 +81,7 @@ export default async function RetreatDetailPage({
 
   return (
     <RetreatDetailContent
+      returnSearch={milestonePreviewEnabled()&&typeof sp.search==="string"?searchParamsFor(parseRetreatListParams(Object.fromEntries(new URLSearchParams(sp.search).keys().map(k=>[k,new URLSearchParams(sp.search as string).getAll(k)])))).toString():undefined}
       row={row}
       departures={departures}
       hasAdmin={Boolean(hasAdmin)}
