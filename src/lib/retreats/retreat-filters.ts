@@ -26,8 +26,17 @@ export const retreatListParamsSchema = z.object({
   min_price:z.coerce.number().min(0).max(1000000).optional(),
   max_price:z.coerce.number().min(0).max(1000000).optional(),
   lengths:z.array(z.enum(["2-3","4-5","6-7","8-14","15+"])).optional(),
-  categories:z.array(z.enum(["wellness","spiritual","nature","yoga"])).optional(),
-  features:z.array(z.enum(["featured","solo","meals","beach","women","private","couples","vegetarian","spanish","transfers"])).optional(),
+  categories:z.array(z.string().max(50)).max(1).optional(),
+  features:z.array(z.string().max(50)).max(20).optional(),
+  atmosphere:z.array(z.string().max(50)).max(20).optional(),
+  level:z.array(z.string().max(50)).max(20).optional(),
+  setting:z.array(z.string().max(50)).max(20).optional(),
+  food:z.array(z.string().max(50)).max(20).optional(),
+  included:z.array(z.string().max(50)).max(20).optional(),
+  ages:z.array(z.string().max(50)).max(20).optional(),
+  rooms:z.array(z.string().max(50)).max(20).optional(),
+  language:z.array(z.string().max(50)).max(20).optional(),
+
   intent: z.enum(RETREAT_INTENTS).optional(),
   destination: z.string().optional(),
   month: z.string().regex(/^\d{4}-\d{2}$/, "YYYY-MM").optional(),
@@ -51,7 +60,7 @@ export function parseRetreatListParams(
   const flat: Record<string, unknown> = {};
   for (const [k, v] of Object.entries(raw)) {
     if(v===undefined||v==='')continue;
-    flat[k] = ["lengths","categories","features"].includes(k)?(Array.isArray(v)?v:[v]).flatMap(x=>x.split(",")):(Array.isArray(v)?v[0]:v);
+    flat[k] = ["lengths","categories","features","atmosphere","level","setting","food","included","ages","rooms","language"].includes(k)?(Array.isArray(v)?v:[v]).flatMap(x=>x.split(",")):(Array.isArray(v)?v[0]:v);
   }
   const valid:Record<string,unknown>={};
   for(const [key,field] of Object.entries(retreatListParamsSchema.shape)){const parsed=field.safeParse(flat[key]);if(parsed.success&&parsed.data!==undefined)valid[key]=parsed.data;}

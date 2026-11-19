@@ -38,7 +38,7 @@ export default async function RetreatListingsPage({ searchParams }: PageProps) {
   const eligible = databaseCards.filter((r) => !isDemoRetreatHref(r.href));
   const cards = eligible;
   const filtered = Boolean(
-    text || q.type || q.intent || q.budget || q.destination || q.currency || q.lengths?.length || q.categories?.length || q.features?.length,
+    text || q.type || q.intent || q.budget || q.destination || q.currency || q.lengths?.length || q.categories?.length || q.features?.length || q.atmosphere?.length || q.level?.length || q.setting?.length || q.food?.length || q.included?.length || q.ages?.length || q.rooms?.length || q.language?.length,
   );
   return (
     <div className="lp">
@@ -117,7 +117,7 @@ export default async function RetreatListingsPage({ searchParams }: PageProps) {
               <h2>Refine your search</h2>
               <Link href="/retreat-listings">Clear all</Link>
             </div>
-            <label>
+            {!milestonePreviewEnabled()&&<label>
               What do you need?
               <select name="intent" defaultValue={q.intent ?? ""}>
                 <option value="">Any intention</option>
@@ -127,7 +127,7 @@ export default async function RetreatListingsPage({ searchParams }: PageProps) {
                   </option>
                 ))}
               </select>
-            </label>
+            </label>}
             {!milestonePreviewEnabled()&&<label>
               Budget
               <select name="budget" defaultValue={q.budget ?? ""}>

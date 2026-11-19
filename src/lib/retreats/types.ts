@@ -1,6 +1,6 @@
 /** Row shape for public.retreats (with Migration A columns — all nullable until applied). */
 export type RetreatRow = {
-  filterFacts?:{days:number;categories:string[];features:string[]};
+  filterFacts?:{days:number;categories:string[];features:string[];facets?:Record<string,string[]>};
   previewOnly?: boolean;
   imageIllustrative?:boolean;
   imageAlt?:string;
