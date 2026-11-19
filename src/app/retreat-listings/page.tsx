@@ -72,6 +72,7 @@ export default async function RetreatListingsPage({ searchParams }: PageProps) {
         </div>
       </section>
       <form
+        key={JSON.stringify(q)}
         action="/retreat-listings"
         method="get"
         className="lp-container lp-search"
