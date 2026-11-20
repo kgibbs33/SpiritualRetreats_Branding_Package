@@ -1,0 +1,2 @@
+import {notFound} from 'next/navigation';import {milestonePreviewEnabled,milestonePreviewRows} from '@/lib/retreats/milestone-preview';import {OperatorInvites} from '@/components/admin/OperatorInvites';import {AdminShell} from '@/components/admin/AdminShell';import '@/app/operator-listing.css';
+export default function Page(){if(!milestonePreviewEnabled())notFound();return <AdminShell title="Operator invitations"><OperatorInvites listings={milestonePreviewRows.map(r=>({id:r.id,title:r.title}))}/></AdminShell>;}

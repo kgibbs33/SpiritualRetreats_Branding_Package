@@ -1,0 +1,16 @@
+import 'server-only';
+import {createHash,randomBytes} from 'node:crypto';
+import {z} from 'zod';
+import {NextRequest,NextResponse} from 'next/server';
+import {createAdminClient} from '@/lib/supabase/admin';
+import {getAdminSession} from '@/lib/admin/auth';
+import {mediaEnabled} from './media';
+import {milestonePreviewRows} from './milestone-preview';
+export const PRIVATE_HEADERS={'Cache-Control':'private, no-store','Referrer-Policy':'no-referrer','X-Robots-Tag':'noindex, nofollow'};
+export const reply=(data:unknown,status=200)=>NextResponse.json(data,{status,headers:PRIVATE_HEADERS});
+export const detailSchema=z.object({title:z.string().trim().min(3).max(200),location:z.string().trim().min(2).max(200),country:z.string().trim().min(2).max(100),dates:z.string().trim().min(2).max(200),price:z.string().trim().min(2).max(200),description:z.string().trim().min(20).max(15000),included:z.string().max(5000),excluded:z.string().max(5000),programme:z.string().max(10000)}).strict();
+export function initialDetails(key:string){const row=milestonePreviewRows.find(r=>r.id===key);if(key==='test-listing')return {title:'Your retreat, private test listing',location:'Example location',country:'Example country',dates:'Dates to be confirmed',price:'Price to be confirmed',description:'Use this isolated test listing to try the information and photo submission workflow. No real retreat is changed.',included:'',excluded:'',programme:''};if(!row)return null;return {title:row.title,location:row.location??'',country:row.country??'',dates:row.dates_display,price:row.price_display,description:row.description??'',included:(row.inclusions??[]).join('\n'),excluded:(row.exclusions??[]).join('\n'),programme:(row.itinerary??[]).map(x=>String(x.title??'')+'\n'+String(x.description??'')).join('\n\n')};}
+export async function adminAuth(req:NextRequest,write=false){if(!mediaEnabled())return reply({error:'Unavailable.'},404);if(!await getAdminSession())return reply({error:'Admin sign-in required.'},401);if(write&&!sameOrigin(req))return reply({error:'Same-origin request required.'},403);return null;}
+export function sameOrigin(req:NextRequest){return req.headers.get('origin')===new URL(req.url).origin&&req.headers.get('x-listing-editor')==='1'&&req.headers.get('sec-fetch-site')!=='cross-site';}
+export async function inviteAuth(req:NextRequest){if(!mediaEnabled())return null;const token=req.headers.get('authorization')?.replace(/^Bearer /,'')??'';if(!/^[a-f0-9]{64}$/.test(token))return null;const {data,error}=await createAdminClient().from('retreat_operator_invites').select('id,listing_key,snapshot,expires_at,revoked_at').eq('token_hash',createHash('sha256').update(token).digest('hex')).maybeSingle();if(error||!data||data.revoked_at||Date.parse(data.expires_at)<=Date.now())return null;return data;}
+export async function createInvite(listing:string){const snapshot=initialDetails(listing);if(!snapshot)throw Error('Unknown listing');const token=randomBytes(32).toString('hex');const expires_at=new Date(Date.now()+7*86400000).toISOString();const{data,error}=await createAdminClient().from('retreat_operator_invites').insert({listing_key:listing,snapshot,token_hash:createHash('sha256').update(token).digest('hex'),expires_at}).select('id,expires_at').single();if(error)throw Error('Could not create invitation');return {...data,token};}

@@ -8,7 +8,7 @@ export function SiteChrome({ children, showLegal }: { children: React.ReactNode;
   const pathname = usePathname() ?? "";
   const isAdmin = pathname === "/admin" || pathname.startsWith("/admin/");
 
-  if (isAdmin) {
+  if (isAdmin || pathname === "/operator-listing") {
     return (
       <div className="flex min-h-0 min-w-0 w-full flex-1 flex-col">
         {children}
