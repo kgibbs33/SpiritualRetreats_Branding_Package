@@ -30,3 +30,7 @@ Desktop and 390px mobile screenshots inspected, including admin photo and approv
 Read-only management credential could not apply schema. Failed attempts returned read-only transaction and schema permission errors. No tables were created. Browser sign-in was submitted before parent pause arrived, but no project page/SQL editor was opened. Browser closed on pause. Do not retry migration or sign-in without fresh parent direction and owner approval.
 
 Read-only verification: operator tables absent; existing 11 retreat and 17 retreat submission row hashes unchanged. Project also has 17 seeker responses, 45 facilitator onboarding responses, 27 contact inquiries, 33 newsletter subscriptions, two retreat departures. It holds operator contacts and prospective-guest personal information, mixed with some test records. It is not a disposable sandbox. Booked/paid guest status was not established.
+
+## 23 November continuation
+
+User approved the three private tables by direct WhatsApp reply at 21:16:48 UTC. Exact additive SQL was applied through the signed-in dashboard at approximately 21:27 UTC. Read-only verification confirms RLS enabled, anon/authenticated access revoked, server-role grants present, all three tables exist. Existing 11 retreat and 17 retreat_submission records have unchanged hashes. No production/main or payment changes.
