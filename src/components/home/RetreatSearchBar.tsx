@@ -73,7 +73,7 @@ export function RetreatSearchBar() {
           <input
             id="search-destination"
             type="text"
-            placeholder="Destination"
+            placeholder="Where would you like to go?"
             value={form.destination}
             onChange={(e) => setForm((f) => ({ ...f, destination: e.target.value }))}
             className={fieldClass}
@@ -167,7 +167,7 @@ export function RetreatSearchBar() {
           type="submit"
           className="inline-flex h-12 w-full items-center justify-center rounded-xl bg-sacred-gold px-8 text-base font-semibold text-celestial-navy shadow-sm transition-all hover:bg-sacred-gold/90 hover:scale-[1.02] active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-river-teal focus-visible:ring-offset-2 sm:w-auto"
         >
-          {CTA.DISCOVER_RETREATS}
+          Find my retreat
         </button>
         <p className="text-sm text-stone-500">
           Not sure yet?{" "}

@@ -87,9 +87,9 @@ export default async function Home({ searchParams }: { searchParams: Promise<Rec
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-4">
               <a href="#search" className={cta}>Find my retreat</a>
-              <Link href="/retreat-listings" className="inline-flex h-12 items-center rounded-full border-2 border-forest-green px-8 text-sm font-semibold text-forest-green transition-colors hover:bg-forest-green hover:text-white">
-                Explore retreats
-              </Link>
+              <a href={destinations.length > 0 ? "#destinations" : "/retreat-listings"} className="inline-flex h-12 items-center rounded-full border-2 border-forest-green px-8 text-sm font-semibold text-forest-green transition-colors hover:bg-forest-green hover:text-white">
+                Explore destinations
+              </a>
             </div>
           </div>
         </div>
@@ -166,10 +166,10 @@ export default async function Home({ searchParams }: { searchParams: Promise<Rec
 
       {/* 5 Destinations (only countries with a listing) */}
       {destinations.length > 0 && (
-        <section className="bg-warm-cream/40 py-16 sm:py-20">
+        <section id="destinations" className="scroll-mt-20 bg-warm-cream/40 py-16 sm:py-20">
           <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
             <h2 className={h2}>Beautiful places. Meaningful journeys.</h2>
-            <p className="mt-3 max-w-2xl text-stone-600">Destinations where we currently have retreat listings.</p>
+            <p className="mt-3 max-w-2xl text-stone-600">From tropical coasts to ancient mountain landscapes, explore the places where we currently have retreat listings.</p>
             <div className="mt-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
               {destinations.map((d) => (
                 <Link key={d.name} href={`/retreat-listings?destination=${encodeURIComponent(d.name)}`} className="group overflow-hidden rounded-2xl border border-sage-mist bg-white transition hover:shadow-lg">
@@ -190,7 +190,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<Rec
         <div className="mx-auto max-w-4xl px-5 text-center sm:px-8">
           <h2 className={h2}>More than a getaway. A journey back to yourself.</h2>
           <p className="mt-5 text-lg leading-relaxed text-stone-700">
-            The most meaningful journeys are not always about how far we travel, but how deeply we reconnect with ourselves. Light Path Retreats brings together inspiring experiences, beautiful spaces and retreat leaders who share a belief in meaningful connection.
+            The most meaningful journeys are not always about how far we travel, but how deeply we reconnect with ourselves. Light Path Retreats brings together inspiring experiences, beautiful spaces and retreat leaders who share a belief in meaningful connection.</p><p className="mt-4 text-lg leading-relaxed text-stone-700">Whether you are seeking stillness, spiritual exploration, personal growth or simply a moment to breathe, we are here to help you discover a retreat that feels right for you.
           </p>
           <p className="mt-4 font-[family-name:var(--font-display)] text-xl italic text-[#8B5E1A]">Find your path. At your own pace.</p>
           <div className="mt-10 grid grid-cols-2 gap-6 text-left">
