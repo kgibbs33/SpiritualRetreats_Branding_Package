@@ -12,7 +12,6 @@ import { milestonePreviewEnabled, milestonePreviewRows } from "@/lib/retreats/mi
 import { previewStock } from "@/lib/retreats/preview-stock";
 import "@/app/retreat-design.css";
 
-export const revalidate = 60;
 
 export const metadata: Metadata = {
   alternates: { canonical: canonicalUrl("/") },
@@ -41,7 +40,7 @@ const DESTINATIONS = [
 const PROFESSIONAL = [
   { title: "For Retreat Planners", text: "Share your passion, reach new audiences and grow your retreat business with purpose.", cta: "List my retreat", href: "/retreat-planners", img: "/images/yoga-retreat.jpg", alt: "Illustrative yoga photo" },
   { title: "For Venue Owners", text: "Your space could be the setting for someone's next meaningful retreat. Show it to retreat planners looking for places to host.", cta: "List my venue", href: "/find-a-venue", img: "/images/sacred-valley.jpg", alt: "Illustrative landscape photo" },
-  { title: "For Facilitators", text: "Share your expertise, connect with retreat leaders and discover professional opportunities.", cta: "Create my profile", href: "/find-a-facilitator", img: "/images/meditation-nature.jpg", alt: "Illustrative meditation photo" },
+  { title: "For Facilitators", text: "Share your expertise, connect with retreat leaders and discover professional opportunities.", cta: "Create my profile", href: "/find-a-facilitator", img: "/images/hero-meditation.jpg", alt: "Illustrative silhouette meditating at sunrise" },
 ];
 
 const PILLARS = [
@@ -51,7 +50,9 @@ const PILLARS = [
   ["Your journey, your choice", "Find experiences aligned with your intentions."],
 ];
 
-export default async function Home() {
+export default async function Home({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
+  const sp = await searchParams;
+  const ideal = sp.headline === "ideal";
   let featured: Awaited<ReturnType<typeof listPublishedRetreats>>["cards"] = [];
   try {
     const res = await listPublishedRetreats({});
@@ -76,10 +77,10 @@ export default async function Home() {
           <div className="max-w-[36rem] text-left">
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#8B5E1A]">Transformational retreats worldwide</p>
             <h1 className="mt-4 font-[family-name:var(--font-display)] text-5xl font-bold leading-[1.05] tracking-tight text-forest-green lg:text-7xl">
-              Leave the noise behind.
+              {ideal ? "Find your ideal retreat." : "Leave the noise behind."}
             </h1>
             <p className="mt-3 font-[family-name:var(--font-display)] text-2xl italic leading-snug text-[#8B5E1A] lg:text-3xl">
-              Return to what matters.
+              {ideal ? "Leave the noise behind. Return to what matters." : "Return to what matters."}
             </p>
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-stone-700 lg:text-xl">
               Discover your ideal retreat in some of the world&apos;s most inspiring places. Reconnect with yourself, restore your balance and explore meaningful experiences that speak to your soul.
