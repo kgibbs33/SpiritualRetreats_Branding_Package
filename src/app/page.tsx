@@ -23,7 +23,7 @@ const INTENTS = [
   { label: "Spiritual connection", line: "Explore a deeper connection with yourself.", href: "/retreat-listings?intent=spiritual", img: "/images/meditation-retreat-type.png", alt: "Illustrative meditation photo" },
   { label: "Wellness & renewal", line: "Make time for your body, mind and soul.", href: "/retreat-listings?intent=health+and+wellbeing", img: "/images/spa-wellness.jpg", alt: "Illustrative spa and wellness photo" },
   { label: "Personal growth", line: "Discover new perspectives and possibilities.", href: "/retreat-listings?intent=personal+growth", img: "/images/yoga-retreat.jpg", alt: "Illustrative yoga photo" },
-  { label: "Nature & adventure", line: "Reconnect with the natural world.", href: "/retreat-listings?intent=adventure", img: "/images/nature-immersion.jpg", alt: "Illustrative forest photo" },
+  { label: "Nature & adventure", line: "Reconnect with the natural world.", href: "/retreat-listings?intent=adventure", img: "/images/nature-retreat-type.png", alt: "Illustrative forest path photo" },
   { label: "Stillness & mindfulness", line: "Find space for presence and reflection.", href: "/retreat-listings?intent=clarity+and+focus", img: "/images/mindfulness-retreat.jpg", alt: "Illustrative mindfulness photo" },
 ];
 
