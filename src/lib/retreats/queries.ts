@@ -1,5 +1,5 @@
 import "server-only";
-import {matchesPreviewDates} from "./preview-dates";
+import {matchesPreviewDates, previewDateRanges} from "./preview-dates";
 import {matchesPreviewFilters} from "./preview-filters";
 import {applyApprovedMedia} from "./media";
 import { milestonePreviewEnabled, milestonePreviewRows } from "./milestone-preview";
@@ -259,7 +259,8 @@ export async function listPublishedRetreats(
       (!params.q || `${row.title} ${row.description} ${row.location}`.toLowerCase().includes(params.q.toLowerCase())) &&
       (!params.destination || `${row.country} ${row.location}`.toLowerCase().includes(params.destination.toLowerCase())) &&
       (!params.type || params.type === "All types" || row.type === params.type.toLowerCase()) &&
-      (!params.intent || row.categories.includes(params.intent))
+      (!params.intent || row.categories.includes(params.intent)) &&
+      (!params.month || (previewDateRanges[row.slug] ?? []).some(([a,b]) => a.slice(0,7) <= params.month! && b.slice(0,7) >= params.month!))
     );
     const budget = params.budget ? budgetRange(params.budget) : null;
     if (budget) rows = rows.filter(row => row.price_currency==='EUR' && row.price_from != null && row.price_from >= budget.min && row.price_from <= budget.max);
