@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { canonicalUrl } from "@/lib/metadata";
 
 export const metadata: Metadata = {
-  title: "Our story",
+  title: { absolute: "Our story | Light Path Retreats" },
   description: "Why Light Path Retreats exists, and how we are connecting retreat guests, planners, venues and facilitators.", alternates: { canonical: canonicalUrl("/about/our-story") },
 };
 
