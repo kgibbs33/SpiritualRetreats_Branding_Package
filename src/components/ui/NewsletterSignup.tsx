@@ -152,7 +152,7 @@ export function NewsletterSignup({
         </p>
       ) : null}
       <p
-        className={`text-xs ${isDark ? "text-white/50" : "text-stone-400"}`}
+        className={`text-xs ${isDark ? "text-white/70" : "text-stone-600"}`}
       >
         By subscribing you agree to receive occasional email updates. You can
         unsubscribe at any time. See our{" "}

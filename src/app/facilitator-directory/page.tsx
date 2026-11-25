@@ -17,14 +17,15 @@ type PageProps = {
 };
 
 export const metadata: Metadata = {
-  title: "Facilitators — Light Path Retreats",
+  title: "Facilitator directory",
   description:
     "Browse our directory of retreat facilitators — teachers, guides, and practitioners across yoga, meditation, breathwork, somatic work, coaching, and more.",
   alternates: { canonical: "/facilitator-directory" },
   openGraph: {
     type: "website",
     url: "/facilitator-directory",
-    title: "Facilitators — Light Path Retreats",
+    title: "Facilitator directory | Light Path Retreats",
+    images: [{ url: "/brand/og-share.png", width: 1200, height: 630, alt: "Light Path Retreats" }],
     description:
       "Browse our directory of retreat facilitators across many practices and locations.",
   },

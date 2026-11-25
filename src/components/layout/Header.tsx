@@ -139,7 +139,7 @@ export function Header() {
           className={`overflow-hidden border-t border-sage-mist bg-warm-cream transition-[max-height] duration-300 ease-out motion-reduce:transition-none xl:hidden ${
             mobileOpen ? "max-h-[min(85vh,calc(100dvh-5rem))]" : "max-h-0"
           }`}
-          aria-label="Mobile" aria-hidden={!mobileOpen}
+          aria-label="Mobile" aria-hidden={!mobileOpen} inert={!mobileOpen}
         >
           <div className="max-h-[min(85vh,calc(100dvh-5rem))] overflow-y-auto overscroll-y-contain px-4 py-5 sm:px-6">
             {mainNav.map(({ href, label }, i) => (

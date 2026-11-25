@@ -3,6 +3,8 @@ import Link from "next/link";
 import { RetreatSearchBar } from "@/components/home/RetreatSearchBar";
 import { NewsletterSignup } from "@/components/ui/NewsletterSignup";
 import { canonicalUrl } from "@/lib/metadata";
+import { SITE_CONFIG } from "@/config/site";
+import { BRAND_NAME, BRAND_MOTTO, SHORT_DESCRIPTION } from "@/lib/brand";
 import { BrandImage } from "@/components/ui/BrandImage";
 import { IMAGES } from "@/config/images";
 import { DirectoryCard } from "@/components/retreat/DirectoryCard";
@@ -66,8 +68,17 @@ export default async function Home({ searchParams }: { searchParams: Promise<Rec
   const h2 = "font-[family-name:var(--font-display)] text-3xl font-semibold text-forest-green sm:text-4xl";
   const cta = "inline-flex h-12 items-center rounded-full bg-forest-green px-8 text-sm font-semibold text-white shadow-md transition hover:bg-forest-green/90";
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      { "@type": "Organization", "@id": `${canonicalUrl("/")}#org`, name: BRAND_NAME, legalName: SITE_CONFIG.legal_name, url: canonicalUrl("/"), logo: canonicalUrl("/brand/og-share.png"), slogan: BRAND_MOTTO, email: SITE_CONFIG.support_email },
+      { "@type": "WebSite", "@id": `${canonicalUrl("/")}#site`, name: BRAND_NAME, url: canonicalUrl("/"), description: SHORT_DESCRIPTION, publisher: { "@id": `${canonicalUrl("/")}#org` } },
+    ],
+  };
+
   return (
     <div className="bg-white">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
       {/* 1 Hero */}
       <section className="relative isolate overflow-hidden min-h-[34rem] lg:min-h-[80vh]">
         <BrandImage slot={IMAGES.homeHero} fill priority sizes="100vw" className="object-[70%_center] md:object-right" />
@@ -219,7 +230,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<Rec
       <section className="bg-forest-green py-16 text-center text-warm-cream sm:py-20">
         <div className="mx-auto max-w-2xl px-5 sm:px-8">
           <h2 className="font-[family-name:var(--font-display)] text-3xl font-semibold sm:text-4xl">Perhaps it&apos;s time to make space for you.</h2>
-          <p className="mt-3 font-[family-name:var(--font-display)] italic text-sacred-gold">A new perspective. A deeper connection. A meaningful beginning.</p>
+          <p className="mt-3 font-[family-name:var(--font-display)] italic text-[#f0cd7a]">A new perspective. A deeper connection. A meaningful beginning.</p>
           <p className="mt-4 text-warm-cream/85">Whatever you are searching for, your next journey starts with a single step.</p>
           <a href="#search" className="mt-8 inline-flex h-14 items-center justify-center rounded-full bg-sacred-gold px-10 text-base font-semibold text-celestial-navy shadow-md transition hover:bg-sacred-gold/90">Find my retreat</a>
         </div>
