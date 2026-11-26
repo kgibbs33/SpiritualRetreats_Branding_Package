@@ -119,7 +119,7 @@ export function Header() {
               href="/#search"
               className="hidden rounded-full bg-sacred-gold px-5 py-2.5 text-[15px] font-semibold leading-none text-celestial-navy shadow-sm transition-all motion-reduce:transition-none hover:bg-sacred-gold/90 hover:shadow-md xl:inline-flex"
             >
-              Book Your Retreat
+              Find My Retreat
             </Link>
             <button
               type="button" onClick={() => setMobileOpen((o) => !o)}
@@ -161,7 +161,7 @@ export function Header() {
             </Link>
             <Link href="/#search" onClick={() => setMobileOpen(false)}
               className="mt-3 flex min-h-[48px] items-center justify-center rounded-full bg-sacred-gold py-3.5 text-[16px] font-semibold text-celestial-navy transition-colors hover:bg-sacred-gold/90 active:bg-sacred-gold/80">
-              Book Your Retreat
+              Find My Retreat
             </Link>
           </div>
         </nav>

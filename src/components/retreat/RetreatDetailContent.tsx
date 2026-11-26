@@ -38,7 +38,7 @@ export function RetreatDetailContent({
       <div className="lp-container lp-detail">
         {(hasAdmin || previewOnly) && (
           <div className="lp-admin-notice">
-            {previewOnly ? "Milestone preview only · Illustrative photos labelled · Details and operator checks pending · Not bookable" : "Admin preview · Not a public booking page"}
+            {previewOnly ? "Early listing · Photos are illustrative · Details being confirmed · Not yet bookable" : "Admin preview · Not a public booking page"}
           </div>
         )}
         <nav className="lp-breadcrumb" aria-label="Breadcrumb">
@@ -233,7 +233,7 @@ export function RetreatDetailContent({
             {row.price_notes && <p>{row.price_notes}</p>}
             {row.dates_display && <p>{row.dates_display}</p>}
             <div className="lp-enquiry-rule" />
-            <p>{previewOnly ? "Review only. No booking or enquiry can be submitted from this preview." : "Have a question about dates, accommodation or the programme?"}</p>
+            <p>{previewOnly ? "Booking is not open yet. Use the Find your retreat form and we will help you find a match." : "Have a question about dates, accommodation or the programme?"}</p>
             {!hasAdmin && !previewOnly && (
               <div className="lp-enquiry-action">
                 <RequestPlaceForm
