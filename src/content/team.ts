@@ -33,6 +33,7 @@ Above all, she believes that when we reconnect with ourselves, we don't just cha
   },
   {
     name: "Adriana Domingues",
+    subheading: "Holistic Therapist & Reiki Master",
     bio: `With a Master's degree in Biomedical Sciences, Adriana is a holistic therapist and Reiki Master who believes in an integrative approach to well-being, where science and holistic therapies complement one another rather than stand apart.
 Her work is guided by the belief that true well-being comes from nurturing the connection between body, mind and spirit. Through a holistic approach, she aims to help individuals reconnect with themselves, cultivate inner balance and awareness, and support their journey towards a more harmonious and mindful life.
 She is passionate about creating a space where each person can feel supported in their own journey of self-discovery, healing and personal growth.`,
