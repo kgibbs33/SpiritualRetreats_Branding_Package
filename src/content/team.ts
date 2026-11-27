@@ -55,6 +55,6 @@ She is passionate about creating a space where each person can feel supported in
     name: "Kirtis Gibbs",
     subheading: "Co-Founder · Veteran & Health Coach · Finance and Technology",
     bio: "Kirtis Gibbs is a war veteran who learned through service and its aftermath that healing is a daily practice, not a destination. Living with a 100% disability, he began his formal health training in 2021 and has since earned ISSA certifications as a Personal Trainer, Nutritionist, Health Coach and Corrective Exercise Specialist. Today he is deepening that path toward functional and integrative medicine, and carrying it to people around the world through retreats. Kirtis believes the most peaceful places in the world are the ones we build inside ourselves, and that a well-planned retreat can be where that begins. He is using Light Path Retreats as a way to better his own health and to help other veterans around the world, and he looks after the finance and technology that keep the platform running. His mission is simple: to help people find their peace in a world of war.",
-    imagePath: "/images/team/kirtis-gibbs.jpg",
+    imagePath: "/images/team/kirtis-gibbs-2.jpg",
   },
 ];
