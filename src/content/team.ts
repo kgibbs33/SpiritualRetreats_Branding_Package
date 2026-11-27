@@ -32,18 +32,16 @@ Above all, she believes that when we reconnect with ourselves, we don't just cha
     imagePath: "/images/team/gordana-ross.jpg",
   },
   {
-    name: "Adriana Domingues",
-    subheading: "Holistic Therapist & Reiki Master",
-    bio: `With a Master's degree in Biomedical Sciences, Adriana is a holistic therapist and Reiki Master who believes in an integrative approach to well-being, where science and holistic therapies complement one another rather than stand apart.
-Her work is guided by the belief that true well-being comes from nurturing the connection between body, mind and spirit. Through a holistic approach, she aims to help individuals reconnect with themselves, cultivate inner balance and awareness, and support their journey towards a more harmonious and mindful life.
-She is passionate about creating a space where each person can feel supported in their own journey of self-discovery, healing and personal growth.`,
-    imagePath: "/images/team/adriana-domingues.jpg",
-  },
-  {
     name: "Andrew A. Porteous",
     subheading: "Co-Founder · Learning Officer & Chief Alchemist (LOCA)",
     bio: "Andrew A. Porteous is a financial educator, personal development coach and architect of The Alchemist Path, with over 20 years of experience in personal and spiritual transformation. His enlightening vision quest in Corumbá, Brazil, in 2015 strengthened his belief that the world needs more spiritual retreats and meaningful human connection beyond our everyday environments. Through Light Path Retreats, Andrew seeks to create transformative experiences that people can bring back into their homes, relationships and workplaces. His vision is to inspire lasting change in thoughts, behaviours, beliefs, values and identity, empowering individuals to align with their higher purpose and their highest possible timeline.",
     imagePath: "/images/team/andrew-porteous.jpg",
+  },
+  {
+    name: "Kirtis Gibbs",
+    subheading: "Co-Founder · Veteran & Health Coach · Finance and Technology",
+    bio: "Kirtis Gibbs is a war veteran who learned through service and its aftermath that healing is a daily practice, not a destination. Living with a 100% disability, he began his formal health training in 2021 and has since earned ISSA certifications as a Personal Trainer, Nutritionist, Health Coach and Corrective Exercise Specialist. Today he is deepening that path toward functional and integrative medicine, and carrying it to people around the world through retreats. Kirtis believes the most peaceful places in the world are the ones we build inside ourselves, and that a well-planned retreat can be where that begins. He is using Light Path Retreats as a way to better his own health and to help other veterans around the world, and he looks after the finance and technology that keep the platform running. His mission is simple: to help people find their peace in a world of war.",
+    imagePath: "/images/team/kirtis-gibbs-2.jpg",
   },
   {
     name: VANESSA_NAME,
@@ -52,9 +50,11 @@ She is passionate about creating a space where each person can feel supported in
     imagePath: "/images/team/vanessa-mendoza.jpg",
   },
   {
-    name: "Kirtis Gibbs",
-    subheading: "Co-Founder · Veteran & Health Coach · Finance and Technology",
-    bio: "Kirtis Gibbs is a war veteran who learned through service and its aftermath that healing is a daily practice, not a destination. Living with a 100% disability, he began his formal health training in 2021 and has since earned ISSA certifications as a Personal Trainer, Nutritionist, Health Coach and Corrective Exercise Specialist. Today he is deepening that path toward functional and integrative medicine, and carrying it to people around the world through retreats. Kirtis believes the most peaceful places in the world are the ones we build inside ourselves, and that a well-planned retreat can be where that begins. He is using Light Path Retreats as a way to better his own health and to help other veterans around the world, and he looks after the finance and technology that keep the platform running. His mission is simple: to help people find their peace in a world of war.",
-    imagePath: "/images/team/kirtis-gibbs-2.jpg",
+    name: "Adriana Domingues",
+    subheading: "Holistic Therapist & Reiki Master",
+    bio: `With a Master's degree in Biomedical Sciences, Adriana is a holistic therapist and Reiki Master who believes in an integrative approach to well-being, where science and holistic therapies complement one another rather than stand apart.
+Her work is guided by the belief that true well-being comes from nurturing the connection between body, mind and spirit. Through a holistic approach, she aims to help individuals reconnect with themselves, cultivate inner balance and awareness, and support their journey towards a more harmonious and mindful life.
+She is passionate about creating a space where each person can feel supported in their own journey of self-discovery, healing and personal growth.`,
+    imagePath: "/images/team/adriana-domingues.jpg",
   },
 ];
